@@ -26,7 +26,7 @@ namespace UsingPronounsInSpecFlowScenarios
         }
 
         [When(@"(.*) move in together at '(.*)'")]
-        public void WhenPerson1AndPerson2MoveInTogetherAt(Person[] persons, string newAddress)
+        public void WhenPersonsMoveInTogetherAt(Person[] persons, string newAddress)
         {
             Person.MoveInTogether(newAddress, persons);
         }
@@ -34,7 +34,7 @@ namespace UsingPronounsInSpecFlowScenarios
         [Then(@"(.*) his address is '(.*)'")]
         [Then(@"(.*) her address is '(.*)'")]
         [Then(@"(.*) address is '(.*)'")]
-        public void ThenHisAddressIs(Person person, string expectedAddress)
+        public void ThenPersonsAddressIs(Person person, string expectedAddress)
         {
             Assert.AreEqual(expectedAddress, person.Address, $"Unexpected address for {person.Name}");
         }
