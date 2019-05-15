@@ -25,10 +25,10 @@ namespace UsingPronounsInSpecFlowScenarios
             person.Address = address;
         }
 
-        [When(@"(.*) and (.*) move in together at '(.*)'")]
-        public void WhenPerson1AndPerson2MoveInTogetherAt(Person person1, Person person2, string newAddress)
+        [When(@"(.*) move in together at '(.*)'")]
+        public void WhenPerson1AndPerson2MoveInTogetherAt(Person[] persons, string newAddress)
         {
-            Person.MoveInTogether(newAddress, person1, person2);
+            Person.MoveInTogether(newAddress, persons);
         }
 
         [Then(@"(.*) his address is '(.*)'")]

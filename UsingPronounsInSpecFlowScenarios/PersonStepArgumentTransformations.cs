@@ -50,6 +50,12 @@ namespace UsingPronounsInSpecFlowScenarios
             }
         }
 
+        [StepArgumentTransformation("(.*) and (.*)")]
+        public Person[] ConvertTwoPersonsIntoCollection(Person person1, Person person2)
+        {
+            return new Person[] { person1, person2 };
+        }
+
         [StepArgumentTransformation("'(.*)'")]
         public Person ConvertNameToPerson(string name)
         {
