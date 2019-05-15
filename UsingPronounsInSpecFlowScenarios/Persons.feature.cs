@@ -108,9 +108,9 @@ this.ScenarioInitialize(scenarioInfo);
     testRunner.When("\'John H. Watson\' and \'Mary Morstan\' move in together at \'221B Baker Street, Londo" +
                     "n\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 11
-    testRunner.Then("\'John H. Watson\' his address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("\'Mary Morstan\' her address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 12
-        testRunner.And("\'Mary Morstan\' her address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("\'John H. Watson\' his address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -135,9 +135,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 21
     testRunner.When("they move in together at \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
-    testRunner.Then("his address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("her address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 23
-        testRunner.And("her address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("his address is \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
