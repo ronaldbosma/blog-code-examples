@@ -99,9 +99,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 6
  testRunner.Given("a man called \'John H. Watson\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 7
-        testRunner.And("a woman called \'Mary Morstan\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 8
         testRunner.And("\'John H. Watson\' lives at \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 8
+        testRunner.And("a woman called \'Mary Morstan\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 9
         testRunner.And("\'Mary Morstan\' lives at \'123 Couldn\'t Find It, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
@@ -127,9 +127,9 @@ this.ScenarioInitialize(scenarioInfo);
 #line 17
  testRunner.Given("a man called \'John H. Watson\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 18
-        testRunner.And("a woman called \'Mary Morstan\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 19
         testRunner.And("he lives at \'221B Baker Street, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 19
+        testRunner.And("a woman called \'Mary Morstan\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 20
         testRunner.And("she lives at \'123 Couldn\'t Find It, London\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 21
