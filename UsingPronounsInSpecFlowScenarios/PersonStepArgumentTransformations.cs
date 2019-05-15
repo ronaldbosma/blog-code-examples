@@ -50,6 +50,12 @@ namespace UsingPronounsInSpecFlowScenarios
             }
         }
 
+        /// <summary>
+        /// This method using Step Argument Transformation chaning.
+        /// Because the method is expecting two input parameters of type <see cref="Person"/>
+        /// SpecFlow will first call <see cref="ConvertNameToPerson"/> for each name to create the <see cref="Person"/>.
+        /// Then this method is called to combine the persons.
+        /// </summary>
         [StepArgumentTransformation("(.*) and (.*)")]
         public Person[] ConvertTwoPersonsIntoCollection(Person person1, Person person2)
         {
