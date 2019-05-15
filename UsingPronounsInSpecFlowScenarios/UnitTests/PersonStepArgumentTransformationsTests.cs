@@ -161,6 +161,23 @@ namespace UsingPronounsInSpecFlowScenarios.UnitTests
             _sut.ConvertHeToPerson("he");
         }
 
+        [TestMethod]
+        public void ConvertHeToPerson_PersonCreatedAndConvertedToSheAndThanSecondPersonCreated_SecondPersonReturned()
+        {
+            //Arrange
+            var she = _sut.ConvertNameToPerson("Mary Morstan");
+            _sut.ConvertSheToPerson("she");
+
+            var he = _sut.ConvertNameToPerson("John H. Watson");
+
+            //Act
+            var result = _sut.ConvertHeToPerson("he");
+
+            //Assert
+            Assert.AreSame(he, result);
+            Assert.AreNotSame(she, result);
+        }
+
         #endregion
 
         #region ConvertSheToPerson Tests
@@ -202,7 +219,7 @@ namespace UsingPronounsInSpecFlowScenarios.UnitTests
         }
 
         [TestMethod]
-        public void ConvertSheToPerson_PersonWasCreatedAfterAHeWasAlreadyConverted_OriginalHeWasReturnedAndNotNewPerson()
+        public void ConvertSheToPerson_PersonWasCreatedAfterASheWasAlreadyConverted_OriginalSheWasReturnedAndNotNewPerson()
         {
             //Arrange
             var person = _sut.ConvertNameToPerson("Mary Morstan");
@@ -229,6 +246,29 @@ namespace UsingPronounsInSpecFlowScenarios.UnitTests
             //Act
             _sut.ConvertSheToPerson("she");
         }
+
+        [TestMethod]
+        public void ConvertSheToPerson_PersonCreatedAndConvertedToHeAndThanSecondPersonCreated_SecondPersonReturned()
+        {
+            //Arrange
+            var he = _sut.ConvertNameToPerson("John H. Watson");
+            _sut.ConvertHeToPerson("he");
+
+            var she = _sut.ConvertNameToPerson("Mary Morstan");
+
+            //Act
+            var result = _sut.ConvertSheToPerson("she");
+
+            //Assert
+            Assert.AreSame(she, result);
+            Assert.AreNotSame(he, result);
+        }
+
+        #endregion
+
+        #region ConvertTheyToPersons Tests
+
+
 
         #endregion
 
