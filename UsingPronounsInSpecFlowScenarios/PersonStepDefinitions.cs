@@ -33,6 +33,7 @@ namespace UsingPronounsInSpecFlowScenarios
 
         [Then(@"(.*) his address is '(.*)'")]
         [Then(@"(.*) her address is '(.*)'")]
+        [Then(@"(.*) address is '(.*)'")]
         public void ThenHisAddressIs(Person person, string expectedAddress)
         {
             Assert.AreEqual(expectedAddress, person.Address, $"Unexpected address for {person.Name}");

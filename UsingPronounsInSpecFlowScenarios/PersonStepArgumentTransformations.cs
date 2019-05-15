@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using TechTalk.SpecFlow;
 
@@ -13,7 +14,7 @@ namespace UsingPronounsInSpecFlowScenarios
         private Person _she;
 
         [StepArgumentTransformation("(he|his)")]
-        public Person ConvertHeToPerson(string malePronoun)
+        public Person ConvertHeToPerson(string pronoun)
         {
             if (_he != null)
             {
@@ -27,12 +28,12 @@ namespace UsingPronounsInSpecFlowScenarios
             }
             else
             {
-                throw new InvalidOperationException($"Unable to convert '{malePronoun}' to person. No available person was found.");
+                throw new InvalidOperationException($"Unable to convert '{pronoun}' to person. No available person was found.");
             }
         }
 
         [StepArgumentTransformation("(she|her)")]
-        public Person ConvertSheToPerson(string femalePronoun)
+        public Person ConvertSheToPerson(string pronoun)
         {
             if (_she != null)
             {
@@ -46,8 +47,19 @@ namespace UsingPronounsInSpecFlowScenarios
             }
             else
             {
-                throw new InvalidOperationException($"Unable to convert '{femalePronoun}' to person. No available person was found.");
+                throw new InvalidOperationException($"Unable to convert '{pronoun}' to person. No available person was found.");
             }
+        }
+
+        [StepArgumentTransformation("(they|their)")]
+        public Person[] ConvertTheyToPersons(string pronoun)
+        {
+            if (_persons.Count < 2)
+            {
+                throw new InvalidOperationException($"Unable to convert '{pronoun}' to persons. There should be atleast 2 persons.");
+            }
+
+            return _persons.Values.ToArray();
         }
 
         /// <summary>
