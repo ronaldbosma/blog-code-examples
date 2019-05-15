@@ -14,10 +14,12 @@ namespace UsingPronounsInSpecFlowScenarios
 
         public string Address { get; set; }
 
-        public static void MoveInTogether(Person p1, Person p2, string newAddress)
+        public static void MoveInTogether(string newAddress, params Person[] persons)
         {
-            p1.Address = newAddress;
-            p2.Address = newAddress;
+            foreach (var person in persons)
+            {
+                person.Address = newAddress;
+            }
         }
     }
 }

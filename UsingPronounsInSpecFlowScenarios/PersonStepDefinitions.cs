@@ -28,7 +28,7 @@ namespace UsingPronounsInSpecFlowScenarios
         [When(@"(.*) and (.*) move in together at '(.*)'")]
         public void WhenPerson1AndPerson2MoveInTogetherAt(Person person1, Person person2, string newAddress)
         {
-            Person.MoveInTogether(person1, person2, newAddress);
+            Person.MoveInTogether(newAddress, person1, person2);
         }
 
         [Then(@"(.*) his address is '(.*)'")]
