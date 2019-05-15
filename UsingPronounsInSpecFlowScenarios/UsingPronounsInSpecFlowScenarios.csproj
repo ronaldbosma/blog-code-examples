@@ -79,6 +79,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Persons.feature</DependentUpon>
     </Compile>
+    <Compile Include="PersonStepDefinitions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
