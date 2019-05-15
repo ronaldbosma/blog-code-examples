@@ -70,7 +70,7 @@ namespace UsingPronounsInSpecFlowScenarios
         /// Then this method is called to combine the persons.
         /// </summary>
         [StepArgumentTransformation("(.*) and (.*)")]
-        public Person[] ConvertTwoPersonsIntoCollection(Person person1, Person person2)
+        public Person[] CombineTwoPersonsIntoArray(Person person1, Person person2)
         {
             return new Person[] { person1, person2 };
         }
