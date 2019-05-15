@@ -75,7 +75,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Persons.feature.cs" />
+    <Compile Include="Persons.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Persons.feature</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
