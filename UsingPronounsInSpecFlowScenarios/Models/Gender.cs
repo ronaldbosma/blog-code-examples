@@ -1,4 +1,4 @@
-﻿namespace UsingPronounsInSpecFlowScenarios
+﻿namespace UsingPronounsInSpecFlowScenarios.Models
 {
     enum Gender
     {

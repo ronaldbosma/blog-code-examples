@@ -75,8 +75,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Gender.cs" />
-    <Compile Include="Person.cs" />
+    <Compile Include="Models\Gender.cs" />
+    <Compile Include="Models\Person.cs" />
     <Compile Include="Persons.feature.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Persons.feature</DependentUpon>

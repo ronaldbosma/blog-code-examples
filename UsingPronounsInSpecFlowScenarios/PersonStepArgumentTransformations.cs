@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using TechTalk.SpecFlow;
+using UsingPronounsInSpecFlowScenarios.Models;
 
 namespace UsingPronounsInSpecFlowScenarios
 {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
+using UsingPronounsInSpecFlowScenarios.Models;
 
 namespace UsingPronounsInSpecFlowScenarios
 {
