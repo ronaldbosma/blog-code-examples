@@ -14,7 +14,7 @@ namespace UsingPronounsInSpecFlowScenarios
         private Person _he;
         private Person _she;
 
-        [StepArgumentTransformation("(he|his)")]
+        [StepArgumentTransformation("(he|him|his)")]
         public Person ConvertHeToPerson(string pronoun)
         {
             if (_he != null)
@@ -33,7 +33,7 @@ namespace UsingPronounsInSpecFlowScenarios
             }
         }
 
-        [StepArgumentTransformation("(she|her)")]
+        [StepArgumentTransformation("(she|her|hers)")]
         public Person ConvertSheToPerson(string pronoun)
         {
             if (_she != null)
@@ -52,7 +52,7 @@ namespace UsingPronounsInSpecFlowScenarios
             }
         }
 
-        [StepArgumentTransformation("(they|their)")]
+        [StepArgumentTransformation("(they|their|theirs)")]
         public Person[] ConvertTheyToPersons(string pronoun)
         {
             if (_persons.Count < 2)
