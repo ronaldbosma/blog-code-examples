@@ -8,7 +8,7 @@ stages:
 - stage: 'GenerateHugoSite'
   displayName: 'Generate Hugo Site'
   jobs:
-  - job: # chose to use a normal job instead of a deployment job because I don't need an environment
+  - job:
     pool:
       vmImage: 'vs2017-win2016'  # need a Windows host because the Hugo task uses PowerShell
 
@@ -29,13 +29,14 @@ stages:
       artifact: 'hugo-site'
 
 
+
 - stage: 'PublishHugoSite'
   displayName: 'Publish Hugo Site'
   dependsOn: 'GenerateHugoSite'
   # only publish site when generation succeeded and it's the master branch
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
-  - job:
+  - job: # chose to use a normal job instead of a deployment job because I don't need an environment
     pool:
       vmImage: 'vs2017-win2016'  # need a Windows host because the GitHubPagesPublish task uses PowerShell
 
