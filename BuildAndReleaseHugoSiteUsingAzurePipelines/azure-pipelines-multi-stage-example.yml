@@ -1,0 +1,56 @@
+# Pipeline to generate and publish Hugo site
+
+trigger:
+- master
+
+stages:
+
+- stage: 'GenerateHugoSite'
+  displayName: 'Generate Hugo Site'
+  jobs:
+  - job:
+    pool:
+      vmImage: 'vs2017-win2016'  # need a Windows host because the Hugo task uses PowerShell
+
+    workspace:
+      clean: all
+
+    steps:
+    - checkout: self
+      displayName: 'Checkout repository including submodules'
+      submodules: true  # true so Hugo theme submodule is checked out
+
+    - task: HugoTask@1
+      displayName: 'Generate Hugo site'
+      inputs:
+        destination: '$(Build.ArtifactStagingDirectory)'
+
+    - publish: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'hugo-site'
+
+
+- stage: 'PublishHugoSite'
+  displayName: 'Publish Hugo Site'
+  dependsOn: 'GenerateHugoSite'
+  # only publish site when generation succeeded and it's the master branch
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  jobs:
+  - job:
+    pool:
+      vmImage: 'vs2017-win2016'  # need a Windows host because the GitHubPagesPublish task uses PowerShell
+
+    steps:
+    - checkout: none  # no need to checkout any code because we only need the artifact
+
+    - download: current
+      artifact: 'hugo-site'
+
+    - task: GitHubPagesPublish@1
+      inputs:
+        docPath: '$(Pipeline.Workspace)/hugo-site/*'
+        githubusername: '$(github-username)'
+        githubemail: '$(github-email)'
+        githubaccesstoken: '$(github-personal-access-token)'
+        repositoryname: '$(repository)'
+        branchname: 'master'
+        commitmessage: 'Automated Pipeline $(Build.BuildNumber): $(Build.SourceVersionMessage)'
