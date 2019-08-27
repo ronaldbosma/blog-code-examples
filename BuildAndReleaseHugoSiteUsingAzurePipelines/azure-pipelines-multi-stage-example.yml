@@ -8,7 +8,7 @@ stages:
 - stage: 'GenerateHugoSite'
   displayName: 'Generate Hugo Site'
   jobs:
-  - job:
+  - job: # chose to use a normal job instead of a deployment job because I don't need an environment
     pool:
       vmImage: 'vs2017-win2016'  # need a Windows host because the Hugo task uses PowerShell
 
