@@ -7,10 +7,5 @@
         public string Name { get; set; }
 
         public string Address { get; set; }
-
-        public void MoveTo(string newAddress)
-        {
-            Address = newAddress;
-        }
     }
 }

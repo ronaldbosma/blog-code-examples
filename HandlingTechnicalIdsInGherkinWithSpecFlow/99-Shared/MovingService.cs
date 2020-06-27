@@ -14,7 +14,7 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
         public void MovePerson(int personId, string newAddress)
         {
             var person = _peopleRepository.GetById(personId);
-            person.MoveTo(newAddress);
+            person.Address = newAddress;
         }
     }
 }
