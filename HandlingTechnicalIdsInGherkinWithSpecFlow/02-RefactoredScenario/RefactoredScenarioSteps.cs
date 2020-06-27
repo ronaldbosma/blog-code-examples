@@ -1,17 +1,21 @@
-﻿using HandlingTechnicalIdsInGherkinWithSpecFlow.Shared;
+﻿using System;
+using System.Linq;
+using System.Collections.Generic;
+using System.Text;
+using HandlingTechnicalIdsInGherkinWithSpecFlow.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 
-namespace HandlingTechnicalIdsInGherkinWithSpecFlow.InitialScenario
+namespace HandlingTechnicalIdsInGherkinWithSpecFlow.RefactoredScenario
 {
     [Binding]
-    class InitialScenarioSteps
+    class RefactoredScenarioSteps
     {
         private readonly PeopleRepositoryStub _peopleRepositoryStub = new PeopleRepositoryStub();
         private readonly MovingService _movingService;
 
-        public InitialScenarioSteps()
+        public RefactoredScenarioSteps()
         {
             _movingService = new MovingService(_peopleRepositoryStub);
         }
@@ -20,18 +24,25 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.InitialScenario
         public void GivenTheFollowingPeople(Table table)
         {
             var people = table.CreateSet<Person>();
+            foreach (var person in people)
+            {
+                person.Id = person.Name.GetHashCode();
+            }
+
             _peopleRepositoryStub.AddRange(people);
         }
 
-        [When(@"person (.*) moves to '(.*)'")]
-        public void WhenPersonMovesTo(int personId, string newAddress)
+        [When(@"'(.*)' moves to '(.*)'")]
+        public void WhenMovesTo(string name, string newAddress)
         {
+            int personId = name.GetHashCode();
             _movingService.MovePerson(personId, newAddress);
         }
 
-        [Then(@"the new address of person (.*) is '(.*)'")]
-        public void ThenTheNewAddressOfPersonIs(int personId, string expectedAddress)
+        [Then(@"the new address of '(.*)' is '(.*)'")]
+        public void ThenTheNewAddressOfIs(string name, string expectedAddress)
         {
+            int personId = name.GetHashCode();
             var person = _peopleRepositoryStub.GetById(personId);
             Assert.AreEqual(expectedAddress, person.Address);
         }
