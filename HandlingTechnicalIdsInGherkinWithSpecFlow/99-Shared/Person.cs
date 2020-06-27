@@ -8,7 +8,7 @@
 
         public string Address { get; set; }
 
-        public void Move(string newAddress)
+        public void MoveTo(string newAddress)
         {
             Address = newAddress;
         }
