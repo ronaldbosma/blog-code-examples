@@ -2,6 +2,9 @@
 
 namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
 {
+    /// <summary>
+    /// Service to move a <see cref="Person"/> from one address to another.
+    /// </summary>
     public class MovingService
     {
         private readonly IPeopleRepository _peopleRepository;

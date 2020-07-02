@@ -1,5 +1,7 @@
 ﻿Feature: Initial Scenario
 
+Initial scenario that uses technical id's to identity a person.
+
 Scenario: Person moves to new address
 
     Given the following people

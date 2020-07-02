@@ -1,5 +1,8 @@
 ﻿Feature: Refactored Scenario
 
+Refactored scenario where the technical id has been replaced by a functional id, the name of the person.
+The automation code will convert the functional id to a technical id.
+
 Scenario: Person moves to new address
 
     Given the following people
