@@ -44,6 +44,11 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.RefactoredScenario
             Assert.AreEqual(expectedAddress, person.Address);
         }
 
+        /// <summary>
+        /// Converts the name of a person to a technical id that can be used by the rest of the code.
+        /// </summary>
+        /// <param name="name">The name of the person.</param>
+        /// <returns>The id of the person.</returns>
         private static Guid NameToId(string name)
         {
             // Convert the name to an integer value and make sure it's always a positive number
