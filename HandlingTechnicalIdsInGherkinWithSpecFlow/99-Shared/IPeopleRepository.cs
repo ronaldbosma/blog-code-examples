@@ -1,7 +1,9 @@
-﻿namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
+﻿using System;
+
+namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
 {
     public interface IPeopleRepository
     {
-        Person GetById(int id);
+        Person GetById(Guid id);
     }
 }

@@ -123,25 +123,27 @@ this.ScenarioInitialize(scenarioInfo);
                             "Id",
                             "Address"});
                 table1.AddRow(new string[] {
-                            "1",
+                            "9A9EE974-9062-4AB3-98C8-E83B0A5A3BAA",
                             "221B Baker Street, London, UK"});
                 table1.AddRow(new string[] {
-                            "2",
+                            "70EC5DE6-F569-4092-AF58-DA857F44279E",
                             "1630 Revello Drive, Sunnydale, US"});
                 table1.AddRow(new string[] {
-                            "3",
+                            "0545383F-28E7-4968-9525-11829915ED89",
                             "31 Spooner Street, Quahog, US"});
                 table1.AddRow(new string[] {
-                            "4",
+                            "EF03C690-6F29-43F0-931F-546938F2869F",
                             "12 Grimmauld Place, London, UK"});
 #line 5
     testRunner.Given("the following people", ((string)(null)), table1, "Given ");
 #line hidden
 #line 11
-    testRunner.When("person 3 moves to \'742 Evergreen Terrace, Springfield, US\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+    testRunner.When("person \'0545383F-28E7-4968-9525-11829915ED89\' moves to \'742 Evergreen Terrace, Sp" +
+                        "ringfield, US\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 12
-    testRunner.Then("the new address of person 3 is \'742 Evergreen Terrace, Springfield, US\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.Then("the new address of person \'0545383F-28E7-4968-9525-11829915ED89\' is \'742 Evergree" +
+                        "n Terrace, Springfield, US\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();

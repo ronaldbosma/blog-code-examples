@@ -1,4 +1,5 @@
-﻿using HandlingTechnicalIdsInGherkinWithSpecFlow.Shared;
+﻿using System;
+using HandlingTechnicalIdsInGherkinWithSpecFlow.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
@@ -23,14 +24,14 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.InitialScenario
             _peopleRepositoryStub.AddRange(people);
         }
 
-        [When(@"person (.*) moves to '(.*)'")]
-        public void WhenPersonMovesTo(int personId, string newAddress)
+        [When(@"person '(.*)' moves to '(.*)'")]
+        public void WhenPersonMovesTo(Guid personId, string newAddress)
         {
             _movingService.MovePerson(personId, newAddress);
         }
 
-        [Then(@"the new address of person (.*) is '(.*)'")]
-        public void ThenTheNewAddressOfPersonIs(int personId, string expectedAddress)
+        [Then(@"the new address of person '(.*)' is '(.*)'")]
+        public void ThenTheNewAddressOfPersonIs(Guid personId, string expectedAddress)
         {
             var person = _peopleRepositoryStub.GetById(personId);
             Assert.AreEqual(expectedAddress, person.Address);

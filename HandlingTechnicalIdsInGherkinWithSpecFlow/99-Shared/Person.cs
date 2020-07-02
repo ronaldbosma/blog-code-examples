@@ -1,8 +1,10 @@
-﻿namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
+﻿using System;
+
+namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
 {
     public class Person
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         public string Name { get; set; }
 

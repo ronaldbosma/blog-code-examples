@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
 {
     public class PeopleRepositoryStub : IPeopleRepository
     {
-        private readonly IDictionary<int, Person> _people = new Dictionary<int, Person>();
+        private readonly IDictionary<Guid, Person> _people = new Dictionary<Guid, Person>();
 
-        public Person GetById(int id)
+        public Person GetById(Guid id)
         {
             return _people[id];
         }

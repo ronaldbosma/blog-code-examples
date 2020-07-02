@@ -26,7 +26,7 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.RefactoredScenario
             var people = table.CreateSet<Person>();
             foreach (var person in people)
             {
-                person.Id = person.Name.GetHashCode();
+                person.Id = NameToId(person.Name);
             }
 
             _peopleRepositoryStub.AddRange(people);
@@ -35,16 +35,26 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.RefactoredScenario
         [When(@"'(.*)' moves to '(.*)'")]
         public void WhenMovesTo(string name, string newAddress)
         {
-            int personId = name.GetHashCode();
+            Guid personId = NameToId(name);
             _movingService.MovePerson(personId, newAddress);
         }
 
         [Then(@"the new address of '(.*)' is '(.*)'")]
         public void ThenTheNewAddressOfIs(string name, string expectedAddress)
         {
-            int personId = name.GetHashCode();
+            Guid personId = NameToId(name);
             var person = _peopleRepositoryStub.GetById(personId);
             Assert.AreEqual(expectedAddress, person.Address);
+        }
+
+        private static Guid NameToId(string name)
+        {
+            // Convert the name to an integer value and make sure it's always a positive number
+            int personId = Math.Abs(name.GetHashCode());
+            // Convert the integer personId to a string of 32 numbers so we can create a valid Guid
+            string personIdGuid = personId.ToString().PadLeft(32, '0');
+            
+            return Guid.ParseExact(personIdGuid, "N");
         }
     }
 }

@@ -11,7 +11,7 @@ namespace HandlingTechnicalIdsInGherkinWithSpecFlow.Shared
             _peopleRepository = peopleRepository ?? throw new ArgumentNullException(nameof(peopleRepository));
         }
 
-        public void MovePerson(int personId, string newAddress)
+        public void MovePerson(Guid personId, string newAddress)
         {
             var person = _peopleRepository.GetById(personId);
             person.Address = newAddress;
