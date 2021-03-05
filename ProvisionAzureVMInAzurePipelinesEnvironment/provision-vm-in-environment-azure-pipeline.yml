@@ -27,5 +27,5 @@ stages:
           az vm create `
             --name MyVirtualMachine `
             --image Win2019Datacenter `
-            --admin-password $(adminPassword) `
+            --admin-password Password12345!`
             --resource-group $(environmentName);
