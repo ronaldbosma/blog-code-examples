@@ -7,7 +7,7 @@ variables:
 
 
 stages:
-- stage: 'Provision'
+- stage: Provision
   condition: succeeded()
   jobs:
   - job:
@@ -31,14 +31,14 @@ stages:
             --resource-group $(environmentName);
 
 
-- stage: 'Test'
-  dependsOn: 'Provision'
+- stage: Test
+  dependsOn: Provision
   condition: succeeded()
   jobs:
-  - deployment: 'TestCustomTask'
+  - deployment: TestCustomTask
     environment:
       name: '$(environmentName)'
-      resourceType: 'VirtualMachine'
+      resourceType: VirtualMachine
     strategy:
       runOnce:
         deploy:
