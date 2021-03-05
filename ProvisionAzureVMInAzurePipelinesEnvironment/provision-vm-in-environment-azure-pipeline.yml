@@ -11,10 +11,8 @@ stages:
   condition: succeeded()
   jobs:
   - job:
-    displayName: 'Provision VM in Environment'
     steps:
     - task: AzureCLI@2
-      displayName: 'Provision and register Azure VM'
       inputs:
         azureSubscription: 'Azure Visual Studio Enterprise'
         scriptType: pscore
@@ -42,7 +40,6 @@ stages:
         deploy:
           steps:
           - task: InstallNetCoreRuntimeAndHosting@1
-            displayName: 'Install .NET (Core) 6.0'
             inputs:
               version: '6.0'
               norestart: true
