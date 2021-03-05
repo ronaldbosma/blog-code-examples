@@ -22,7 +22,7 @@ stages:
         scriptType: pscore
         scriptLocation: inlineScript
         inlineScript: |
-          az group create --name $(environmentName);
+          az group create --name $(environmentName) --location westeurope;
 
           az vm create `
             --name MyVirtualMachine `
