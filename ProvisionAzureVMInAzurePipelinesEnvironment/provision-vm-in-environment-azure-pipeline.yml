@@ -19,7 +19,6 @@ variables:
 
 stages:
 - stage: Provision
-  condition: succeeded()
   jobs:
   - job:
     steps:
