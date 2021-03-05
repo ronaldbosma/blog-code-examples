@@ -1,3 +1,14 @@
+# This pipeline shows how to:
+# - Provision an Azure VM and register the VM in an Azure Pipelines environment.
+# - Run a task like InstallNetCoreRuntimeAndHosting on the provisioned VM.
+# - Remove the used Azure Pipelines environment and provisioned Azure resource group.
+#
+# The following variables need to be provided to the pipeline:
+# - token   : a Personal Access Token with the scopes 'Environment (Read & manage)' and 'Tokens (Read & manage)'.
+#
+# This pipeline also expects an Azure (Resource Manager) service connection in Azure DevOps with the name 'Azure Visual Studio Enterprise'.
+
+
 trigger: none
 pr: none
 
