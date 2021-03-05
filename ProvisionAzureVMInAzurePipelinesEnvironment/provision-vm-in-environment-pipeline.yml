@@ -1,0 +1,29 @@
+trigger: none
+pr: none
+
+
+variables:
+  environmentName: "provision-vm-example-${{ variables['Build.SourceVersion'] }}"
+
+
+stages:
+- stage: 'Provision'
+  condition: succeeded()
+  jobs:
+  - job:
+    displayName: 'Provision VM in Environment'
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: AzureCLI@2
+      displayName: 'Provision and register Azure VM'
+      inputs:
+        azureSubscription: 'Azure Visual Studio Enterprise'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          az vm create `
+            --name MyVirtualMachine `
+            --image Win2019Datacenter `
+            --admin-password $(adminPassword) `
+            --resource-group $(environmentName);
