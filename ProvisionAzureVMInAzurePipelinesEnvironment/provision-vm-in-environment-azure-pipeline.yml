@@ -29,3 +29,22 @@ stages:
             --image Win2019Datacenter `
             --admin-password Password12345!`
             --resource-group $(environmentName);
+
+
+- stage: 'Test'
+  dependsOn: 'Provision'
+  condition: succeeded()
+  jobs:
+  - deployment: 'Test Custom Task'
+    environment:
+      name: '$(environmentName)'
+      resourceType: 'VirtualMachine'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: InstallNetCoreRuntimeAndHosting@1
+            displayName: 'Install .NET (Core) 6.0'
+            inputs:
+              version: '6.0'
+              norestart: true
