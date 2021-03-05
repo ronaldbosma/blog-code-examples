@@ -1,0 +1,91 @@
+trigger: none
+pr: none
+
+
+variables:
+  environmentName: "provision-vm-example-${{ variables['Build.SourceVersion'] }}"
+
+
+stages:
+- stage: Provision
+  condition: succeeded()
+  jobs:
+  - job:
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Azure Visual Studio Enterprise'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          az group create --name $(environmentName) --location westeurope;
+
+          az vm create `
+            --name ProvisionedVM `
+            --image Win2019Datacenter `
+            --admin-password Password12345!`
+            --resource-group $(environmentName);
+
+          $customScriptUri = "https://raw.githubusercontent.com/ronaldbosma/blog-code-examples/master/ProvisionAzureVMInAzurePipelinesEnvironment/register-server-in-environment.ps1";
+          $customScriptSettings="{`\`"fileUris`\`":[`\`"$customScriptUri`\`"], `\`"commandToExecute`\`":`\`"powershell.exe ./register-server-in-environment.ps1 -OrganizationUrl '$(System.CollectionUri)' -TeamProject '$(System.TeamProject)' -Environment '$(environmentName)' -Token '$(token)'`\`"}";
+          az vm extension set `
+            --name CustomScriptExtension `
+            --publisher Microsoft.Compute `
+            --vm-name ProvisionedVM `
+            --resource-group $(environmentName) `
+            --settings $customScriptSettings;
+
+
+- stage: Test
+  dependsOn: Provision
+  condition: succeeded()
+  jobs:
+  - deployment: TestCustomTask
+    environment:
+      name: '$(environmentName)'
+      resourceType: VirtualMachine
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: InstallNetCoreRuntimeAndHosting@1
+            inputs:
+              version: '6.0'
+              iisReset: false
+              norestart: true
+
+
+- stage: Cleanup
+  dependsOn: Test
+  condition: succeeded()
+  jobs:
+  - job:
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Azure Visual Studio Enterprise'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          "$(token)" | az devops login --organization "$(System.CollectionUri)"
+
+          $environmentId = az devops invoke `
+            --area distributedtask `
+            --resource environments `
+            --route-parameters project="$(System.TeamProject)" `
+            --org "$(System.CollectionUri)" `
+            --api-version "6.0-preview" `
+            --query "value[?name=='$(environmentName)'].id" `
+            --output tsv
+
+          az devops invoke `
+            --area distributedtask `
+            --resource environments `
+            --route-parameters project="$(System.TeamProject)" environmentId=$environmentId `
+            --org "$(System.CollectionUri)" `
+            --http-method DELETE `
+            --api-version "6.0-preview"
+          
+          az devops logout
+
+          az group delete --name $(environmentName) --no-wait --yes
