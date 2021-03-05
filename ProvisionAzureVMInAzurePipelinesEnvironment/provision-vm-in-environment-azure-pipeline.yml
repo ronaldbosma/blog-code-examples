@@ -4,7 +4,8 @@
 # - Remove the used Azure Pipelines environment and provisioned Azure resource group.
 #
 # The following variables need to be provided to the pipeline:
-# - token   : a Personal Access Token with the scopes 'Environment (Read & manage)' and 'Tokens (Read & manage)'.
+# - token           : a Personal Access Token with the scopes 'Environment (Read & manage)' and 'Tokens (Read & manage)'.
+# - adminPassword   : a password for the admin user of the virtual machine.
 #
 # This pipeline also expects an Azure (Resource Manager) service connection in Azure DevOps with the name 'Azure Visual Studio Enterprise'.
 
@@ -33,7 +34,7 @@ stages:
           az vm create `
             --name ProvisionedVM `
             --image Win2019Datacenter `
-            --admin-password Password12345!`
+            --admin-password "$(adminPassword)"`
             --resource-group $(environmentName);
 
           $customScriptUri = "https://raw.githubusercontent.com/ronaldbosma/blog-code-examples/master/ProvisionAzureVMInAzurePipelinesEnvironment/register-server-in-environment.ps1";
