@@ -12,8 +12,6 @@ stages:
   jobs:
   - job:
     displayName: 'Provision VM in Environment'
-    pool:
-      vmImage: 'ubuntu-latest'
     steps:
     - task: AzureCLI@2
       displayName: 'Provision and register Azure VM'
