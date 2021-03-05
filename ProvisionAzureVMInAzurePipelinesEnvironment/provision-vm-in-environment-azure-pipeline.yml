@@ -53,3 +53,39 @@ stages:
               version: '6.0'
               iisReset: false
               norestart: true
+
+
+- stage: Cleanup
+  dependsOn: Test
+  condition: succeeded()
+  jobs:
+  - job:
+    steps:
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'Azure Visual Studio Enterprise'
+        scriptType: pscore
+        scriptLocation: inlineScript
+        inlineScript: |
+          "$(token)" | az devops login --organization "$(System.CollectionUri)"
+
+          $environmentId = az devops invoke `
+            --area distributedtask `
+            --resource environments `
+            --route-parameters project="$(System.TeamProject)" `
+            --org "$(System.CollectionUri)" `
+            --api-version "6.0-preview" `
+            --query "value[?name=='$(environmentName)'].id" `
+            --output tsv
+
+          az devops invoke `
+            --area distributedtask `
+            --resource environments `
+            --route-parameters project="$(System.TeamProject)" environmentId=$environmentId `
+            --org "$(System.CollectionUri)" `
+            --http-method DELETE `
+            --api-version "6.0-preview"
+          
+          az devops logout
+
+          az group delete --name $(environmentName) --no-wait --yes
