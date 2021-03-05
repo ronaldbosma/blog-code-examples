@@ -25,7 +25,7 @@ stages:
           az group create --name $(environmentName) --location westeurope;
 
           az vm create `
-            --name MyVirtualMachine `
+            --name ProvisionedVM `
             --image Win2019Datacenter `
             --admin-password Password12345!`
             --resource-group $(environmentName);
