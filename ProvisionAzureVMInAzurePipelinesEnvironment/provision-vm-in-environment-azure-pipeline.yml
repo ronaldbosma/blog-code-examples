@@ -22,6 +22,8 @@ stages:
         scriptType: pscore
         scriptLocation: inlineScript
         inlineScript: |
+          az group create --name $(environmentName);
+
           az vm create `
             --name MyVirtualMachine `
             --image Win2019Datacenter `
