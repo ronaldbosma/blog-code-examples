@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace HandlingExceptionsInSpecFlow.Support
 {
@@ -21,6 +22,15 @@ namespace HandlingExceptionsInSpecFlow.Support
             if (_people.Contains(name))
             {
                 return name;
+            }
+            throw new PersonNotFoundException(name);
+        }
+
+        public Task<string> GetPersonByNameAsync(string name)
+        {
+            if (_people.Contains(name))
+            {
+                return Task.FromResult(name);
             }
             throw new PersonNotFoundException(name);
         }

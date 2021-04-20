@@ -1,4 +1,5 @@
-﻿using HandlingExceptionsInSpecFlow.Support;
+﻿using System.Threading.Tasks;
+using HandlingExceptionsInSpecFlow.Support;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
@@ -34,6 +35,14 @@ namespace HandlingExceptionsInSpecFlow
         {
             _errorContext.TryExecute(() =>
                 _actualPerson = _people.GetPersonByName(name)
+            );
+        }
+
+        [When(@"I retrieve '(.*)' async")]
+        public async Task WhenIRetrieveAsync(string name)
+        {
+            await _errorContext.TryExecuteAsync(async () =>
+                _actualPerson = await _people.GetPersonByNameAsync(name)
             );
         }
 
