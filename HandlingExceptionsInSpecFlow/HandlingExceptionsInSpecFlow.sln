@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HandlingExceptionsInSpecFlow", "HandlingExceptionsInSpecFlow\HandlingExceptionsInSpecFlow.csproj", "{86392A7B-3D9B-4678-BBC8-DDD184309DEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86392A7B-3D9B-4678-BBC8-DDD184309DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86392A7B-3D9B-4678-BBC8-DDD184309DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86392A7B-3D9B-4678-BBC8-DDD184309DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86392A7B-3D9B-4678-BBC8-DDD184309DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0DC97076-F3A7-46D1-87D3-441EFABBD962}
+	EndGlobalSection
+EndGlobal
