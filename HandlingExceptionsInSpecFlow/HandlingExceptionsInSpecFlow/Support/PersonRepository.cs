@@ -4,15 +4,11 @@ namespace HandlingExceptionsInSpecFlow.Support
 {
     internal class PersonRepository
     {
-        private readonly Dictionary<string, Person> _people = new Dictionary<string, Person>();
+        private readonly HashSet<string> _people = new HashSet<string>();
 
-        public void AddPerson(string name, string address)
+        public void AddPerson(string name)
         {
-            _people.Add(name, new Person
-            {
-                Name = name,
-                Address = address
-            });
+            _people.Add(name);
         }
 
         public void Clear()
@@ -20,11 +16,11 @@ namespace HandlingExceptionsInSpecFlow.Support
             _people.Clear();
         }
 
-        public Person GetPersonByName(string name)
+        public string GetPersonByName(string name)
         {
-            if (_people.ContainsKey(name))
+            if (_people.Contains(name))
             {
-                return _people[name];
+                return name;
             }
             throw new PersonNotFoundException(name);
         }

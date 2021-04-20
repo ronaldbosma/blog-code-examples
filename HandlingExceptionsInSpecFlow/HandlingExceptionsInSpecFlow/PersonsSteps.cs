@@ -8,7 +8,7 @@ namespace HandlingExceptionsInSpecFlow
     internal class PersonsSteps
     {
         private readonly PersonRepository _people = new PersonRepository();
-        private Person _actualPerson;
+        private string _actualPerson;
 
         private readonly ErrorContext _errorContext;
 
@@ -17,10 +17,10 @@ namespace HandlingExceptionsInSpecFlow
             _errorContext = errorContext;
         }
 
-        [Given(@"the person '(.*)' living at '(.*)' is registered")]
-        public void GivenThePersonLivingAtIsRegistered(string name, string address)
+        [Given(@"the person '(.*)' is registered")]
+        public void GivenThePersonLivingAtIsRegistered(string name)
         {
-            _people.AddPerson(name, address);
+            _people.AddPerson(name);
         }
 
         [Given(@"no person is registered")]
@@ -37,12 +37,11 @@ namespace HandlingExceptionsInSpecFlow
             );
         }
 
-        [Then(@"the person '(.*)' living at '(.*)' is returned")]
-        public void ThenThePersonLivingAtIsReturned(string expectedName, string expectedAddress)
+        [Then(@"the person '(.*)' is returned")]
+        public void ThenThePersonLivingAtIsReturned(string expectedName)
         {
             Assert.IsNotNull(_actualPerson, "No person retrieved");
-            Assert.AreEqual(expectedName, _actualPerson.Name);
-            Assert.AreEqual(expectedAddress, _actualPerson.Address);
+            Assert.AreEqual(expectedName, _actualPerson);
         }
     }
 }
