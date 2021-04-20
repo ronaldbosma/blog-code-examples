@@ -22,3 +22,9 @@ Scenario: Should fail: retrieve unknown person but don't check error
 
     Given no person is registered
 	When I retrieve 'Buffy Summers' async
+    
+Scenario: Should fail: different error message expected
+
+    Given no person is registered
+	When I retrieve 'Buffy Summers' async
+	Then the error 'Something went wrong' should be raised
