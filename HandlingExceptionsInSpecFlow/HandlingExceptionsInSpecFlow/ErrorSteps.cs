@@ -1,30 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using TechTalk.SpecFlow;
+﻿using TechTalk.SpecFlow;
 
 namespace HandlingExceptionsInSpecFlow
 {
     [Binding]
     class ErrorSteps
     {
-        private readonly ErrorContext _errorContext;
+        private readonly ErrorDriver _errorDriver;
 
-        public ErrorSteps(ErrorContext errorContext)
+        public ErrorSteps(ErrorDriver errorDriver)
         {
-            _errorContext = errorContext;
+            _errorDriver = errorDriver;
         }
 
         [Then(@"the error '(.*)' should be raised")]
         public void ThenTheErrorShouldBeRaised(string expectedErrorMessage)
         {
-            _errorContext.AssertExceptionWasRaisedWithMessage(expectedErrorMessage);
+            _errorDriver.AssertExceptionWasRaisedWithMessage(expectedErrorMessage);
         }
 
         [AfterScenario]
         public void CheckForUnexpectedExceptionsAfterEachScenario()
         {
-            _errorContext.AssertNoUnexpectedExceptionsRaised();
+            _errorDriver.AssertNoUnexpectedExceptionsRaised();
         }
     }
 }

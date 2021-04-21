@@ -11,11 +11,11 @@ namespace HandlingExceptionsInSpecFlow
         private readonly PersonRepository _people = new PersonRepository();
         private string _actualPerson;
 
-        private readonly ErrorContext _errorContext;
+        private readonly ErrorDriver _errorDriver;
 
-        public PersonsSteps(ErrorContext errorContext)
+        public PersonsSteps(ErrorDriver errorDriver)
         {
-            _errorContext = errorContext;
+            _errorDriver = errorDriver;
         }
 
         [Given(@"the person '(.*)' is registered")]
@@ -33,7 +33,7 @@ namespace HandlingExceptionsInSpecFlow
         [When(@"I retrieve '(.*)'")]
         public void WhenIRetrieve(string name)
         {
-            _errorContext.TryExecute(() =>
+            _errorDriver.TryExecute(() =>
                 _actualPerson = _people.GetPersonByName(name)
             );
         }
@@ -41,7 +41,7 @@ namespace HandlingExceptionsInSpecFlow
         [When(@"I retrieve '(.*)' async")]
         public async Task WhenIRetrieveAsync(string name)
         {
-            await _errorContext.TryExecuteAsync(async () =>
+            await _errorDriver.TryExecuteAsync(async () =>
                 _actualPerson = await _people.GetPersonByNameAsync(name)
             );
         }

@@ -11,12 +11,12 @@ namespace HandlingExceptionsInSpecFlow
     /// <summary>
     /// Context class that can be used to track exceptions.
     /// </summary>
-    public class ErrorContext
+    public class ErrorDriver
     {
         private readonly Queue<Exception> _exceptions = new Queue<Exception>();
 
         /// <summary>
-        /// Executes <paramref name="act"/>. Any exception raised will be caught and registered in this instance of <see cref="ErrorContext" />.
+        /// Executes <paramref name="act"/>. Any exception raised will be caught and registered in this instance of <see cref="ErrorDriver" />.
         /// </summary>
         /// <param name="act">The action to execute.</param>
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Intentionally catches all exceptions to be handled later")]
@@ -35,7 +35,7 @@ namespace HandlingExceptionsInSpecFlow
 
 
         /// <summary>
-        /// Executes <paramref name="act"/>. Any exception raised will be caught and registered in this instance of <see cref="ErrorContext" />.
+        /// Executes <paramref name="act"/>. Any exception raised will be caught and registered in this instance of <see cref="ErrorDriver" />.
         /// </summary>
         /// <param name="act">The action to execute.</param>
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Intentionally catches all exceptions to be handled later")]
