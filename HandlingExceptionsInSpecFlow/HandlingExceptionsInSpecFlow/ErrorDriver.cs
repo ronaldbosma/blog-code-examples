@@ -22,6 +22,11 @@ namespace HandlingExceptionsInSpecFlow
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Intentionally catches all exceptions to be handled later")]
         public void TryExecute(Action act)
         {
+            if (act is null)
+            {
+                throw new ArgumentNullException(nameof(act));
+            }
+
             try
             {
                 act();
@@ -40,6 +45,11 @@ namespace HandlingExceptionsInSpecFlow
         [SuppressMessage("Design", "CA1031:Do not catch general exception types", Justification = "Intentionally catches all exceptions to be handled later")]
         public async Task TryExecuteAsync(Func<Task> act)
         {
+            if (act is null)
+            {
+                throw new ArgumentNullException(nameof(act));
+            }
+
             try
             {
                 await act();
@@ -57,6 +67,11 @@ namespace HandlingExceptionsInSpecFlow
         /// <param name="expectedErrorMessage">The expected error message.</param>
         public void AssertExceptionWasRaisedWithMessage(string expectedErrorMessage)
         {
+            if (expectedErrorMessage is null)
+            {
+                throw new ArgumentNullException(nameof(expectedErrorMessage));
+            }
+
             Assert.IsTrue(_exceptions.Any(), $"No exception was raised but expected exception with message: {expectedErrorMessage}");
 
             var actualException = _exceptions.Dequeue();
