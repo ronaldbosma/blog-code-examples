@@ -1,12 +1,12 @@
 ﻿Feature: ExceptionFeature
 
-Scenario: Retrieve existing person
+Scenario: Retrieve existing person successfully
 
     Given the person 'Buffy Summers' is registered
 	When I retrieve 'Buffy Summers'
 	Then the person 'Buffy Summers' is returned
     
-Scenario: Retrieve unknown person
+Scenario: Retrieve unknown person and expect an error
 
     Given no person is registered
 	When I retrieve 'Buffy Summers'
