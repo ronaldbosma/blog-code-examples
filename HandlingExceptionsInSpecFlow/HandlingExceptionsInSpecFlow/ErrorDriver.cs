@@ -11,7 +11,7 @@ namespace HandlingExceptionsInSpecFlow
     /// <summary>
     /// Context class that can be used to track exceptions.
     /// </summary>
-    public class ErrorDriver
+    internal class ErrorDriver
     {
         private readonly Queue<Exception> _exceptions = new Queue<Exception>();
 

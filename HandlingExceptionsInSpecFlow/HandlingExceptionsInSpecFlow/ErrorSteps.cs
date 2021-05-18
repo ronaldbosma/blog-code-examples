@@ -3,7 +3,7 @@
 namespace HandlingExceptionsInSpecFlow
 {
     [Binding]
-    class ErrorSteps
+    internal class ErrorSteps
     {
         private readonly ErrorDriver _errorDriver;
 
