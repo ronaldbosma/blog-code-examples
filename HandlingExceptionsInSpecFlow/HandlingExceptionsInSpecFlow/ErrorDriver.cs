@@ -33,7 +33,6 @@ namespace HandlingExceptionsInSpecFlow
             }
         }
 
-
         /// <summary>
         /// Executes <paramref name="act"/>. Any exception raised will be caught and registered in this instance of <see cref="ErrorDriver" />.
         /// </summary>
