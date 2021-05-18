@@ -13,7 +13,7 @@ namespace HandlingExceptionsInSpecFlow.WithoutErrorDriver
         private Exception _actualException;
 
         [Given(@"the person '(.*)' is registered")]
-        public void GivenThePersonLivingAtIsRegistered(string name)
+        public void GivenThePersonIsRegistered(string name)
         {
             _people.AddPerson(name);
         }
