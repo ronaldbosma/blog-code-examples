@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HandlingExceptionsInSpecFlow.Support
+namespace HandlingExceptionsInSpecFlow.Shared
 {
     public class PersonNotFoundException : Exception
     {

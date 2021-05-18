@@ -1,20 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace HandlingExceptionsInSpecFlow.Support
+namespace HandlingExceptionsInSpecFlow.Shared
 {
-    internal class PersonRepository
+    public class PersonRepository
     {
         private readonly HashSet<string> _people = new HashSet<string>();
 
         public void AddPerson(string name)
         {
             _people.Add(name);
-        }
-
-        public void Clear()
-        {
-            _people.Clear();
         }
 
         public string GetPersonByName(string name)
@@ -33,6 +28,11 @@ namespace HandlingExceptionsInSpecFlow.Support
                 return Task.FromResult(name);
             }
             throw new PersonNotFoundException(name);
+        }
+
+        public void Clear()
+        {
+            _people.Clear();
         }
     }
 }

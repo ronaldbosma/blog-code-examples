@@ -23,4 +23,8 @@
     
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\HandlingExceptionsInSpecFlow.Shared\HandlingExceptionsInSpecFlow.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
