@@ -50,6 +50,7 @@ namespace HandlingExceptionsInSpecFlow.WithoutErrorDriver
             Assert.IsNotNull(_actualException, "No error was raised");
             Assert.AreEqual(expectedErrorMessage, _actualException.Message);
 
+            // Clear the caught exception so it's not marked as unexpected in the AfterScenario hook
             _actualException = null;
         }
 
