@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
 using HandlingExceptionsInSpecFlow.Shared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
-namespace HandlingExceptionsInSpecFlow
+namespace HandlingExceptionsInSpecFlow.WithoutErrorDriver
 {
     [Binding]
     class PersonPersonsSteps
@@ -50,6 +49,14 @@ namespace HandlingExceptionsInSpecFlow
         {
             Assert.IsNotNull(_actualException, "No error was raised");
             Assert.AreEqual(expectedErrorMessage, _actualException.Message);
+
+            _actualException = null;
+        }
+
+        [AfterScenario]
+        public void CheckForUnexpectedExceptionsAfterEachScenario()
+        {
+            Assert.IsNull(_actualException, $"No exception was expected to be raised but found exception: {_actualException}");
         }
     }
 }
