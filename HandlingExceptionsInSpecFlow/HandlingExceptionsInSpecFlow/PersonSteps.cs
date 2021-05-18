@@ -6,14 +6,14 @@ using TechTalk.SpecFlow;
 namespace HandlingExceptionsInSpecFlow
 {
     [Binding]
-    internal class PersonsSteps
+    internal class PersonSteps
     {
         private readonly PersonRepository _people = new PersonRepository();
         private string _actualName;
 
         private readonly ErrorDriver _errorDriver;
 
-        public PersonsSteps(ErrorDriver errorDriver)
+        public PersonSteps(ErrorDriver errorDriver)
         {
             _errorDriver = errorDriver;
         }

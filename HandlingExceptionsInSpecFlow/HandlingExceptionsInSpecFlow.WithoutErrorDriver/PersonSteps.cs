@@ -6,7 +6,7 @@ using TechTalk.SpecFlow;
 namespace HandlingExceptionsInSpecFlow.WithoutErrorDriver
 {
     [Binding]
-    internal class PersonPersonsSteps
+    internal class PersonSteps
     {
         private readonly PersonRepository _people = new PersonRepository();
         private string _actualName;
