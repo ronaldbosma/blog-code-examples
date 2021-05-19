@@ -47,7 +47,7 @@ namespace HandlingExceptionsInSpecFlow
         }
 
         [Then(@"the person '(.*)' is returned")]
-        public void ThenThePersonLivingAtIsReturned(string expectedName)
+        public void ThenThePersonIsReturned(string expectedName)
         {
             Assert.IsNotNull(_actualName, "No person retrieved");
             Assert.AreEqual(expectedName, _actualName);
