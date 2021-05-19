@@ -30,16 +30,16 @@ namespace HandlingExceptionsInSpecFlow
             _people.Clear();
         }
 
-        [When(@"I retrieve '(.*)'")]
-        public void WhenIRetrieve(string name)
+        [When(@"I retrieve the person '(.*)'")]
+        public void WhenIRetrieveThePerson(string name)
         {
             _errorDriver.TryExecute(() =>
                 _actualName = _people.GetPersonByName(name)
             );
         }
 
-        [When(@"I retrieve '(.*)' async")]
-        public async Task WhenIRetrieveAsync(string name)
+        [When(@"I retrieve the person '(.*)' async")]
+        public async Task WhenIRetrieveThePersonAsync(string name)
         {
             await _errorDriver.TryExecuteAsync(async () =>
                 _actualName = await _people.GetPersonByNameAsync(name)

@@ -31,8 +31,8 @@ namespace HandlingExceptionsInSpecFlow.WithoutErrorDriver
             _people.Clear();
         }
 
-        [When(@"I retrieve '(.*)'")]
-        public void WhenIRetrieve(string name)
+        [When(@"I retrieve the person '(.*)'")]
+        public void WhenIRetrieveThePerson(string name)
         {
             try
             {
