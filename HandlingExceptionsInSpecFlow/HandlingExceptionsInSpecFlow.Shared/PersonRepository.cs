@@ -9,11 +9,13 @@ namespace HandlingExceptionsInSpecFlow.Shared
 
         public void AddPerson(string name)
         {
+            // For demo purposes we only store the name.
             _people.Add(name);
         }
 
         public string GetPersonByName(string name)
         {
+            // For demo purposes we only check if de name is stored and return the name if it is stored.
             if (_people.Contains(name))
             {
                 return name;
@@ -23,6 +25,7 @@ namespace HandlingExceptionsInSpecFlow.Shared
 
         public Task<string> GetPersonByNameAsync(string name)
         {
+            // For demo purposes we only check if de name is stored and return the name if it is stored.
             if (_people.Contains(name))
             {
                 return Task.FromResult(name);
