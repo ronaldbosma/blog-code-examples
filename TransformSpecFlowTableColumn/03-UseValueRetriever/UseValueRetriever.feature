@@ -1,4 +1,4 @@
-﻿Feature: Use Test Model
+﻿Feature: Use Value Retriever
 
 
 Scenario: Succeeds because we use Value Retriever
@@ -16,9 +16,9 @@ Scenario: Succeeds because we use Value Retriever
         | 29 October 2022 | Madrid    | 33          |
     When the weather forecasts for 'London' are retrieved
     Then the following weather forecasts are returned
-        | Date            | Location Id | Temperature |
-        | 28 October 2022 | 2           | 8           |
-        | 29 October 2022 | 2           | 9           |
+        | Date            | Location | Temperature |
+        | 28 October 2022 | 2        | 8           |
+        | 29 October 2022 | 2        | 9           |
 
 
 Scenario: Fails because Location cannot be compared
