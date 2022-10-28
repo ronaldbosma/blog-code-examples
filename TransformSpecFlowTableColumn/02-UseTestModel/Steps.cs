@@ -17,7 +17,7 @@ namespace TransformSpecFlowTableColumn.UseTestModel
         /// </summary>
         /// <seealso cref="https://docs.specflow.org/projects/specflow/en/latest/Bindings/Step-Argument-Conversions.html"/>
         [StepArgumentTransformation]
-        public IEnumerable<WeatherForecast> TransformTableToWeatherForecast(Table table)
+        public IEnumerable<WeatherForecast> TransformTableToWeatherForecasts(Table table)
         {
             return table.CreateSet<WeatherForecastTestModel>()
                         .Select(t => new WeatherForecast
@@ -27,6 +27,13 @@ namespace TransformSpecFlowTableColumn.UseTestModel
                             Temperature = t.Temperature
                         });
         }
+
+        [StepArgumentTransformation]
+        public WeatherForecast TransformTableToWeatherForecast(Table table)
+        {
+            return TransformTableToWeatherForecasts(table).Single();
+        }
+
 
         [Given(@"the weather forecasts")]
         public void GivenTheWeatherForecasts(IEnumerable<WeatherForecast> weatherForecasts)
@@ -42,10 +49,9 @@ namespace TransformSpecFlowTableColumn.UseTestModel
         }
 
         [Then(@"the following weather forecast is returned")]
-        public void ThenTheFollowingWeatherForecastIsReturned(IEnumerable<WeatherForecast> expectedWeatherForecasts)
+        public void ThenTheFollowingWeatherForecastIsReturned(WeatherForecast expectedWeatherForecasts)
         {
-            var expected = expectedWeatherForecasts.Single();
-            _actualWeatherForecast.Should().BeEquivalentTo(expected);
+            _actualWeatherForecast.Should().BeEquivalentTo(expectedWeatherForecasts);
         }
     }
 }
