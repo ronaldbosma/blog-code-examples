@@ -1,4 +1,6 @@
-﻿namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndComparer
+﻿using TransformSpecFlowTableColumn.Shared;
+
+namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndComparer
 {
     internal class WeatherForecastWithCustomLocationIdTypeRepository
     {
@@ -9,9 +11,9 @@
             _weatherForecasts.AddRange(weatherForecasts);
         }
 
-        public IEnumerable<WeatherForecastWithCustomLocationIdType> GetByLocation(LocationId locationId)
+        public WeatherForecastWithCustomLocationIdType? GetByDateAndLocation(DateTime date, LocationId locationId)
         {
-            return _weatherForecasts.Where(wf => wf.LocationId == locationId);
+            return _weatherForecasts.SingleOrDefault(wf => wf.Date == date && wf.LocationId == locationId);
         }
     }
 }

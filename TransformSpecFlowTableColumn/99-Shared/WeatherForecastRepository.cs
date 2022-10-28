@@ -9,9 +9,9 @@
             _weatherForecasts.AddRange(weatherForecasts);
         }
 
-        public IEnumerable<IWeatherForecast> GetByLocation(int locationId)
+        public IWeatherForecast? GetByDateAndLocation(DateTime date, int locationId)
         {
-            return _weatherForecasts.Where(wf => wf.LocationId == locationId);
+            return _weatherForecasts.SingleOrDefault(wf => wf.Date == date && wf.LocationId == locationId);
         }
     }
 }

@@ -9,16 +9,12 @@ Scenario: Succeeds because we use Value Retriever
     Given the weather forecasts
         | Date            | Location  | Temperature |
         | 28 October 2022 | Amsterdam | 22          |
-        | 29 October 2022 | Amsterdam | 21          |
         | 28 October 2022 | London    | 8           |
-        | 29 October 2022 | London    | 9           |
         | 28 October 2022 | Madrid    | 31          |
-        | 29 October 2022 | Madrid    | 33          |
-    When the weather forecasts for 'London' are retrieved
-    Then the following weather forecasts are returned
+    When the weather forecast for 'London' on '28 October 2022' is retrieved
+    Then the following weather forecast is returned
         | Date            | Location | Temperature |
         | 28 October 2022 | 2        | 8           |
-        | 29 October 2022 | 2        | 9           |
 
 
 Scenario: Fails because Location cannot be compared
@@ -29,13 +25,9 @@ Scenario: Fails because Location cannot be compared
     Given the weather forecasts
         | Date            | Location  | Temperature |
         | 28 October 2022 | Amsterdam | 22          |
-        | 29 October 2022 | Amsterdam | 21          |
         | 28 October 2022 | London    | 8           |
-        | 29 October 2022 | London    | 9           |
         | 28 October 2022 | Madrid    | 31          |
-        | 29 October 2022 | Madrid    | 33          |
-    When the weather forecasts for 'London' are retrieved
-    Then the following weather forecasts are returned
+    When the weather forecast for 'London' on '28 October 2022' is retrieved
+    Then the following weather forecast is returned
         | Date            | Location | Temperature |
         | 28 October 2022 | London   | 8           |
-        | 29 October 2022 | London   | 9           |

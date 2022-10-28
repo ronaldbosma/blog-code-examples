@@ -8,7 +8,7 @@ namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndCompare
     internal class Steps
     {
         private readonly WeatherForecastWithCustomLocationIdTypeRepository _repository = new();
-        private IEnumerable<WeatherForecastWithCustomLocationIdType>? _actualWeatherForecasts;
+        private WeatherForecastWithCustomLocationIdType? _actualWeatherForecast;
 
         [BeforeTestRun]
         public static void RegisterValueRetrieverAndComparer()
@@ -24,17 +24,17 @@ namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndCompare
             _repository.Register(weatherForecasts);
         }
 
-        [When(@"the weather forecasts for '([^']*)' are retrieved")]
-        public void WhenTheWeatherForecastsForAreRetrieved(string location)
+        [When(@"the weather forecast for '([^']*)' on '([^']*)' is retrieved")]
+        public void WhenTheWeatherForecastForOnIsRetrieved(string location, DateTime date)
         {
             var locationId = new LocationId(location.LocationToId());
-            _actualWeatherForecasts = _repository.GetByLocation(locationId);
+            _actualWeatherForecast = _repository.GetByDateAndLocation(date, locationId);
         }
 
-        [Then(@"the following weather forecasts are returned")]
-        public void ThenTheFollowingWeatherForecastsAreReturned(Table table)
+        [Then(@"the following weather forecast is returned")]
+        public void ThenTheFollowingWeatherForecastIsReturned(Table table)
         {
-            table.CompareToSet(_actualWeatherForecasts);
+            table.CompareToInstance(_actualWeatherForecast);
         }
     }
 }

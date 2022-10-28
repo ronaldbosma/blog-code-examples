@@ -8,7 +8,7 @@ namespace TransformSpecFlowTableColumn.Init
     internal class Steps
     {
         private readonly WeatherForecastRepository _repository = new ();
-        private IEnumerable<IWeatherForecast>? _actualWeatherForecasts;
+        private IWeatherForecast? _actualWeatherForecast;
 
         [Given(@"the weather forecasts")]
         public void GivenTheWeatherForecasts(Table table)
@@ -17,23 +17,17 @@ namespace TransformSpecFlowTableColumn.Init
             _repository.Register(weatherForecasts);
         }
 
-        [When(@"the weather forecasts for (\d+) are retrieved")]
-        public void WhenTheWeatherForecastsForAreRetrieved(int locationId)
-        {
-            _actualWeatherForecasts = _repository.GetByLocation(locationId);
-        }
-
-        [When(@"the weather forecasts for '([^']*)' are retrieved")]
-        public void WhenTheWeatherForecastsForAreRetrieved(string location)
+        [When(@"the weather forecast for '([^']*)' on '([^']*)' is retrieved")]
+        public void WhenTheWeatherForecastForOnIsRetrieved(string location, DateTime date)
         {
             int locationId = location.LocationToId();
-            _actualWeatherForecasts = _repository.GetByLocation(locationId);
+            _actualWeatherForecast = _repository.GetByDateAndLocation(date, locationId);
         }
 
-        [Then(@"the following weather forecasts are returned")]
-        public void ThenTheFollowingWeatherForecastsAreReturned(Table table)
+        [Then(@"the following weather forecast is returned")]
+        public void ThenTheFollowingWeatherForecastIsReturned(Table table)
         {
-            table.CompareToSet(_actualWeatherForecasts);
+            table.CompareToInstance(_actualWeatherForecast);
         }
     }
 }

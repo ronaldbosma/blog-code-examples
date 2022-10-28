@@ -9,7 +9,7 @@ namespace TransformSpecFlowTableColumn.UseTestModel
     internal class Steps
     {
         private readonly WeatherForecastRepository _repository = new ();
-        private IEnumerable<IWeatherForecast>? _actualWeatherForecasts;
+        private IWeatherForecast? _actualWeatherForecast;
 
         /// <summary>
         /// This method transform the Table into IEnumerable<WeatherForecast>,
@@ -34,17 +34,18 @@ namespace TransformSpecFlowTableColumn.UseTestModel
             _repository.Register(weatherForecasts);
         }
 
-        [When(@"the weather forecasts for '([^']*)' are retrieved")]
-        public void WhenTheWeatherForecastsForAreRetrieved(string location)
+        [When(@"the weather forecast for '([^']*)' on '([^']*)' is retrieved")]
+        public void WhenTheWeatherForecastForOnIsRetrieved(string location, DateTime date)
         {
             int locationId = location.LocationToId();
-            _actualWeatherForecasts = _repository.GetByLocation(locationId);
+            _actualWeatherForecast = _repository.GetByDateAndLocation(date, locationId);
         }
 
-        [Then(@"the following weather forecasts are returned")]
-        public void ThenTheFollowingWeatherForecastsAreReturned(IEnumerable<WeatherForecast> expectedWeatherForecasts)
+        [Then(@"the following weather forecast is returned")]
+        public void ThenTheFollowingWeatherForecastIsReturned(IEnumerable<WeatherForecast> expectedWeatherForecasts)
         {
-            _actualWeatherForecasts.Should().BeEquivalentTo(expectedWeatherForecasts);
+            var expected = expectedWeatherForecasts.Single();
+            _actualWeatherForecast.Should().BeEquivalentTo(expected);
         }
     }
 }
