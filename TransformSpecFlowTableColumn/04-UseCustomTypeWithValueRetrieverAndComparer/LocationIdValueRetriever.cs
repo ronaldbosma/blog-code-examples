@@ -11,7 +11,7 @@ namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndCompare
     {
         public bool CanRetrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
         {
-            return keyValuePair.Key == "Location" && propertyType == typeof(LocationId);
+            return propertyType == typeof(LocationId);
         }
 
         public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
