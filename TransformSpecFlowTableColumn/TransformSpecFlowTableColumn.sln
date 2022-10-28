@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01-Init", "01-Init\01-Init.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "02-UseTestModel", "02-UseTestModel\02-UseTestModel.csproj", "{E5A4B4A3-CB5A-47BF-A1D1-83B89E9FCE7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03-UseValueRetriever", "03-UseValueRetriever\03-UseValueRetriever.csproj", "{B3FED99B-46E7-4656-9421-59E15D7EE6EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E5A4B4A3-CB5A-47BF-A1D1-83B89E9FCE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5A4B4A3-CB5A-47BF-A1D1-83B89E9FCE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5A4B4A3-CB5A-47BF-A1D1-83B89E9FCE7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3FED99B-46E7-4656-9421-59E15D7EE6EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3FED99B-46E7-4656-9421-59E15D7EE6EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3FED99B-46E7-4656-9421-59E15D7EE6EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3FED99B-46E7-4656-9421-59E15D7EE6EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
