@@ -13,8 +13,7 @@ namespace TransformSpecFlowTableColumn.TransformColumn
         [Given(@"the weather forecasts")]
         public void GivenTheWeatherForecasts(Table table)
         {
-            var weatherForecasts = table.TransformColumn("Location", "LocationId", (s) => s.LocationToId().ToString())
-                                        .CreateSet<WeatherForecast>();
+            var weatherForecasts = table.TransformLocationNameToId().CreateSet<WeatherForecast>();
 
             _repository.Register(weatherForecasts);
         }
@@ -29,8 +28,7 @@ namespace TransformSpecFlowTableColumn.TransformColumn
         [Then(@"the following weather forecast is returned")]
         public void ThenTheFollowingWeatherForecastIsReturned(Table table)
         {
-            table.TransformColumn("Location", "LocationId", (s) => s.LocationToId().ToString())
-                 .CompareToInstance(_actualWeatherForecast);
+            table.TransformLocationNameToId().CompareToInstance(_actualWeatherForecast);
         }
     }
 }
