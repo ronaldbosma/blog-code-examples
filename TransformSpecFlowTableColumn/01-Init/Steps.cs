@@ -8,7 +8,7 @@ namespace TransformSpecFlowTableColumn.Init
     internal class Steps
     {
         private readonly WeatherForecastRepository _repository = new ();
-        private IEnumerable<WeatherForecast>? _actualWeatherForecasts;
+        private IEnumerable<IWeatherForecast>? _actualWeatherForecasts;
 
         [Given(@"the weather forecasts")]
         public void GivenTheWeatherForecasts(Table table)
@@ -26,7 +26,7 @@ namespace TransformSpecFlowTableColumn.Init
         [When(@"the weather forecasts for '([^']*)' are retrieved")]
         public void WhenTheWeatherForecastsForAreRetrieved(string location)
         {
-            int locationId = location.NameToId();
+            int locationId = location.LocationToId();
             _actualWeatherForecasts = _repository.GetByLocation(locationId);
         }
 
@@ -35,6 +35,5 @@ namespace TransformSpecFlowTableColumn.Init
         {
             table.CompareToSet(_actualWeatherForecasts);
         }
-
     }
 }

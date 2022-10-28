@@ -1,6 +1,6 @@
 ﻿namespace TransformSpecFlowTableColumn.Shared
 {
-    public class WeatherForecast : IWeatherForecast
+    public interface IWeatherForecast
     {
         public DateTime Date { get; set; }
 

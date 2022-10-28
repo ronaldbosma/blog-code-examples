@@ -9,7 +9,7 @@ namespace TransformSpecFlowTableColumn.UseTestModel
     internal class Steps
     {
         private readonly WeatherForecastRepository _repository = new ();
-        private IEnumerable<WeatherForecast>? _actualWeatherForecasts;
+        private IEnumerable<IWeatherForecast>? _actualWeatherForecasts;
 
         /// <summary>
         /// This method transform the Table into IEnumerable<WeatherForecast>,
@@ -23,7 +23,7 @@ namespace TransformSpecFlowTableColumn.UseTestModel
                         .Select(t => new WeatherForecast
                         {
                             Date = t.Date,
-                            LocationId = t.Location.NameToId(),
+                            LocationId = t.Location.LocationToId(),
                             Temperature = t.Temperature
                         });
         }
@@ -37,7 +37,7 @@ namespace TransformSpecFlowTableColumn.UseTestModel
         [When(@"the weather forecasts for '([^']*)' are retrieved")]
         public void WhenTheWeatherForecastsForAreRetrieved(string location)
         {
-            int locationId = location.NameToId();
+            int locationId = location.LocationToId();
             _actualWeatherForecasts = _repository.GetByLocation(locationId);
         }
 

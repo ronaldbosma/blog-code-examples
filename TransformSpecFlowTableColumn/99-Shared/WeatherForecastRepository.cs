@@ -2,14 +2,14 @@
 {
     public class WeatherForecastRepository
     {
-        private List<WeatherForecast> _weatherForecasts = new();
+        private List<IWeatherForecast> _weatherForecasts = new();
 
-        public void Register(IEnumerable<WeatherForecast> weatherForecasts)
+        public void Register(IEnumerable<IWeatherForecast> weatherForecasts)
         {
             _weatherForecasts.AddRange(weatherForecasts);
         }
 
-        public IEnumerable<WeatherForecast> GetByLocation(int locationId)
+        public IEnumerable<IWeatherForecast> GetByLocation(int locationId)
         {
             return _weatherForecasts.Where(wf => wf.LocationId == locationId);
         }

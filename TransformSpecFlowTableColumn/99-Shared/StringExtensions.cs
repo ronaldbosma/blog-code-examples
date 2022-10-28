@@ -2,9 +2,15 @@
 {
     public static class StringExtensions
     {
-        public static int NameToId(this string name)
+        public static int LocationToId(this string location)
         {
-            return Math.Abs(name.GetHashCode());
+            switch (location)
+            {
+                case "Amsterdam": return 1;
+                case "London": return 2;
+                case "Madrid": return 3;
+                default: throw new ArgumentException("Unknown location", nameof(location));
+            }
         }
     }
 }
