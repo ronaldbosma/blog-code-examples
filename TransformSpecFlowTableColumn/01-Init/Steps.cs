@@ -7,7 +7,7 @@ namespace TransformSpecFlowTableColumn.Init
     [Binding]
     internal class Steps
     {
-        private readonly WeatherForecastRepository _repository = new WeatherForecastRepository();
+        private readonly WeatherForecastRepository _repository = new ();
         private IEnumerable<WeatherForecast>? _actualWeatherForecasts;
 
         [Given(@"the weather forecasts")]
@@ -26,7 +26,7 @@ namespace TransformSpecFlowTableColumn.Init
         [When(@"the weather forecasts for '([^']*)' are retrieved")]
         public void WhenTheWeatherForecastsForAreRetrieved(string location)
         {
-            var locationId = location.NameToId();
+            int locationId = location.NameToId();
             _actualWeatherForecasts = _repository.GetByLocation(locationId);
         }
 
