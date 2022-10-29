@@ -1,14 +1,13 @@
 ﻿using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using TransformSpecFlowTableColumn.Shared;
 
 namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndComparer
 {
     [Binding]
     internal class Steps
     {
-        private readonly WeatherForecastWithCustomLocationIdTypeRepository _repository = new();
-        private WeatherForecastWithCustomLocationIdType? _actualWeatherForecast;
+        private readonly WeatherForecastRepository _repository = new();
+        private WeatherForecast? _actualWeatherForecast;
 
         [BeforeTestRun]
         public static void RegisterValueRetrieverAndComparer()
@@ -20,7 +19,7 @@ namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndCompare
         [Given(@"the weather forecasts")]
         public void GivenTheWeatherForecasts(Table table)
         {
-            var weatherForecasts = table.CreateSet<WeatherForecastWithCustomLocationIdType>();
+            var weatherForecasts = table.CreateSet<WeatherForecast>();
             _repository.Register(weatherForecasts);
         }
 
