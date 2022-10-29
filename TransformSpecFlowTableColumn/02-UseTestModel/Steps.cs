@@ -1,7 +1,6 @@
 ﻿using FluentAssertions;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using TransformSpecFlowTableColumn.Shared;
 
 namespace TransformSpecFlowTableColumn.UseTestModel
 {
@@ -9,7 +8,7 @@ namespace TransformSpecFlowTableColumn.UseTestModel
     internal class Steps
     {
         private readonly WeatherForecastRepository _repository = new ();
-        private IWeatherForecast? _actualWeatherForecast;
+        private WeatherForecast? _actualWeatherForecast;
 
         /// <summary>
         /// This method transform the Table into IEnumerable<WeatherForecast>,
