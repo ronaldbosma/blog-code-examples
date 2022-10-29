@@ -1,9 +1,8 @@
 ﻿using TechTalk.SpecFlow.Assist.Attributes;
-using TransformSpecFlowTableColumn.Shared;
 
 namespace TransformSpecFlowTableColumn.UseValueRetriever
 {
-    public class WeatherForecastWithTableAlias : IWeatherForecast
+    public class WeatherForecast
     {
         public DateTime Date { get; set; }
 

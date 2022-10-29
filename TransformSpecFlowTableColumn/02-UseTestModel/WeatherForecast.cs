@@ -1,6 +1,6 @@
-﻿namespace TransformSpecFlowTableColumn.Shared
+﻿namespace TransformSpecFlowTableColumn.UseTestModel
 {
-    public class WeatherForecast : IWeatherForecast
+    public class WeatherForecast
     {
         public DateTime Date { get; set; }
 

@@ -1,5 +1,4 @@
 ﻿using TechTalk.SpecFlow.Assist;
-using TransformSpecFlowTableColumn.Shared;
 
 namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndComparer
 {

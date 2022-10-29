@@ -2,7 +2,7 @@
 
 namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndComparer
 {
-    public class WeatherForecastWithCustomLocationIdType
+    public class WeatherForecast
     {
         public DateTime Date { get; set; }
 
