@@ -1,6 +1,5 @@
 ﻿using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using TransformSpecFlowTableColumn.Shared;
 
 namespace TransformSpecFlowTableColumn.TransformColumn
 {
@@ -8,7 +7,7 @@ namespace TransformSpecFlowTableColumn.TransformColumn
     internal class Steps
     {
         private readonly WeatherForecastRepository _repository = new ();
-        private IWeatherForecast? _actualWeatherForecast;
+        private WeatherForecast? _actualWeatherForecast;
 
         [Given(@"the weather forecasts")]
         public void GivenTheWeatherForecasts(Table table)

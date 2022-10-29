@@ -1,5 +1,4 @@
 ﻿using TechTalk.SpecFlow;
-using TransformSpecFlowTableColumn.Shared;
 
 namespace TransformSpecFlowTableColumn.TransformColumn
 {
