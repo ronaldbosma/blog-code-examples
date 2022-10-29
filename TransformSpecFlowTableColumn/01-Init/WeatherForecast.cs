@@ -1,4 +1,4 @@
-﻿namespace TransformSpecFlowTableColumn.UseTestModel
+﻿namespace TransformSpecFlowTableColumn.Init
 {
     public class WeatherForecast
     {

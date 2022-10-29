@@ -1,6 +1,5 @@
 ﻿using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
-using TransformSpecFlowTableColumn.UseTestModel;
 
 namespace TransformSpecFlowTableColumn.Init
 {
