@@ -1,6 +1,6 @@
 ﻿namespace TransformSpecFlowTableColumn.Init
 {
-    public class WeatherForecast
+    internal class WeatherForecast
     {
         public DateTime Date { get; set; }
 

@@ -2,7 +2,7 @@
 
 namespace TransformSpecFlowTableColumn.UseValueRetriever
 {
-    public class WeatherForecast
+    internal class WeatherForecast
     {
         public DateTime Date { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿namespace TransformSpecFlowTableColumn.TransformColumn
 {
-    public static class StringExtensions
+    internal static class StringExtensions
     {
         public static int LocationToId(this string location)
         {

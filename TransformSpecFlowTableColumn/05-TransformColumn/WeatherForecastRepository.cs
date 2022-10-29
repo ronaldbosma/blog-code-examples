@@ -1,6 +1,6 @@
 ﻿namespace TransformSpecFlowTableColumn.TransformColumn
 {
-    public class WeatherForecastRepository
+    internal class WeatherForecastRepository
     {
         private List<WeatherForecast> _weatherForecasts = new();
 
