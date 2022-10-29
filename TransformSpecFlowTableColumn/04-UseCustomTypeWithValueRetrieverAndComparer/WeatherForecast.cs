@@ -12,5 +12,5 @@ namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndCompare
         public int Temperature { get; set; }
     }
 
-    public record struct LocationId(int locationId);
+    internal record struct LocationId(int locationId);
 }
