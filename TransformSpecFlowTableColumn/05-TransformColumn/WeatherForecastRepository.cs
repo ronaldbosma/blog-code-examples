@@ -2,7 +2,7 @@
 {
     internal class WeatherForecastRepository
     {
-        private List<WeatherForecast> _weatherForecasts = new();
+        private readonly List<WeatherForecast> _weatherForecasts = new();
 
         public void Register(IEnumerable<WeatherForecast> weatherForecasts)
         {
