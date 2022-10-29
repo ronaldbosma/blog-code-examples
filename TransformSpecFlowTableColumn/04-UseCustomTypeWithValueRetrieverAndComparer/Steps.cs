@@ -25,7 +25,7 @@ namespace TransformSpecFlowTableColumn.UseCustomTypeWithValueRetrieverAndCompare
         }
 
         [When(@"the weather forecast for '([^']*)' on '([^']*)' is retrieved")]
-        public void WhenTheWeatherForecastForOnIsRetrieved(string location, DateTime date)
+        public void WhenTheWeatherForecastForLocationOnDateIsRetrieved(string location, DateTime date)
         {
             var locationId = new LocationId(location.LocationToId());
             _actualWeatherForecast = _repository.GetByDateAndLocation(date, locationId);
