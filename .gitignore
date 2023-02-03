@@ -338,4 +338,8 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# SpecFlow feature code behind files
 *.feature.cs
+
+# Local files
+*.local.*
