@@ -1,5 +1,5 @@
 $sourceFile = "./my-workbook.workbook"
-$targetFile = "./my-workbook.bicep"
+$targetFile = "./my-workbook-definition.bicep"
 
 # Key value pair of variables that should replace environment specific values
 $variables = @{
