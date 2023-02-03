@@ -106,6 +106,7 @@
             timeContextFromParameter: 'Time'
             queryType: 0
             resourceType: 'microsoft.insights/components'
+            value: []
           }
         ]
         style: 'pills'
@@ -118,11 +119,46 @@
       type: 3
       content: {
         version: 'KqlItem/1.0'
-        query: 'let subscriptionFilter = dynamic([{Subscription}]);\r\nlet apiFilter = dynamic([{Api}]);\r\n\r\nunion requests\r\n| where customDimensions["Service ID"] == "${apimResourceName}"\r\n| where array_length(subscriptionFilter) == 0 or customDimensions["Subscription Name"] in (subscriptionFilter)\r\n| where array_length(apiFilter) == 0 or customDimensions["API Name"] in (apiFilter)\r\n| project timestamp\r\n    , api = customDimensions["API Name"]\r\n    , name\r\n    , subscription = customDimensions["Subscription Name"]\r\n    , success\r\n    , resultCode\r\n    , duration\r\n    , request = itemId\r\n    , trace = itemId\r\n| order by timestamp desc'
+        query: 'let subscriptionFilter = dynamic([{Subscription}]);\r\nlet apiFilter = dynamic([{Api}]);\r\n\r\nunion requests\r\n| where customDimensions["Service ID"] == "${apimResourceName}"\r\n| where array_length(subscriptionFilter) == 0 or customDimensions["Subscription Name"] in (subscriptionFilter)\r\n| where array_length(apiFilter) == 0 or customDimensions["API Name"] in (apiFilter)\r\n| project timestamp\r\n    , subscription = customDimensions["Subscription Name"]\r\n    , api = customDimensions["API Name"]\r\n    , name\r\n    , success\r\n    , resultCode\r\n    , duration\r\n    , request = itemId\r\n    , trace = itemId\r\n| order by timestamp desc'
         size: 2
         timeContextFromParameter: 'Time'
         queryType: 0
         resourceType: 'microsoft.insights/components'
+        gridSettings: {
+          formatters: [
+            {
+              columnMatch: 'timestamp'
+              formatter: 0
+              formatOptions: {
+                customColumnWidthSetting: '25ch'
+              }
+            }
+            {
+              columnMatch: 'subscription'
+              formatter: 0
+              formatOptions: {
+                customColumnWidthSetting: '17ch'
+              }
+            }
+            {
+              columnMatch: 'request'
+              formatter: 7
+              formatOptions: {
+                linkTarget: 'RequestDetails'
+                linkLabel: 'request'
+                linkIsContextBlade: true
+              }
+            }
+            {
+              columnMatch: 'trace'
+              formatter: 7
+              formatOptions: {
+                linkTarget: 'TraceDetails'
+                linkLabel: 'trace'
+              }
+            }
+          ]
+        }
       }
       name: 'query - 1'
     }
