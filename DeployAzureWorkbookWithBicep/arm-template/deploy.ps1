@@ -4,7 +4,7 @@ $applicationInsightsId = '<application insights id>'
 az deployment group create `
     --name 'sample-workbook-deployment' `
     --resource-group $resourceGroupName `
-    --template-file './sample-arm-template.bicep' `
+    --template-file './sample-full.bicep' `
     --parameters `
         workbookDisplayName='Sample Deployed Workbook (Based on ARM template)' `
         workbookSourceId=$applicationInsightsId `
