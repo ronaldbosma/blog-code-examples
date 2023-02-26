@@ -1,11 +1,5 @@
 requests
 | where customDimensions["Service ID"] == "apim-robo-test"
-| project timestamp
-    , subscription = tostring(customDimensions["Subscription Name"])
+| extend subscription = tostring(customDimensions["Subscription Name"])
     , api = tostring(customDimensions["API Name"])
-    , name
-    , success
-    , resultCode
-    , duration
-    , itemId
     , sessionCorrelationId = tostring(customDimensions["Request-Session-Correlation-Id"])
