@@ -1,37 +1,10 @@
-$subscriptionId = '<subscription id>'
-$resourceGroupName = '<resource group>'
-$applicationInsightsName = '<application insights id>'
-$functionName = "ApimRequests"
-
-
-$functions = az rest --method get --url "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Insights/components/$applicationInsightsName/analyticsItems?api-version=2015-05-01"
-$function = $functions | ConvertFrom-Json | Where-Object -Property "name" -Value $functionName -EQ
-
-if ($null -ne $function)
-{
-    Write-Host "Delete $functionName function"
-    az rest --method "DELETE" --url """https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Insights/components/$applicationInsightsName/analyticsItems/item?api-version=2015-05-01&includeContent=true&scope=shared&type=function&name=$functionName"""
+$placeholders = @{
+    "apimName" = "<api management name>";
 }
 
-
-Write-Host "Add $functionName function"
-
-$url = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Insights/components/$applicationInsightsName/analyticsItems/item?api-version=2015-05-01"
-
-$content = Get-Content -Path "./ApimRequests.kql"
-$content = $content -Replace """", "\"""  # Escape " in the query
-$content = $content -Replace "##apimName##", $apimName
-
-Set-Content -Path "./body.json" -Value @"
-{
-    "scope": "shared",
-    "type": "function",
-    "name": "$functionName",
-    "content": "$content",
-    "properties": {
-        "functionAlias": "$functionName"
-    }
-}
-"@
-
-az rest --method "PUT" --url $url --headers "Content-Type=application/json" --body '@body.json'
+.\deploy-shared-function.ps1 -SubscriptionId "<subscription id>" `
+    -ResourceGroup "<resource group with app insights>" `
+    -AppInsightsName "app insights name" `
+    -FunctionName "ApimRequests" `
+    -FunctionFilePath ".\ApimRequests.kql" `
+    -Placeholders $placeholders
