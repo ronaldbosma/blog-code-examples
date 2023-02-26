@@ -5,10 +5,10 @@ param workbookDisplayName string = 'API Management Requests'
 param workbookType string = 'workbook'
 
 @description('The id of resource instance to which the workbook will be associated')
-param workbookSourceId string
+param workbookSourceId string = '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-test/providers/microsoft.insights/components/appin-robo-test'
 
 @description('The unique guid for this workbook instance')
-param workbookId string = newGuid()
+param workbookId string = guid('sample-arm-template')
 
 resource workbookId_resource 'microsoft.insights/workbooks@2021-03-08' = {
   name: workbookId
