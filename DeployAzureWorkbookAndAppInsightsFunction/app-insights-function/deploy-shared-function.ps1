@@ -47,7 +47,8 @@ foreach ($key in $Placeholders.Keys)
 }
 
 
-# Create a request body file used to create the function
+# Create a request body file in the temp folder
+# This will be used to create the function
 $requestBodyPath = Join-Path $env:TEMP "create-shared-function-request-body.json"
 Set-Content -Path $requestBodyPath -Value @"
 {
