@@ -1,9 +1,9 @@
 {
     "scope": "shared",
     "type": "function",
-    "name": "myTestFunction4",
-    "content": "requests",
+    "name": "ApimRequests",
+    "content": "requests | where customDimensions[\"Service ID\"] == \"apim-robo-test\" | project timestamp     , subscription = tostring(customDimensions[\"Subscription Name\"])     , api = tostring(customDimensions[\"API Name\"])     , name     , success     , resultCode     , duration     , itemId     , sessionCorrelationId = tostring(customDimensions[\"Request-Session-Correlation-Id\"])",
     "properties": {
-        "functionAlias": "myTestFunction4"
+        "functionAlias": "ApimRequests"
     }
 }

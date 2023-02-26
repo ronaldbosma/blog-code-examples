@@ -17,12 +17,17 @@ if ($null -ne $function)
 Write-Host "Add $functionName function"
 
 $url = "https://management.azure.com/subscriptions/$subscriptionId/resourceGroups/$resourceGroupName/providers/Microsoft.Insights/components/$applicationInsightsName/analyticsItems/item?api-version=2015-05-01"
+
+$content = Get-Content -Path "./ApimRequests.kql"
+$content = $content -Replace """", "\"""  # Escape " in the query
+$content = $content -Replace "##apimName##", $apimName
+
 Set-Content -Path "./body.json" -Value @"
 {
     "scope": "shared",
     "type": "function",
     "name": "$functionName",
-    "content": "requests",
+    "content": "$content",
     "properties": {
         "functionAlias": "$functionName"
     }
