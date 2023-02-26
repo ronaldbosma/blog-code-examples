@@ -1,0 +1,9 @@
+{
+    "scope": "shared",
+    "type": "function",
+    "name": "myTestFunction4",
+    "content": "requests",
+    "properties": {
+        "functionAlias": "myTestFunction4"
+    }
+}
