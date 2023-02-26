@@ -1,5 +1,5 @@
 @description('The friendly name for the workbook that is used in the Gallery or Saved List.  This name must be unique within a resource group.')
-param workbookDisplayName string = 'API Management Requests'
+param workbookDisplayName string = 'Sample Workbook'
 
 @description('The gallery that the workbook will been shown under. Supported values include workbook, tsg, etc. Usually, this is \'workbook\'')
 param workbookType string = 'workbook'

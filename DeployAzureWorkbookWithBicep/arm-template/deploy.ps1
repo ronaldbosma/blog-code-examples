@@ -5,7 +5,5 @@ az deployment group create `
     --name 'sample-workbook-deployment' `
     --resource-group $resourceGroupName `
     --template-file './sample.bicep' `
-    --parameters `
-        workbookDisplayName='Sample Deployed Workbook (Based on ARM template)' `
-        workbookSourceId=$applicationInsightsId `
+    --parameters workbookSourceId=$applicationInsightsId `
     --verbose
