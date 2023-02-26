@@ -89,14 +89,14 @@
             value: []
           }
           {
-            id: 'ce54ad3b-6527-479a-b2df-b10afc780ffa'
+            id: '5ae86289-64b1-4d6d-82c8-1e657455225a'
             version: 'KqlParameterItem/1.0'
             name: 'Api'
             type: 2
             multiSelect: true
             quote: '\''
             delimiter: ','
-            query: 'ApimRequests\r\n| distinct api\r\n| sort by api asc'
+            query: 'let subscriptionFilter = dynamic([{Subscription}]);\r\n\r\nApimRequests\r\n| where array_length(subscriptionFilter) == 0 or subscription in (subscriptionFilter)\r\n| distinct api\r\n| sort by api asc'
             typeSettings: {
               additionalResourceOptions: []
             }
@@ -106,7 +106,6 @@
             timeContextFromParameter: 'Time'
             queryType: 0
             resourceType: 'microsoft.insights/components'
-            value: []
           }
           {
             id: '397b1738-8446-4d25-8200-377001155b53'
