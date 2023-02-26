@@ -1,0 +1,5 @@
+requests
+| where customDimensions["Service ID"] == "##apimName##"
+| extend subscription = tostring(customDimensions["Subscription Name"])
+    , api = tostring(customDimensions["API Name"])
+    , sessionCorrelationId = tostring(customDimensions["Request-Session-Correlation-Id"])
