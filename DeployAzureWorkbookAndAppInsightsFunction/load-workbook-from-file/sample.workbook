@@ -136,9 +136,7 @@
         "query": "ApimRequests\r\n| summarize \r\n        requests=strcat('Total # of requests: ', count()), \r\n        failures=strcat('Total # of failures: ', countif(success==false)),\r\n        errors=countif(toint(resultCode)>=500)\r\n    by api",
         "size": 4,
         "title": "Total # of errors per API (status code >=500)",
-        "timeContext": {
-          "durationMs": 86400000
-        },
+        "timeContextFromParameter": "Time",
         "queryType": 0,
         "resourceType": "microsoft.insights/components",
         "visualization": "tiles",
