@@ -4,9 +4,11 @@ jobs:
 - job: deploy
   variables:
     azureServiceConnection: 'Visual Studio Enterprise 1'
+    resourceGroupName: 'rg-my-apim-client-cert-sample'
     keyVaultName: 'kv-my-apim-client-certs'
     clientCertificateName: 'my-sample-client-certificate'
     clientCertificatePassword: 'MyPassword' # Should be a secret variable
+    apiManagementServiceName: 'apim-my-client-certs-sample'
     
   steps:
   - task: DownloadSecureFile@1
@@ -27,3 +29,19 @@ jobs:
           --vault-name '$(keyVaultName)' `
           --name '$(clientCertificateName)' `
           --password '$(clientCertificatePassword)'
+
+  - task: AzureCLI@2
+    displayName: 'Deploy Bicep Template'
+    inputs:
+      azureSubscription: '${{ variables.azureServiceConnection }}'
+      scriptType: 'pscore'
+      scriptLocation: 'inlineScript'
+      inlineScript: |
+        az deployment group create `
+          --name 'apim-client-cert-sample-from-pipeline' `
+          --resource-group '$(resourceGroupName)' `
+          --template-file './blog-code-examples/deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/sample/main.bicep' `
+          --parameters keyVaultName='$(keyVaultName)' `
+                      clientCertificateName='$(clientCertificateName)' `
+                      apiManagementServiceName='$(apiManagementServiceName)' `
+          --verbose
