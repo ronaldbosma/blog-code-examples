@@ -76,7 +76,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
 var keyVaultSecretsUserRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
 
 resource grantApimKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('grant-apim-system-assigned-identity-the-key-vault-secrets-user-role')
+  name: guid('grant-${apiManagementServiceName}-${keyVaultName}-${keyVaultSecretsUserRole}')
   scope: keyVault
   properties: {
     roleDefinitionId: keyVaultSecretsUserRole
