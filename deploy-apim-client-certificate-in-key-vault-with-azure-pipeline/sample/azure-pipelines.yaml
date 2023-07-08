@@ -10,12 +10,12 @@ jobs:
   steps:
   - task: DownloadSecureFile@1
     name: clientCertificate
-    displayName: 'Download my-sample-client-certificate.pfx'
+    displayName: 'Download Client Certificate from Secure files library'
     inputs:
       secureFile: 'my-sample-client-certificate.pfx'
 
   - task: AzureCLI@2
-    displayName: "Import my-sample-client-certificate.pfx into Key Vault"
+    displayName: "Import Client Certificate into Key Vault"
     inputs:
       azureSubscription: 'Visual Studio Enterprise 1'
       scriptType: 'pscore'
