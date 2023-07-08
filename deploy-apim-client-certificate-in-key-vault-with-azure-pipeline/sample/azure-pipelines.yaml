@@ -6,14 +6,13 @@ jobs:
     keyVaultName: 'kv-my-apim-client-certs'
     clientCertificateName: 'my-sample-client-certificate'
     clientCertificatePassword: 'MyPassword' # Should be a secret variable
-    clientCertificateSecureFileName: 'my-sample-client-certificate.pfx'
     
   steps:
   - task: DownloadSecureFile@1
     name: clientCertificate
     displayName: 'Download my-sample-client-certificate.pfx'
     inputs:
-      secureFile: '$(clientCertificateSecureFileName)'
+      secureFile: 'my-sample-client-certificate.pfx'
 
   - task: AzureCLI@2
     displayName: "Import my-sample-client-certificate.pfx into Key Vault"
