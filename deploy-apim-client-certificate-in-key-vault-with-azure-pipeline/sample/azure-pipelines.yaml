@@ -1,47 +1,45 @@
 trigger: none
 
-jobs:
-- job: deploy
-  variables:
-    azureServiceConnection: 'Visual Studio Enterprise 1'
-    resourceGroupName: 'rg-my-apim-client-cert-sample'
-    keyVaultName: 'kv-my-apim-client-certs'
-    clientCertificateName: 'my-sample-client-certificate'
-    clientCertificatePassword: 'MyPassword' # Should be a secret variable
-    apiManagementServiceName: 'apim-my-client-certs-sample'
-    
-  steps:
-  - task: DownloadSecureFile@1
-    name: clientCertificate
-    displayName: 'Download Client Certificate from Secure files library'
-    inputs:
-      secureFile: 'my-sample-client-certificate.pfx'
+variables:
+  azureServiceConnection: 'Visual Studio Enterprise 1'
+  resourceGroupName: 'rg-my-apim-client-cert-sample'
+  keyVaultName: 'kv-my-apim-client-certs'
+  clientCertificateName: 'my-sample-client-certificate'
+  clientCertificatePassword: 'MyPassword' # Should be a secret variable
+  apiManagementServiceName: 'apim-my-client-certs-sample'
+  
+steps:
+- task: DownloadSecureFile@1
+  name: clientCertificate
+  displayName: 'Download Client Certificate from Secure files library'
+  inputs:
+    secureFile: 'my-sample-client-certificate.pfx'
 
-  - task: AzureCLI@2
-    displayName: "Import Client Certificate into Key Vault"
-    inputs:
-      azureSubscription: '${{ variables.azureServiceConnection }}'
-      scriptType: 'pscore'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az keyvault certificate import `
-          --file '$(clientCertificate.secureFilePath)' `
-          --vault-name '$(keyVaultName)' `
-          --name '$(clientCertificateName)' `
-          --password '$(clientCertificatePassword)'
-
-  - task: AzureCLI@2
-    displayName: 'Deploy Bicep Template'
-    inputs:
-      azureSubscription: '${{ variables.azureServiceConnection }}'
-      scriptType: 'pscore'
-      scriptLocation: 'inlineScript'
-      inlineScript: |
-        az deployment group create `
-          --name 'apim-client-cert-sample-deployment' `
-          --resource-group '$(resourceGroupName)' `
-          --template-file './deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/sample/main.bicep' `
-          --parameters keyVaultName='$(keyVaultName)' `
-                       clientCertificateName='$(clientCertificateName)' `
-                       apiManagementServiceName='$(apiManagementServiceName)' `
-          --verbose
+- task: AzureCLI@2
+  displayName: "Import Client Certificate into Key Vault"
+  inputs:
+    azureSubscription: '${{ variables.azureServiceConnection }}'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az keyvault certificate import `
+        --file '$(clientCertificate.secureFilePath)' `
+        --vault-name '$(keyVaultName)' `
+        --name '$(clientCertificateName)' `
+        --password '$(clientCertificatePassword)'
+        
+- task: AzureCLI@2
+  displayName: 'Deploy Bicep Template'
+  inputs:
+    azureSubscription: '${{ variables.azureServiceConnection }}'
+    scriptType: 'pscore'
+    scriptLocation: 'inlineScript'
+    inlineScript: |
+      az deployment group create `
+        --name 'apim-client-cert-sample-deployment' `
+        --resource-group '$(resourceGroupName)' `
+        --template-file './deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/sample/main.bicep' `
+        --parameters keyVaultName='$(keyVaultName)' `
+                     clientCertificateName='$(clientCertificateName)' `
+                     apiManagementServiceName='$(apiManagementServiceName)' `
+        --verbose
