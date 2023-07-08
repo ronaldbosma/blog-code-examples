@@ -18,7 +18,7 @@ jobs:
   - task: AzureCLI@2
     displayName: "Import Client Certificate into Key Vault"
     inputs:
-      azureSubscription: '$(azureServiceConnection)'
+      azureSubscription: '${{ variables.azureServiceConnection }}'
       scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: |
