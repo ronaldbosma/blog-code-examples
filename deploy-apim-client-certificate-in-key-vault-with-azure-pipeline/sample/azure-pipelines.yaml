@@ -3,6 +3,7 @@ trigger: none
 jobs:
 - job: deploy
   variables:
+    azureServiceConnection: 'Visual Studio Enterprise 1'
     keyVaultName: 'kv-my-apim-client-certs'
     clientCertificateName: 'my-sample-client-certificate'
     clientCertificatePassword: 'MyPassword' # Should be a secret variable
@@ -17,7 +18,7 @@ jobs:
   - task: AzureCLI@2
     displayName: "Import Client Certificate into Key Vault"
     inputs:
-      azureSubscription: 'Visual Studio Enterprise 1'
+      azureSubscription: '$(azureServiceConnection)'
       scriptType: 'pscore'
       scriptLocation: 'inlineScript'
       inlineScript: |
