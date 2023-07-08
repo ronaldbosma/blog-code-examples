@@ -38,7 +38,7 @@ jobs:
       scriptLocation: 'inlineScript'
       inlineScript: |
         az deployment group create `
-          --name 'apim-client-cert-sample-from-pipeline' `
+          --name 'apim-client-cert-sample-deployment' `
           --resource-group '$(resourceGroupName)' `
           --template-file './deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/sample/main.bicep' `
           --parameters keyVaultName='$(keyVaultName)' `
