@@ -1,4 +1,12 @@
-# Sample
+# Client Certificates
+
+This folders contains sample client certificates that you can use as a reference to deploy client certificates in Azure Key Vault.
+
+| Certificate | Password |
+|-|-|
+| `my-sample-client-certificate.pfx` | `MyPassword` |
+| `dev-my-sample-client-certificate.pfx` | `MyDevPassword` |
+| `test-my-sample-client-certificate.pfx` | `MyTstPassword` |
 
 ## Create Self Signed Certificate
 
