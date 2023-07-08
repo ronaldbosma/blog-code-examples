@@ -1,0 +1,6 @@
+POST https://<your-api-management-service-name>.azure-api.net/echo HTTP/1.1
+Ocp-Apim-Subscription-Key: <your-subscription-key>
+
+{
+    "foo": "bar"
+}
