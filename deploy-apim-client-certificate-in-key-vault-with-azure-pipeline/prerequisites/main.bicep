@@ -19,6 +19,9 @@ param location string = resourceGroup().location
 @description('Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet.')
 param tenantId string = subscription().tenantId
 
+@description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
+param keyVaultAdministratorId string
+
 @description('The email address of the owner of the API Management service')
 param publisherEmail string
 
@@ -82,5 +85,20 @@ resource grantApimKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-0
     roleDefinitionId: keyVaultSecretsUserRole
     principalId: apiManagementService.identity.principalId
     principalType: 'ServicePrincipal'
+  }
+}
+
+
+// Grant the signed in user access to the Key Vault
+
+var keyVaultAdministratorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
+
+resource grantAdministratorKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid('grant-${keyVaultAdministratorId}-${keyVaultName}-${keyVaultAdministratorRole}')
+  scope: keyVault
+  properties: {
+    roleDefinitionId: keyVaultAdministratorRole
+    principalId: keyVaultAdministratorId
+    principalType: 'User'
   }
 }

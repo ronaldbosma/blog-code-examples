@@ -17,9 +17,9 @@ if ((az group exists --name $ResourceGroupName) -eq "false")
 
 # Get the signed in user. This user will be the publisher of API Management.
 $signedInUser = az ad signed-in-user show | ConvertFrom-Json
+$keyVaultAdministratorId = $signedInUser.id
 $publisherEmail = $signedInUser.mail
 $publisherName = $signedInUser.displayName
-
 
 # Deploy the resources with Bicep
 az deployment group create `
@@ -28,6 +28,7 @@ az deployment group create `
     --template-file './main.bicep' `
     --parameters keyVaultName=$KeyVaultName `
                  apiManagementServiceName=$ApiManagementServiceName `
+                 keyVaultAdministratorId=$keyVaultAdministratorId `
                  publisherEmail=$publisherEmail `
                  publisherName=$publisherName `
     --verbose
