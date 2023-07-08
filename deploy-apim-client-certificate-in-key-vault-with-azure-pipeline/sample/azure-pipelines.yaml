@@ -40,7 +40,7 @@ jobs:
         az deployment group create `
           --name 'apim-client-cert-sample-from-pipeline' `
           --resource-group '$(resourceGroupName)' `
-          --template-file './blog-code-examples/deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/sample/main.bicep' `
+          --template-file './deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/sample/main.bicep' `
           --parameters keyVaultName='$(keyVaultName)' `
                       clientCertificateName='$(clientCertificateName)' `
                       apiManagementServiceName='$(apiManagementServiceName)' `
