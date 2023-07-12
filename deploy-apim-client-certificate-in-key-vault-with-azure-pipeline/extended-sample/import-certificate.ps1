@@ -12,47 +12,39 @@ param
     [Parameter(Mandatory = $true)]
     [string]$CertificateName,
 
-    # The password of the certificate (as a secure string).
+    # The password of the certificate (as a secure string) to import.
     [Parameter(Mandatory = $true)]
     [Security.SecureString]$CertificatePassword,
 
-    # The path to the certificate file to import
+    # The file path to the certificate to import.
     [Parameter(Mandatory = $true)]
     [string]$CertificateFilePath
 )
 
-$shouldImportCertificate = $true
+$currentCertificate = Get-AzKeyVaultCertificate -VaultName $keyVaultName -Name $certificateName
+$certificateExistsInKeyVault = $null -ne $currentCertificate
 
-# Retrieve the thumprint of the existing certificate. Will be $null if the certificate does not exist.
-$existingThumprint = az keyvault certificate show --name $CertificateName --vault-name $KeyVaultName --query "x509ThumbprintHex" -o tsv
-$currentCertificate = az keyvault certificate show --name $CertificateName --vault-name $KeyVaultName --query "x509ThumbprintHex" -o tsv
-
-# If the certificate exists, check if the thumbprint of the existing certificate is the same as the thumbprint of the certificate to import.
-if ($null -ne $existingThumprint)
+if ($certificateExistsInKeyVault)
 {
-    $cert = Get-PfxCertificate -FilePath $CertificateFilePath -Password $CertificatePassword
-    $shouldImportCertificate = $cert.Thumbprint -ne $existingThumprint
+    $certificateToImport = Get-PfxCertificate -FilePath $CertificateFilePath -Password $CertificatePassword
+    $thumbprintIsDifferent = $certificateToImport.Thumbprint -ne $currentCertificate.Thumbprint
 
-    Write-Host "Does thumbprint of $CertificateName in Key $KeyVaultName match thumbprint of '$CertificateFilePath': $(-not($shouldImportCertificate))"
+    Write-Host "Is thumbprint from '$CertificateName' in Key '$KeyVaultName' different from '$CertificateFilePath': $thumbprintIsDifferent"
 }
 else
 {
-    Write-Host "Certificate $CertificateName does not exist in Key Vault $KeyVaultName."
+    Write-Host "Certificate '$CertificateName' does not exist in Key Vault '$KeyVaultName'"
 }
 
-# Import the certificate if it doesn't exist or if the thumbprint did not match.
-if ($shouldImportCertificate)
+if (-not($certificateExistsInKeyVault) -or $thumbprintIsDifferent)
 {
-    Write-Host "Import certificate $CertificateName into Key Vault $KeyVaultName."
-
+    Write-Host "Import certificate '$CertificateName' into Key Vault '$KeyVaultName'"
     Import-AzKeyVaultCertificate -VaultName $KeyVaultName `
                                  -Name $CertificateName `
                                  -FilePath $CertificateFilePath `
                                  -Password $CertificatePassword
-
-    # az keyvault certificate import `
-    #     --file $CertificateFilePath `
-    #     --vault-name $KeyVaultName `
-    #     --name $CertificateName `
-    #     --password $CertificatePassword
+}
+else
+{
+    Write-Host "Skipped import of certificate '$CertificateName' into Key Vault '$KeyVaultName'"
 }
