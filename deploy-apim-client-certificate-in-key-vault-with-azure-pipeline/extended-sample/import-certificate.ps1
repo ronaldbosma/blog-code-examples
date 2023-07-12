@@ -29,7 +29,7 @@ if ($certificateExistsInKeyVault)
     $certificateToImport = Get-PfxCertificate -FilePath $CertificateFilePath -Password $CertificatePassword
     $thumbprintIsDifferent = $certificateToImport.Thumbprint -ne $currentCertificate.Thumbprint
 
-    Write-Host "Is thumbprint from '$CertificateName' in Key '$KeyVaultName' different from '$CertificateFilePath': $thumbprintIsDifferent"
+    Write-Host "Is thumbprint of '$CertificateName' in Key Vault '$KeyVaultName' different from '$CertificateFilePath': $thumbprintIsDifferent"
 }
 else
 {
