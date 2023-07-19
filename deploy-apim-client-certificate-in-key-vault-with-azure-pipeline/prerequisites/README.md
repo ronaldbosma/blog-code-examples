@@ -25,3 +25,26 @@ $apiManagementServiceName = '<your-api-management-service-name>'
              -KeyVaultName $keyVaultName `
              -ApiManagementServiceName $apiManagementServiceName
 ```
+
+This example will deploy the Key Vault with `Allow public access from all networks` enabled.
+
+## Enable Key Vault Firewall
+
+If you want to enable `Allow public access from specific virtual networks and IP addresses`, set the parameter `KeyVaultNetworkAclsDefaultAction` to `Deny` and optionally pass your ip address in `KeyVaultAllowedIpAddress` so you can access the Key Vault.
+
+Here's an example:
+
+```powershell
+$resourceGroupName = '<your-resource-group-name>'
+$location = '<your-location>'
+$keyVaultName = '<your-key-vault-name>'
+$apiManagementServiceName = '<your-api-management-service-name>'
+$yourIpAddress = 'your-ip-address'
+
+./deploy.ps1 -ResourceGroupName $resourceGroupName `
+             -Location $location `
+             -KeyVaultName $keyVaultName `
+             -ApiManagementServiceName $apiManagementServiceName `
+             -KeyVaultNetworkAclsDefaultAction "Deny" `
+             -KeyVaultAllowedIpAddress $yourIpAddress
+```

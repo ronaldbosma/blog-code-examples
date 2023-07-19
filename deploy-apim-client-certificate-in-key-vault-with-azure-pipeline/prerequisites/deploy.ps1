@@ -1,8 +1,10 @@
 param (
-    $ResourceGroupName = 'rg-my-apim-client-cert-sample',
-    $Location = 'westeurope',
-    $KeyVaultName = 'kv-my-apim-client-certs',
-    $ApiManagementServiceName = 'apim-my-client-certs-sample'
+    [string]$ResourceGroupName = 'rg-my-apim-client-cert-sample',
+    [string]$Location = 'westeurope',
+    [string]$KeyVaultName = 'kv-my-apim-client-certs',
+    [string]$KeyVaultNetworkAclsDefaultAction = "Allow",
+    [string]$KeyVaultAllowedIpAddress = "",
+    [string]$ApiManagementServiceName = 'apim-my-client-certs-sample'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -29,6 +31,8 @@ az deployment group create `
     --parameters keyVaultName=$KeyVaultName `
                  apiManagementServiceName=$ApiManagementServiceName `
                  keyVaultAdministratorId=$keyVaultAdministratorId `
+                 keyVaultNetworkAclsDefaultAction=$KeyVaultNetworkAclsDefaultAction `
+                 keyVaultAllowedIpAddress=$KeyVaultAllowedIpAddress `
                  publisherEmail=$publisherEmail `
                  publisherName=$publisherName `
     --verbose
