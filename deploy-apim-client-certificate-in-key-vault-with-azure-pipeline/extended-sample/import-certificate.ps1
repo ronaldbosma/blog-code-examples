@@ -21,12 +21,12 @@ param
     [string]$CertificateFilePath
 )
 
-# # Get the public IP address of the agent running this script.
-# $agentIpAddress = Invoke-RestMethod -Uri "ipinfo.io/ip"
+# Get the public IP address of the agent running this script.
+$agentIpAddress = Invoke-RestMethod -Uri "ipinfo.io/ip"
 
-# Write-Host "Temporarely whitelist IP address range '$agentIpAddress' in the firewall of Key Vault '$KeyVaultName', so we can import the certificate."
-# # Register the IP address of the agent in the firewall of the Key Vault so we can import the certificate.
-# Add-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange $agentIpAddress
+Write-Host "Temporarely whitelist IP address range '$agentIpAddress' in the firewall of Key Vault '$KeyVaultName', so we can import the certificate."
+# Register the IP address of the agent in the firewall of the Key Vault so we can import the certificate.
+Add-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange $agentIpAddress
 
 try
 {
@@ -60,8 +60,8 @@ try
 }
 finally
 {
-    # Write-Host "Remove whitelisted IP address range '$agentIpAddress' from the firewall of Key Vault '$KeyVaultName'"
-    # # Always remove the whitelisted IP address, even if for example the import of the certificate has failed.
-    # # NOTE: the IP address is automatically postfixed with /32 when adding the network rule and we need to include it when removing the rule.
-    # Remove-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange "$agentIpAddress/32"
+    Write-Host "Remove whitelisted IP address range '$agentIpAddress' from the firewall of Key Vault '$KeyVaultName'"
+    # Always remove the whitelisted IP address, even if for example the import of the certificate has failed.
+    # NOTE: the IP address is automatically postfixed with /32 when adding the network rule and we need to include it when removing the rule.
+    Remove-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange "$agentIpAddress/32"
 }
