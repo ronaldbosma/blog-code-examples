@@ -21,30 +21,46 @@ param
     [string]$CertificateFilePath
 )
 
-$currentCertificate = Get-AzKeyVaultCertificate -VaultName $keyVaultName -Name $certificateName
-$certificateExistsInKeyVault = $null -ne $currentCertificate
+# Get the public IP address of the agent running this script.
+$agentIpAddress = Invoke-RestMethod -Uri "ipinfo.io/ip"
 
-if ($certificateExistsInKeyVault)
-{
-    $certificateToImport = Get-PfxCertificate -FilePath $CertificateFilePath -Password $CertificatePassword
-    $thumbprintIsDifferent = $certificateToImport.Thumbprint -ne $currentCertificate.Thumbprint
+Write-Host "Temporarely whitelist IP address range '$agentIpAddress' in the firewall of Key Vault '$KeyVaultName', so we can import the certificate."
+# Register the IP address of the agent in the firewall of the Key Vault so we can import the certificate.
+Add-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange $agentIpAddress
 
-    Write-Host "Is thumbprint of '$CertificateName' in Key Vault '$KeyVaultName' different from '$CertificateFilePath': $thumbprintIsDifferent"
-}
-else
+try
 {
-    Write-Host "Certificate '$CertificateName' does not exist in Key Vault '$KeyVaultName'"
-}
+    $currentCertificate = Get-AzKeyVaultCertificate -VaultName $keyVaultName -Name $certificateName
+    $certificateExistsInKeyVault = $null -ne $currentCertificate
 
-if (-not($certificateExistsInKeyVault) -or $thumbprintIsDifferent)
-{
-    Write-Host "Import certificate '$CertificateName' into Key Vault '$KeyVaultName'"
-    Import-AzKeyVaultCertificate -VaultName $KeyVaultName `
-                                 -Name $CertificateName `
-                                 -FilePath $CertificateFilePath `
-                                 -Password $CertificatePassword
+    if ($certificateExistsInKeyVault)
+    {
+        $certificateToImport = Get-PfxCertificate -FilePath $CertificateFilePath -Password $CertificatePassword
+        $thumbprintIsDifferent = $certificateToImport.Thumbprint -ne $currentCertificate.Thumbprint
+
+        Write-Host "Is thumbprint of '$CertificateName' in Key Vault '$KeyVaultName' different from '$CertificateFilePath': $thumbprintIsDifferent"
+    }
+    else
+    {
+        Write-Host "Certificate '$CertificateName' does not exist in Key Vault '$KeyVaultName'"
+    }
+
+    if (-not($certificateExistsInKeyVault) -or $thumbprintIsDifferent)
+    {
+        Write-Host "Import certificate '$CertificateName' into Key Vault '$KeyVaultName'"
+        Import-AzKeyVaultCertificate -VaultName $KeyVaultName `
+                                    -Name $CertificateName `
+                                    -FilePath $CertificateFilePath `
+                                    -Password $CertificatePassword
+    }
+    else
+    {
+        Write-Host "Skipped import of certificate '$CertificateName' into Key Vault '$KeyVaultName'"
+    }
 }
-else
+finally
 {
-    Write-Host "Skipped import of certificate '$CertificateName' into Key Vault '$KeyVaultName'"
+    Write-Host "Remove whitelisted IP address range '$agentIpAddress' from the firewall of Key Vault '$KeyVaultName'"
+    # NOTE: the IP address is automatically postfixed with /32 when adding the network rule and we need to include it when removing the rule.
+    Remove-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange "$agentIpAddress/32"
 }
