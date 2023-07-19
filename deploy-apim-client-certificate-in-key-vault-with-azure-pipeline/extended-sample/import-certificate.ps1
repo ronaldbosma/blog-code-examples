@@ -61,6 +61,7 @@ try
 finally
 {
     Write-Host "Remove whitelisted IP address range '$agentIpAddress' from the firewall of Key Vault '$KeyVaultName'"
+    # Always remove the whitelisted IP address, even if for example the import of the certificate has failed.
     # NOTE: the IP address is automatically postfixed with /32 when adding the network rule and we need to include it when removing the rule.
     Remove-AzKeyVaultNetworkRule -VaultName $KeyVaultName -IpAddressRange "$agentIpAddress/32"
 }
