@@ -14,20 +14,27 @@ steps:
   displayName: 'Download Client Certificate from Secure files library'
   inputs:
     secureFile: 'my-sample-client-certificate.pfx'
-
-- task: AzureCLI@2
+        
+- task: AzurePowerShell@5
   displayName: "Import Client Certificate into Key Vault"
   inputs:
     azureSubscription: '${{ variables.azureServiceConnection }}'
-    scriptType: 'pscore'
-    scriptLocation: 'inlineScript'
-    inlineScript: |
-      az keyvault certificate import `
-        --file '$(clientCertificate.secureFilePath)' `
-        --vault-name '$(keyVaultName)' `
-        --name '$(clientCertificateName)' `
-        --password '$(clientCertificatePassword)'
-        
+    ScriptType: 'InlineScript'
+    Inline: |
+      $securePassword = ConvertTo-SecureString -String $env:SECURE_CERTIFICATE_PASSWORD -Force -AsPlainText
+      ./deploy-apim-client-certificate-in-key-vault-with-azure-pipeline/extended-sample/import-certificate.ps1 `
+          -KeyVaultName "$(keyVaultName)" `
+          -CertificateName "$(clientCertificateName)" `
+          -CertificatePassword $securePassword `
+          -CertificateFilePath "$(clientCertificate.secureFilePath)"
+    FailOnStandardError: true
+    azurePowerShellVersion: 'LatestVersion'
+    pwsh: true
+  # The recommended approach to pass a secret on the command line is through an environment variable.
+  # See https://learn.microsoft.com/en-us/azure/devops/pipelines/process/variables?view=azure-devops&tabs=yaml%2Cbatch#secret-variables
+  env:
+    SECURE_CERTIFICATE_PASSWORD: '$(clientCertificatePassword)'
+
 - task: AzureCLI@2
   displayName: 'Deploy Bicep Template'
   inputs:
