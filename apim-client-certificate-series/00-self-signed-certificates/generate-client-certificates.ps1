@@ -52,6 +52,7 @@ Export-CertificateAsBase64 -Certificate $rootCA -OutputFilePath "$exportPath\roo
 Export-CertificateAsBase64 -Certificate $devIntermediateCA -OutputFilePath "$exportPath\dev-intermediate-ca.cer"
 Export-CertificateAsBase64 -Certificate $devIntermediateCA -OutputFilePath "$exportPath\dev-intermediate-ca.without-markers.cer" -ExcludeMarkers
 Export-CertificateAsBase64 -Certificate $devClient01 -OutputFilePath "$exportPath\dev-client-01.cer"
+Export-CertificateAsBase64 -Certificate $devClient01 -OutputFilePath "$exportPath\dev-client-01.without-markers.cer" -ExcludeMarkers
 Export-CertificateAsBase64 -Certificate $devClient02 -OutputFilePath "$exportPath\dev-client-02.cer"
 
 Export-CertificateAsBase64 -Certificate $tstIntermediateCA -OutputFilePath "$exportPath\tst-intermediate-ca.cer"

@@ -45,6 +45,14 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
       }
     ]
   }
+
+  // Upload client certificate for 'Dev Client 01'
+  resource clientCertificates 'certificates' = {
+    name: 'dev-client-01'
+    properties: {
+      data: loadTextContent('../00-self-signed-certificates/certificates/dev-client-01.without-markers.cer')
+    }
+  }
 }
 
 // API
@@ -60,6 +68,7 @@ resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
     ]
   }
 
+  // Operation to validate client certificate using validate-client-certificate policy
   resource validateUsingPolicy 'operations' = {
     name: 'validate-using-policy'
     properties: {
@@ -78,6 +87,7 @@ resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
     }
   }
 
+  // Operation to validate client certificate using context.Request.Certificate property
   resource validateUsingContext 'operations' = {
     name: 'validate-using-context'
     properties: {
