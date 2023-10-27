@@ -67,3 +67,16 @@ Export-PfxCertificate -Cert $devExpiredClient -FilePath "$exportPath\dev-expired
 
 Export-PfxCertificate -Cert $tstClient01 -FilePath "$exportPath\tst-client-01.pfx" -Password $certificatePassword
 Export-PfxCertificate -Cert $tstClient02 -FilePath "$exportPath\tst-client-02.pfx" -Password $certificatePassword
+
+
+# =====================================================================
+# Combine the base64 encoded X.509 (.cer) files into one file
+# =====================================================================
+
+# All (CA) certificates in a certificate chain need be combined when uploading them in Azure Application Gateway
+
+Merge-Base64CertificateFiles -InputFilePaths @( "$exportPath\dev-intermediate-ca.cer", "$exportPath\root-ca.cer" ) `
+                             -OutputFilePath "$exportPath\dev-intermediate-ca-with-root-ca.cer"
+
+Merge-Base64CertificateFiles -InputFilePaths @( "$exportPath\tst-intermediate-ca.cer", "$exportPath\root-ca.cer" ) `
+                             -OutputFilePath "$exportPath\tst-intermediate-ca-with-root-ca.cer"

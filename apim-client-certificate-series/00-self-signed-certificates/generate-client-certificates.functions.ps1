@@ -87,3 +87,12 @@ $([Convert]::ToBase64String($certificate.Export('Cert'), [System.Base64Formattin
 "@
 	Set-Content -Path $outputFilePath -Value $base64certificate
 }
+
+function Merge-Base64CertificateFiles
+(
+	[Parameter(Mandatory=$true)][string[]]$InputFilePaths, 
+	[Parameter(Mandatory=$true)][string]$OutputFilePath
+)
+{
+    Get-Content -Path $InputFilePaths | Set-Content -Path $OutputFilePath
+}
