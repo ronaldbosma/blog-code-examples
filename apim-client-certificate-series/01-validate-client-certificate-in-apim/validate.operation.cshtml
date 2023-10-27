@@ -33,9 +33,6 @@
         <set-header name="ErrorMessage" exists-action="override">
             <value>@(context.LastError.Message)</value>
         </set-header>
-        <set-header name="ErrorPolicyId" exists-action="override">
-            <value>@(context.LastError.PolicyId)</value>
-        </set-header>
         <base />
     </on-error>
 </policies>
