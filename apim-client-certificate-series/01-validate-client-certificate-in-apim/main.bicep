@@ -2,9 +2,11 @@
 // Validate Client Certificate in Azure API Management
 //=============================================================================
 
+
 //=============================================================================
 // Parameters
 //=============================================================================
+
 
 @description('The name of the API Management Service that will be created')
 param apiManagementServiceName string
@@ -18,9 +20,11 @@ param publisherEmail string
 @description('The name of the owner of the API Management service')
 param publisherName string
 
+
 //=============================================================================
 // Resources
 //=============================================================================
+
 
 // API Management
 resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
