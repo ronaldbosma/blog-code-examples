@@ -60,20 +60,38 @@ resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
     ]
   }
 
-  // Validate operation
-  resource validate 'operations' = {
-    name: 'validate'
+  resource validateUsingPolicy 'operations' = {
+    name: 'validate-using-policy'
     properties: {
-      displayName: 'Validate'
+      displayName: 'Validate (using policy)'
+      description: 'Validates client certificate using validate-client-certificate policy'
       method: 'GET'
-      urlTemplate: '/validate'
+      urlTemplate: '/validate-using-policy'
     }
 
     resource policies 'policies' = {
       name: 'policy'
       properties: {
         format: 'rawxml'
-        value: loadTextContent('./validate.operation.cshtml') 
+        value: loadTextContent('./validate-using-policy.operation.cshtml') 
+      }
+    }
+  }
+
+  resource validateUsingContext 'operations' = {
+    name: 'validate-using-context'
+    properties: {
+      displayName: 'Validate (using context)'
+      description: 'Validates client certificate using the context.Request.Certificate property'
+      method: 'GET'
+      urlTemplate: '/validate-using-context'
+    }
+
+    resource policies 'policies' = {
+      name: 'policy'
+      properties: {
+        format: 'rawxml'
+        value: loadTextContent('./validate-using-context.operation.cshtml') 
       }
     }
   }
