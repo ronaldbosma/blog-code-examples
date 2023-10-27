@@ -1,24 +1,13 @@
-###################################################################################################################
-# Install the VS Code REST Client extension: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
-#
-# Configure an environment with the following settings:
-#   - apimHostname: The hostname of your API Management instance
-#   - apimSubscriptionKey: The subscription key of your API Management instance
-#
-# See: https://github.com/Huachao/vscode-restclient#environment-variables
-###################################################################################################################
+# Configure your host name
 
+@apimHostname = apim-validate-client-certificate.azure-api.net
+
+
+### Validates client certificate using validate-client-certificate policy
 
 GET https://{{apimHostname}}/client-cert/validate-using-policy
-Ocp-Apim-Subscription-Key: {{apimSubscriptionKey}}
-# Don't forget to enable 'allow tracing' on the subscription
-Ocp-Apim-Trace: true
 
 
-### 
-
+### Validates client certificate using the context.Request.Certificate property
 
 GET https://{{apimHostname}}/client-cert/validate-using-context
-Ocp-Apim-Subscription-Key: {{apimSubscriptionKey}}
-# Don't forget to enable 'allow tracing' on the subscription
-Ocp-Apim-Trace: true

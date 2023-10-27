@@ -67,6 +67,7 @@ resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
     protocols: [ 
       'https' 
     ]
+    subscriptionRequired: false
   }
 }
 
