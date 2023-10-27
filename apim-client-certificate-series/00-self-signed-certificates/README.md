@@ -4,4 +4,4 @@ The script [generate-client-certificates.ps1](./generate-client-certificates.ps1
 
 ![self-signed certificates](./self-signed-certificates.png)
 
-See the [certificates](./certificates) folder for the generated certificates.
+See the [certificates](./certificates) folder for the generated certificates. The `.pfx` files are password protected with the password `P@ssw0rd`.
