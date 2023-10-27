@@ -1,0 +1,29 @@
+<policies>
+    <inbound>
+        <base />
+
+        <validate-client-certificate validate-revocation="false" validate-trust="false" 
+                                     validate-not-before="true" validate-not-after="true" 
+                                     ignore-error="false">
+            <identities>
+                <identity subject="CN=Client 01" issuer-subject="CN=APIM Sample DEV Intermediate CA" />
+                <identity subject="CN=Client 02" issuer-subject="CN=APIM Sample DEV Intermediate CA" />
+                <identity subject="CN=Expired Client" issuer-subject="CN=APIM Sample DEV Intermediate CA" />
+            </identities>
+        </validate-client-certificate>
+
+        <return-response>
+            <set-status code="200" />
+            <set-body>OK</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <base />
+    </on-error>
+</policies>

@@ -36,3 +36,35 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
     publisherName: publisherName
   }
 }
+
+// API
+
+resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
+  name: 'client-cert-api'
+  parent: apiManagementService
+  properties: {
+    displayName: 'Client Cert API'
+    path: 'client-cert'
+    protocols: [ 
+      'https' 
+    ]
+  }
+
+  // Validate operation
+  resource validate 'operations' = {
+    name: 'validate'
+    properties: {
+      displayName: 'Validate'
+      method: 'GET'
+      urlTemplate: '/validate'
+    }
+
+    resource policies 'policies' = {
+      name: 'policy'
+      properties: {
+        format: 'rawxml'
+        value: loadTextContent('./validate.operation.cshtml') 
+      }
+    }
+  }
+}
