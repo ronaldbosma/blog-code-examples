@@ -39,6 +39,10 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
         encodedCertificate: loadTextContent('../00-self-signed-certificates/certificates/root-ca.without-markers.cer')
         storeName: 'Root'
       }
+      {
+        encodedCertificate: loadTextContent('../00-self-signed-certificates/certificates/dev-intermediate-ca.without-markers.cer')
+        storeName: 'CertificateAuthority'
+      }
     ]
   }
 }
