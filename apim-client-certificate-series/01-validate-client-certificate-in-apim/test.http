@@ -1,0 +1,15 @@
+###################################################################################################################
+# Install the VS Code REST Client extension: https://marketplace.visualstudio.com/items?itemName=humao.rest-client
+#
+# Configure an environment with the following settings:
+#   - apimHostname: The hostname of your API Management instance
+#   - apimSubscriptionKey: The subscription key of your API Management instance
+#
+# See: https://github.com/Huachao/vscode-restclient#environment-variables
+###################################################################################################################
+
+
+GET https://{{apimHostname}}/echo/resource?param1=sample
+Ocp-Apim-Subscription-Key: {{apimSubscriptionKey}}
+
+###
