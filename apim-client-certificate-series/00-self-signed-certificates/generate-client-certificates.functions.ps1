@@ -77,14 +77,21 @@ function New-SelfSignedClientCertificate(
 function Export-CertificateAsBase64
 (
 	[Parameter(Mandatory=$true)][System.Security.Cryptography.X509Certificates.X509Certificate2]$Certificate, 
-	[Parameter(Mandatory=$true)][string]$OutputFilePath
+	[Parameter(Mandatory=$true)][string]$OutputFilePath,
+    [switch]$ExcludeMarkers = $false
 )
 {
-	$base64certificate = @"
+    $base64certificate = [Convert]::ToBase64String($certificate.Export('Cert'), [System.Base64FormattingOptions]::InsertLineBreaks)
+
+    if (-not($ExcludeMarkers)) 
+    {
+        $base64certificate = @"
 -----BEGIN CERTIFICATE-----
-$([Convert]::ToBase64String($certificate.Export('Cert'), [System.Base64FormattingOptions]::InsertLineBreaks))
+$base64certificate
 -----END CERTIFICATE-----
 "@
+    }
+
 	Set-Content -Path $outputFilePath -Value $base64certificate
 }
 
