@@ -23,7 +23,6 @@ param publisherName string
 //=============================================================================
 
 // API Management
-
 resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
   name: apiManagementServiceName
   location: location
@@ -45,18 +44,20 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
       }
     ]
   }
+}
 
-  // Upload client certificate for 'Dev Client 01'
-  resource clientCertificates 'certificates' = {
-    name: 'dev-client-01'
-    properties: {
-      data: loadTextContent('../00-self-signed-certificates/certificates/dev-client-01.without-markers.cer')
-    }
+
+// Add client certificate for 'Dev Client 01'
+resource devClient01Certificate 'Microsoft.ApiManagement/service/certificates@2022-08-01' = {
+  name: 'dev-client-01'
+  parent: apiManagementService
+  properties: {
+    data: loadTextContent('../00-self-signed-certificates/certificates/dev-client-01.without-markers.cer')
   }
 }
 
-// API
 
+// Client Cert API
 resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
   name: 'client-cert-api'
   parent: apiManagementService
@@ -67,42 +68,46 @@ resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
       'https' 
     ]
   }
+}
 
-  // Operation to validate client certificate using validate-client-certificate policy
-  resource validateUsingPolicy 'operations' = {
-    name: 'validate-using-policy'
-    properties: {
-      displayName: 'Validate (using policy)'
-      description: 'Validates client certificate using validate-client-certificate policy'
-      method: 'GET'
-      urlTemplate: '/validate-using-policy'
-    }
 
-    resource policies 'policies' = {
-      name: 'policy'
-      properties: {
-        format: 'rawxml'
-        value: loadTextContent('./validate-using-policy.operation.cshtml') 
-      }
-    }
+// Operation to validate client certificate using validate-client-certificate policy
+resource validateUsingPolicy 'Microsoft.ApiManagement/service/apis/operations@2022-08-01' = {
+  name: 'validate-using-policy'
+  parent: clientCertApi
+  properties: {
+    displayName: 'Validate (using policy)'
+    description: 'Validates client certificate using validate-client-certificate policy'
+    method: 'GET'
+    urlTemplate: '/validate-using-policy'
   }
 
-  // Operation to validate client certificate using context.Request.Certificate property
-  resource validateUsingContext 'operations' = {
-    name: 'validate-using-context'
+  resource policies 'policies' = {
+    name: 'policy'
     properties: {
-      displayName: 'Validate (using context)'
-      description: 'Validates client certificate using the context.Request.Certificate property'
-      method: 'GET'
-      urlTemplate: '/validate-using-context'
+      format: 'rawxml'
+      value: loadTextContent('./validate-using-policy.operation.cshtml') 
     }
+  }
+}
 
-    resource policies 'policies' = {
-      name: 'policy'
-      properties: {
-        format: 'rawxml'
-        value: loadTextContent('./validate-using-context.operation.cshtml') 
-      }
+
+// Operation to validate client certificate using context.Request.Certificate property
+resource validateUsingContext 'Microsoft.ApiManagement/service/apis/operations@2022-08-01' = {
+  name: 'validate-using-context'
+  parent: clientCertApi
+  properties: {
+    displayName: 'Validate (using context)'
+    description: 'Validates client certificate using the context.Request.Certificate property'
+    method: 'GET'
+    urlTemplate: '/validate-using-context'
+  }
+
+  resource policies 'policies' = {
+    name: 'policy'
+    properties: {
+      format: 'rawxml'
+      value: loadTextContent('./validate-using-context.operation.cshtml') 
     }
   }
 }
