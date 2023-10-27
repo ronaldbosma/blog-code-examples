@@ -34,6 +34,12 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
+    certificates: [
+      {
+        encodedCertificate: loadTextContent('../00-self-signed-certificates/certificates/root-ca.without-markers.cer')
+        storeName: 'Root'
+      }
+    ]
   }
 }
 
