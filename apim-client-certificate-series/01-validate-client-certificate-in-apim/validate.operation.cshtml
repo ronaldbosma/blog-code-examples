@@ -12,9 +12,10 @@
             </identities>
         </validate-client-certificate>
 
+        <!-- Returns a 200 OK with the client certificate details in the body -->
         <return-response>
             <set-status code="200" />
-            <set-body>OK</set-body>
+            <set-body>@(context.Request.Certificate.ToString())</set-body>
         </return-response>
     </inbound>
     <backend>
