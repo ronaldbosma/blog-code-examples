@@ -73,3 +73,17 @@ function New-SelfSignedClientCertificate(
     }
     return New-SelfSignedCertificate @params
 }
+
+function Export-CertificateAsBase64
+(
+	[Parameter(Mandatory=$true)][System.Security.Cryptography.X509Certificates.X509Certificate2]$Certificate, 
+	[Parameter(Mandatory=$true)][string]$OutputFilePath
+)
+{
+	$base64certificate = @"
+-----BEGIN CERTIFICATE-----
+$([Convert]::ToBase64String($certificate.Export('Cert'), [System.Base64FormattingOptions]::InsertLineBreaks))
+-----END CERTIFICATE-----
+"@
+	Set-Content -Path $outputFilePath -Value $base64certificate
+}
