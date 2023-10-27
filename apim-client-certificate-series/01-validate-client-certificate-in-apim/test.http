@@ -9,7 +9,16 @@
 ###################################################################################################################
 
 
-GET https://{{apimHostname}}/client-cert/validate
+GET https://{{apimHostname}}/client-cert/validate-using-policy
+Ocp-Apim-Subscription-Key: {{apimSubscriptionKey}}
+# Don't forget to enable 'allow tracing' on the subscription
+Ocp-Apim-Trace: true
+
+
+### 
+
+
+GET https://{{apimHostname}}/client-cert/validate-using-context
 Ocp-Apim-Subscription-Key: {{apimSubscriptionKey}}
 # Don't forget to enable 'allow tracing' on the subscription
 Ocp-Apim-Trace: true
