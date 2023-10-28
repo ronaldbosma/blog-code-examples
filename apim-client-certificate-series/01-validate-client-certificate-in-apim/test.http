@@ -1,0 +1,13 @@
+# Configure your host name
+
+@apimHostname = apim-validate-client-certificate.azure-api.net
+
+
+### Validates client certificate using validate-client-certificate policy
+
+GET https://{{apimHostname}}/client-cert/validate-using-policy
+
+
+### Validates client certificate using the context.Request.Certificate property
+
+GET https://{{apimHostname}}/client-cert/validate-using-context
