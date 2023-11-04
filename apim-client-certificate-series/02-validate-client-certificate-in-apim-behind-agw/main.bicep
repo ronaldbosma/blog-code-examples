@@ -56,6 +56,14 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
     enableDdosProtection: false
     enableVmProtection: false
   }
+
+  resource agwSubnet 'subnets' existing = {
+    name: 'snet-app-gateway'
+  }
+
+  resource apimSubnet 'subnets' existing = {
+    name: 'snet-api-management'
+  }
 }
 
 // API Management
@@ -66,5 +74,6 @@ module apiManagement './api-management/api-management.bicep' = {
     location: location
     publisherEmail: publisherEmail
     publisherName: publisherName
+    subnetId: virtualNetwork::apimSubnet.id
   }
 }

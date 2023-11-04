@@ -20,6 +20,8 @@ param publisherEmail string
 @description('The name of the owner of the API Management service')
 param publisherName string
 
+@description('The ID of the subnet to use for the API Management service')
+param subnetId string
 
 //=============================================================================
 // Resources
@@ -47,6 +49,10 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
         storeName: 'CertificateAuthority'
       }
     ]
+    virtualNetworkType: 'External'
+    virtualNetworkConfiguration: {
+      subnetResourceId: subnetId
+    }
   }
 }
 
