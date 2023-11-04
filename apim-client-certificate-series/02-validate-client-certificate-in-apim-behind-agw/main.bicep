@@ -77,3 +77,14 @@ module apiManagement './api-management/api-management.bicep' = {
     subnetId: virtualNetwork::apimSubnet.id
   }
 }
+
+
+// Application Gateway
+module appGateway './application-gateway/application-gateway.bicep' = {
+  name: 'appGateway'
+  params: {
+    applicationGatewayName: 'agw-validate-client-certificate'
+    location: location
+    subnetId: virtualNetwork::agwSubnet.id
+  }
+}
