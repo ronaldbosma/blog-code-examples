@@ -114,16 +114,38 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
         }
       }
     ]
+
+    probes: [
+      {
+        name: 'apim-gateway-probe'
+        properties: {
+          pickHostNameFromBackendHttpSettings: true
+          interval: 30
+          timeout: 30
+          path: '/status-0123456789abcdef'
+          protocol: 'Https'
+          unhealthyThreshold: 3
+          match: {
+            statusCodes: [
+              '200-399'
+            ]
+          }
+        }
+      }
+    ]
     
     backendHttpSettingsCollection: [
       {
         name: 'apim-gateway-backend-settings'
         properties: {
-          port: 80
-          protocol: 'Http'
+          port: 443
+          protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
           pickHostNameFromBackendAddress: true
           requestTimeout: 20
+          probe: {
+            id: resourceId('Microsoft.Network/applicationGateways/probes', applicationGatewayName, 'apim-gateway-probe')
+          }
         }
       }
     ]
