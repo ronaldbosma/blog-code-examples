@@ -6,7 +6,33 @@
         <return-response>
             <set-status code="200" />
             <!--<set-body>@(context.Request.Certificate?.ToString())</set-body>-->
-            <set-body>@(context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert", "-- header not available --"))</set-body>
+            <!--<set-body>@(context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert", "X-ARR-ClientCert header not set"))</set-body>-->
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@{
+                X509Certificate2 certificate = null;
+                var clientCertHeader = context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert", "X-ARR-ClientCert header not set");
+
+                try 
+                {
+                    // Decode the header value (e.g. replace %20 with a whitespace) and remove the begin and end certificate markers.
+                    // The result is the base64 encoded certificate in X.509 (.cer) format without the private key.
+                    var pem = System.Net.WebUtility.UrlDecode(clientCertHeader)
+                                                .Replace("-----BEGIN CERTIFICATE-----", "")
+                                                .Replace("-----END CERTIFICATE-----", "");
+
+                    var bytes = Convert.FromBase64String(pem);
+                    certificate = new X509Certificate2(bytes);
+                }
+                catch {}
+
+                return JsonConvert.SerializeObject(new
+                {
+                    certificate = certificate?.ToString(),
+                    header = clientCertHeader
+                });
+            }</set-body>
         </return-response>
     </inbound>
     <backend>
