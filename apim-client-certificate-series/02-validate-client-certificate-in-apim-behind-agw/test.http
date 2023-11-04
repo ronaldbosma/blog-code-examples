@@ -1,0 +1,8 @@
+# Configure your host name
+
+@apimHostname = <your-api-management-instance-name>.azure-api.net
+
+
+### Validates client certificate
+
+GET https://{{apimHostname}}/client-cert/validate
