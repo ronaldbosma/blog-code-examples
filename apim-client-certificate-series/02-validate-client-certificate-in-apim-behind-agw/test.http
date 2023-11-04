@@ -3,6 +3,16 @@
 @apimHostname = <your-api-management-instance-name>.azure-api.net
 
 
-### Validates client certificate
+### Validates client certificate using validate-client-certificate policy
 
-GET https://{{apimHostname}}/client-cert/validate
+GET https://{{apimHostname}}/client-cert/validate-using-policy
+
+
+### Validates client certificate using the context.Request.Certificate property
+
+GET https://{{apimHostname}}/client-cert/validate-using-context
+
+
+### Validates client certificate received from Application Gateway
+
+GET https://{{apimHostname}}/client-cert/validate-from-agw
