@@ -12,6 +12,7 @@
             </set-header>
             <set-body>@{
                 X509Certificate2 certificate = null;
+                bool isValidCertificate = false;
                 var clientCertHeader = context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert", "X-ARR-ClientCert header not set");
 
                 try 
@@ -24,12 +25,14 @@
 
                     var bytes = Convert.FromBase64String(pem);
                     certificate = new X509Certificate2(bytes);
+                    isValidCertificate = certificate.VerifyNoRevocation();
                 }
-                catch {}
+                catch { }
 
                 return JsonConvert.SerializeObject(new
                 {
                     certificate = certificate?.ToString(),
+                    isValidCertificate = isValidCertificate,
                     header = clientCertHeader
                 });
             }</set-body>
