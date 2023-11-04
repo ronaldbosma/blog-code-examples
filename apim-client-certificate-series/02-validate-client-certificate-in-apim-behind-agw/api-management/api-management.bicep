@@ -76,22 +76,64 @@ resource clientCertApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
 }
 
 
-// Operation to validate client certificate
-resource validateOperation 'Microsoft.ApiManagement/service/apis/operations@2022-08-01' = {
-  name: 'validate'
+// Operation to validate client certificate using validate-client-certificate policy
+resource validateUsingPolicy 'Microsoft.ApiManagement/service/apis/operations@2022-08-01' = {
+  name: 'validate-using-policy'
   parent: clientCertApi
   properties: {
-    displayName: 'Validate'
-    description: 'Validates client certificate'
+    displayName: 'Validate (using policy)'
+    description: 'Validates client certificate using validate-client-certificate policy'
     method: 'GET'
-    urlTemplate: '/validate'
+    urlTemplate: '/validate-using-policy'
   }
 
   resource policies 'policies' = {
     name: 'policy'
     properties: {
       format: 'rawxml'
-      value: loadTextContent('./validate.operation.cshtml') 
+      value: loadTextContent('./validate-using-policy.operation.cshtml') 
+    }
+  }
+}
+
+
+// Operation to validate client certificate using context.Request.Certificate property
+resource validateUsingContext 'Microsoft.ApiManagement/service/apis/operations@2022-08-01' = {
+  name: 'validate-using-context'
+  parent: clientCertApi
+  properties: {
+    displayName: 'Validate (using context)'
+    description: 'Validates client certificate using the context.Request.Certificate property'
+    method: 'GET'
+    urlTemplate: '/validate-using-context'
+  }
+
+  resource policies 'policies' = {
+    name: 'policy'
+    properties: {
+      format: 'rawxml'
+      value: loadTextContent('./validate-using-context.operation.cshtml') 
+    }
+  }
+}
+
+
+// Operation to validate client certificate received from Application Gateway
+resource validateFromAppGateway 'Microsoft.ApiManagement/service/apis/operations@2022-08-01' = {
+  name: 'validate-from-agw'
+  parent: clientCertApi
+  properties: {
+    displayName: 'Validate (from AGW)'
+    description: 'Validates client certificate received from Application Gateway'
+    method: 'GET'
+    urlTemplate: '/validate-from-agw'
+  }
+
+  resource policies 'policies' = {
+    name: 'policy'
+    properties: {
+      format: 'rawxml'
+      value: loadTextContent('./validate-from-agw.operation.cshtml') 
     }
   }
 }

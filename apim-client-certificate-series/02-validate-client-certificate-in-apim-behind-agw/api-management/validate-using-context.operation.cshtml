@@ -1,0 +1,37 @@
+<policies>
+    <inbound>
+        <base />
+
+        <choose>
+            <when condition="@(context.Request.Certificate == null || !context.Request.Certificate.VerifyNoRevocation() || !context.Deployment.Certificates.Any(c => c.Value.Thumbprint == context.Request.Certificate.Thumbprint))" >
+                <return-response>
+                    <set-status code="401" reason="Invalid client certificate" />
+                </return-response>
+            </when>
+        </choose>
+
+        <!-- Returns a 200 OK with the client certificate details in the body -->
+        <return-response>
+            <set-status code="200" />
+            <set-body>@(context.Request.Certificate.ToString())</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <set-header name="ErrorSource" exists-action="override">
+            <value>@(context.LastError.Source)</value>
+        </set-header>
+        <set-header name="ErrorReason" exists-action="override">
+            <value>@(context.LastError.Reason)</value>
+        </set-header>
+        <set-header name="ErrorMessage" exists-action="override">
+            <value>@(context.LastError.Message)</value>
+        </set-header>
+        <base />
+    </on-error>
+</policies>
