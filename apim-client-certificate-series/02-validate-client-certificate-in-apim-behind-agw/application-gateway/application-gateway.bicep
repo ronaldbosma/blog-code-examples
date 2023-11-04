@@ -104,7 +104,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
 
     backendAddressPools: [
       {
-        name: 'apim-backend-pool'
+        name: 'apim-gateway-backend-pool'
         properties: {
           backendAddresses: [
             {
@@ -122,8 +122,27 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           port: 80
           protocol: 'Http'
           cookieBasedAffinity: 'Disabled'
-          pickHostNameFromBackendAddress: false
+          pickHostNameFromBackendAddress: true
           requestTimeout: 20
+        }
+      }
+    ]
+
+    probes: [
+      {
+        name: 'apim-gateway-probe'
+        properties: {
+          pickHostNameFromBackendHttpSettings: true
+          interval: 30
+          timeout: 30
+          path: '/status-0123456789abcdef'
+          protocol: 'Https'
+          unhealthyThreshold: 3
+          match: {
+            statusCodes: [
+              '200-399'
+            ]
+          }
         }
       }
     ]
@@ -137,7 +156,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
             id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'http-listener')
           }
           backendAddressPool: {
-            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-backend-pool')
+            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
           }
           backendHttpSettings: {
             id: resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', applicationGatewayName, 'http-backend-settings')
