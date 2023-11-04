@@ -90,6 +90,12 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           port: 443
         }
       }
+      {
+        name: 'port-mtls'
+        properties: {
+          port: 50001
+        }
+      }
     ]
 
     sslCertificates: [
@@ -98,6 +104,33 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
         properties: {
           data: loadFileAsBase64('./ssl-cert.apim-sample.dev.pfx')
           password: 'P@ssw0rd'
+        }
+      }
+    ]
+
+    trustedClientCertificates: [
+      {
+        name: 'intermediate-ca-with-root-ca'
+        properties: {
+          data: loadTextContent('../../00-self-signed-certificates/certificates/dev-intermediate-ca-with-root-ca.cer')
+        }
+      }
+    ]
+
+    sslProfiles: [
+      {
+        name: 'mtls-ssl-profile'
+        properties: {
+          clientAuthConfiguration: {
+            // By setting verifyClientCertIssuerDN to true the intermediate CA is also checked, not just the Root CA.
+            // See https://learn.microsoft.com/en-us/azure/application-gateway/mutual-authentication-overview?tabs=powershell#verify-client-certificate-dn
+            verifyClientCertIssuerDN: true
+          }
+          trustedClientCertificates: [
+            {
+              id: resourceId('Microsoft.Network/applicationGateways/trustedClientCertificates', applicationGatewayName, 'intermediate-ca-with-root-ca')
+            }
+          ]
         }
       }
     ]
@@ -129,6 +162,25 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           }
           sslCertificate: {
             id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, 'agw-ssl-certificate')
+          }
+        }
+      }
+      {
+        name: 'mtls-listener'
+        properties: {
+          protocol: 'Https'
+          hostName: 'apim-sample.dev'
+          frontendIPConfiguration: {
+            id: resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', applicationGatewayName, 'agw-public-frontend-ip')
+          }
+          frontendPort: {
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port-mtls')
+          }
+          sslCertificate: {
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, 'agw-ssl-certificate')
+          }
+          sslProfile: {
+            id: resourceId('Microsoft.Network/applicationGateways/sslProfiles', applicationGatewayName, 'mtls-ssl-profile')
           }
         }
       }
@@ -206,6 +258,22 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           ruleType: 'Basic'
           httpListener: {
             id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'https-listener')
+          }
+          backendAddressPool: {
+            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
+          }
+          backendHttpSettings: {
+            id: resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', applicationGatewayName, 'apim-gateway-backend-settings')
+          }
+        }
+      }
+      {
+        name: 'apim-mtls-routing-rule'
+        properties: {
+          priority: 30
+          ruleType: 'Basic'
+          httpListener: {
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'mtls-listener')
           }
           backendAddressPool: {
             id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
