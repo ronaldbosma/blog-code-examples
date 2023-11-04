@@ -25,7 +25,40 @@ param publisherName string
 // Resources
 //=============================================================================
 
+// Virtual Network
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
+  name: 'vnet-validate-client-certificate'
+  location: location
+  properties: {
+    addressSpace: {
+      addressPrefixes: [
+        '10.0.0.0/16'
+      ]
+    }
+    subnets: [
+      {
+        name: 'snet-app-gateway'
+        properties: {
+          addressPrefix: '10.0.0.0/24'
+          // privateEndpointNetworkPolicies: 'Enabled'
+          // privateLinkServiceNetworkPolicies: 'Enabled'
+        }
+      }
+      {
+        name: 'snet-api-management'
+        properties: {
+          addressPrefix: '10.0.1.0/24'
+          // privateEndpointNetworkPolicies: 'Enabled'
+          // privateLinkServiceNetworkPolicies: 'Enabled'
+        }
+      }
+    ]
+    enableDdosProtection: false
+    enableVmProtection: false
+  }
+}
 
+// API Management
 module apiManagement './api-management/api-management.bicep' = {
   name: 'apiManagement'
   params: {
