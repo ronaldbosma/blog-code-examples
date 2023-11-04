@@ -1,4 +1,4 @@
-# Settings
+# Configure your host name
 
 @baseUrl = https://apim-sample.dev
 @mtlsPort = 50001
@@ -13,3 +13,13 @@ X-ARR-ClientCert: -----BEGIN%20CERTIFICATE-----%0AMIIDRTCCAi2gAwIBAgIQeQzo7uXwGZ
 ### mTLS (should return the X-ARR-ClientCert header value and certificate details)
 
 GET {{baseUrl}}:{{mtlsPort}}/client-cert/validate-from-agw
+
+
+### Validates client certificate using validate-client-certificate policy
+
+GET {{baseUrl}}:{{mtlsPort}}/client-cert/validate-using-policy
+
+
+### Validates client certificate using the context.Request.Certificate property
+
+GET {{baseUrl}}:{{mtlsPort}}/client-cert/validate-using-context
