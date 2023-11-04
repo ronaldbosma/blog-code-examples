@@ -49,7 +49,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
         storeName: 'CertificateAuthority'
       }
     ]
-    virtualNetworkType: 'External'
+    virtualNetworkType: 'Internal'
     virtualNetworkConfiguration: {
       subnetResourceId: subnetId
     }
