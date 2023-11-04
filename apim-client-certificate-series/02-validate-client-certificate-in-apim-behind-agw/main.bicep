@@ -86,5 +86,6 @@ module appGateway './application-gateway/application-gateway.bicep' = {
     applicationGatewayName: 'agw-validate-client-certificate'
     location: location
     subnetId: virtualNetwork::agwSubnet.id
+    apiManagementServiceName: apiManagementServiceName
   }
 }

@@ -16,6 +16,9 @@ param location string = resourceGroup().location
 @description('The ID of the subnet to use for the API Management service')
 param subnetId string
 
+@description('The name of the API Management Service to use')
+param apiManagementServiceName string
+
 //=============================================================================
 // Resources
 //=============================================================================
@@ -66,7 +69,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       {
         name: 'agw-public-frontend-ip'
         properties: {
-          privateIPAllocationMethod: 'Dynamic'
+          //privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
             id: publicIPAddress.id
           }
@@ -105,7 +108,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
         properties: {
           backendAddresses: [
             {
-              fqdn: 'apim-robo-validate-client-certificate.azure-api.net'
+              fqdn: '${apiManagementServiceName}.azure-api.net'
             }
           ]
         }
