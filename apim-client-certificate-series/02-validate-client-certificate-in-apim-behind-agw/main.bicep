@@ -53,8 +53,8 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
         }
       }
     ]
-    enableDdosProtection: false
-    enableVmProtection: false
+    // enableDdosProtection: false
+    // enableVmProtection: false
   }
 
   resource agwSubnet 'subnets' existing = {
