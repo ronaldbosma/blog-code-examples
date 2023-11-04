@@ -84,6 +84,22 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           port: 80
         }
       }
+      {
+        name: 'port-443'
+        properties: {
+          port: 443
+        }
+      }
+    ]
+
+    sslCertificates: [
+      {
+        name: 'agw-ssl-certificate'
+        properties: {
+          data: loadFileAsBase64('./ssl-cert.apim-sample.dev.pfx')
+          password: 'P@ssw0rd'
+        }
+      }
     ]
 
     httpListeners: [
@@ -97,7 +113,23 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
             id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port-80')
           }
           protocol: 'Http'
-          requireServerNameIndication: false
+          // requireServerNameIndication: false
+        }
+      }
+      {
+        name: 'https-listener'
+        properties: {
+          protocol: 'Https'
+          hostName: 'apim-sample.dev'
+          frontendIPConfiguration: {
+            id: resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', applicationGatewayName, 'agw-public-frontend-ip')
+          }
+          frontendPort: {
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port-443')
+          }
+          sslCertificate: {
+            id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, 'agw-ssl-certificate')
+          }
         }
       }
     ]
@@ -158,6 +190,22 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           ruleType: 'Basic'
           httpListener: {
             id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'http-listener')
+          }
+          backendAddressPool: {
+            id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
+          }
+          backendHttpSettings: {
+            id: resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', applicationGatewayName, 'apim-gateway-backend-settings')
+          }
+        }
+      }
+      {
+        name: 'apim-https-routing-rule'
+        properties: {
+          priority: 20
+          ruleType: 'Basic'
+          httpListener: {
+            id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'https-listener')
           }
           backendAddressPool: {
             id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
