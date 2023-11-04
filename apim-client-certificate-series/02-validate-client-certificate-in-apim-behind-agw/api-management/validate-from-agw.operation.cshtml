@@ -6,31 +6,7 @@
         <return-response>
             <set-status code="200" />
             <!--<set-body>@(context.Request.Certificate?.ToString())</set-body>-->
-            <set-body>@(context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert"))</set-body>
-            <!--<set-body>@{
-                var clientCertHeader = context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert");
-                X509Certificate2 certificate = null;
-
-                try 
-                {
-                    // Decode de header (vervang bijvoorbeeld %20 door een spatie) en verwijder de begin en eind certificaat markers.
-                    // Het resultaat is een base64 encoded certificaat in X.509 (.cer) formaat zonder private key.
-                    var pem = System.Net.WebUtility.UrlDecode(clientCertHeader)
-                                                .Replace("-----BEGIN CERTIFICATE-----", "")
-                                                .Replace("-----END CERTIFICATE-----", "");
-
-                    // We kunnen het certificaat niet opslaan als type X509Certificate2, daarom we slaan de byte array op waarmee een X509Certificate2 kan worden geïnstantieerd.
-                    var bytes = Convert.FromBase64String(pem);
-                    certificate = new X509Certificate2(bytes);
-                }
-                catch {}
-
-                return JsonConvert.SerializeObject(new
-                {
-                    certificate = certificate?.ToString(),
-                    header = clientCertHeader
-                });
-            }</set-body>-->
+            <set-body>@(context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert", "-- header not available --"))</set-body>
         </return-response>
     </inbound>
     <backend>

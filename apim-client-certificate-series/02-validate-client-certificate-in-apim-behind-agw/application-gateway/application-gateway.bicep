@@ -234,6 +234,53 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       }
     ]
 
+    rewriteRuleSets: [
+      // {
+      //   name: 'default-rewrite-rules'
+      //   properties: {
+      //     rewriteRules: [
+      //       {
+      //         ruleSequence: 100
+      //         conditions: []
+      //         name: 'Remove X-ARR-ClientCert HTTP header'
+      //         actionSet: {
+      //           requestHeaderConfigurations: [
+      //             // We need to remove the client certificate header from the default listener,
+      //             // to prevent clients from tricking APIM into thinking a successful mTLS connection was established.
+      //             {
+      //               headerName: 'X-ARR-ClientCert'
+      //               headerValue: ''
+      //             }
+      //           ]
+      //           responseHeaderConfigurations: []
+      //         }
+      //       }
+      //     ]
+      //   }
+      // }
+      {
+        name: 'mtls-rewrite-rules'
+        properties: {
+          rewriteRules: [
+            {
+              ruleSequence: 100
+              conditions: []
+              name: 'Add Client certificate to HTTP header'
+              actionSet: {
+                requestHeaderConfigurations: [
+                  {
+                    headerName: 'X-ARR-ClientCert'
+                    headerValue: '{var_client_certificate}'
+                  }
+                ]
+                responseHeaderConfigurations: []
+              }
+            }
+          ]
+        }
+      }
+    ]
+
     requestRoutingRules: [
       // {
       //   name: 'apim-http-routing-rule'
@@ -274,6 +321,9 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           ruleType: 'Basic'
           httpListener: {
             id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'mtls-listener')
+          }
+          rewriteRuleSet: {
+            id: resourceId('Microsoft.Network/applicationGateways/rewriteRuleSets', applicationGatewayName, 'mtls-rewrite-rules')
           }
           backendAddressPool: {
             id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
