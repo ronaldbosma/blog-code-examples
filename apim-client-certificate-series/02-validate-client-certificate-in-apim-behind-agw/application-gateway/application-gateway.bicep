@@ -85,7 +85,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       //   }
       // }
       {
-        name: 'port-443'
+        name: 'port-https'
         properties: {
           port: 443
         }
@@ -125,7 +125,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
             id: resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', applicationGatewayName, 'agw-public-frontend-ip')
           }
           frontendPort: {
-            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port-443')
+            id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port-https')
           }
           sslCertificate: {
             id: resourceId('Microsoft.Network/applicationGateways/sslCertificates', applicationGatewayName, 'agw-ssl-certificate')
