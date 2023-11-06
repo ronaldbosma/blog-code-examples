@@ -72,7 +72,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       {
         name: 'agw-public-frontend-ip'
         properties: {
-          //privateIPAllocationMethod: 'Dynamic'
           publicIPAddress: {
             id: publicIPAddress.id
           }
@@ -81,12 +80,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
     ]
 
     frontendPorts: [
-      // {
-      //   name: 'port-80'
-      //   properties: {
-      //     port: 80
-      //   }
-      // }
       {
         name: 'port-https'
         properties: {
@@ -139,19 +132,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
     ]
 
     httpListeners: [
-      // {
-      //   name: 'http-listener'
-      //   properties: {
-      //     frontendIPConfiguration: {
-      //       id: resourceId('Microsoft.Network/applicationGateways/frontendIPConfigurations', applicationGatewayName, 'agw-public-frontend-ip')
-      //     }
-      //     frontendPort: {
-      //       id: resourceId('Microsoft.Network/applicationGateways/frontendPorts', applicationGatewayName, 'port-80')
-      //     }
-      //     protocol: 'Http'
-      //     // requireServerNameIndication: false
-      //   }
-      // }
       {
         name: 'https-listener'
         properties: {
@@ -285,22 +265,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
     ]
 
     requestRoutingRules: [
-      // {
-      //   name: 'apim-http-routing-rule'
-      //   properties: {
-      //     priority: 10
-      //     ruleType: 'Basic'
-      //     httpListener: {
-      //       id: resourceId('Microsoft.Network/applicationGateways/httpListeners', applicationGatewayName, 'http-listener')
-      //     }
-      //     backendAddressPool: {
-      //       id: resourceId('Microsoft.Network/applicationGateways/backendAddressPools', applicationGatewayName, 'apim-gateway-backend-pool')
-      //     }
-      //     backendHttpSettings: {
-      //       id: resourceId('Microsoft.Network/applicationGateways/backendHttpSettingsCollection', applicationGatewayName, 'apim-gateway-backend-settings')
-      //     }
-      //   }
-      // }
       {
         name: 'apim-https-routing-rule'
         properties: {
