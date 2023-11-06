@@ -19,6 +19,9 @@ param subnetId string
 @description('The name of the API Management Service to use')
 param apiManagementServiceName string
 
+@description('The IP address of the API Management Service to use')
+param apiManagementIPAddress string
+
 //=============================================================================
 // Resources
 //=============================================================================
@@ -192,7 +195,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
         properties: {
           backendAddresses: [
             {
-              fqdn: '${apiManagementServiceName}.azure-api.net'
+              ipAddress: apiManagementIPAddress
             }
           ]
         }
@@ -225,7 +228,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
           port: 443
           protocol: 'Https'
           cookieBasedAffinity: 'Disabled'
-          pickHostNameFromBackendAddress: true
+          hostName: '${apiManagementServiceName}.azure-api.net'
           requestTimeout: 20
           probe: {
             id: resourceId('Microsoft.Network/applicationGateways/probes', applicationGatewayName, 'apim-gateway-probe')

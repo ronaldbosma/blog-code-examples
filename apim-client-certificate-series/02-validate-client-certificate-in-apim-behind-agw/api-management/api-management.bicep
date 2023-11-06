@@ -143,3 +143,10 @@ resource validateFromAppGateway 'Microsoft.ApiManagement/service/apis/operations
     }
   }
 }
+
+
+//=============================================================================
+// Outputs
+//=============================================================================
+
+output apiManagementIPAddress string = apiManagementService.properties.privateIPAddresses[0]

@@ -40,21 +40,15 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
         name: 'snet-app-gateway'
         properties: {
           addressPrefix: '10.0.0.0/24'
-          // privateEndpointNetworkPolicies: 'Enabled'
-          // privateLinkServiceNetworkPolicies: 'Enabled'
         }
       }
       {
         name: 'snet-api-management'
         properties: {
           addressPrefix: '10.0.1.0/24'
-          // privateEndpointNetworkPolicies: 'Enabled'
-          // privateLinkServiceNetworkPolicies: 'Enabled'
         }
       }
     ]
-    // enableDdosProtection: false
-    // enableVmProtection: false
   }
 
   resource agwSubnet 'subnets' existing = {
@@ -87,5 +81,6 @@ module appGateway './application-gateway/application-gateway.bicep' = {
     location: location
     subnetId: virtualNetwork::agwSubnet.id
     apiManagementServiceName: apiManagementServiceName
+    apiManagementIPAddress: apiManagement.outputs.apiManagementIPAddress
   }
 }
