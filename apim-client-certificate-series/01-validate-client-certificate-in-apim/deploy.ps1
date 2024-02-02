@@ -35,6 +35,9 @@ if (($null -eq $PublisherName) -or ($null -eq $PublisherEmail))
 }
 
 
+# Print the time and date before starting the deployment so you can estimate when it's finished if you have an expected duration
+Write-Host "Start deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
+
 # Deploy the resources with Bicep
 az deployment group create `
     --name "deploy-validate-client-certificate-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
