@@ -3,7 +3,11 @@
         <base />
 
         <choose>
-            <when condition="@(context.Request.Certificate == null || !context.Request.Certificate.VerifyNoRevocation() || !context.Deployment.Certificates.Any(c => c.Value.Thumbprint == context.Request.Certificate.Thumbprint))" >
+            <when condition="@{
+                return context.Request.Certificate == null ||
+                       !context.Request.Certificate.VerifyNoRevocation() ||
+                       !context.Deployment.Certificates.Any(c => c.Value.Thumbprint == context.Request.Certificate.Thumbprint);
+            }">
                 <return-response>
                     <set-status code="401" reason="Invalid client certificate" />
                 </return-response>
