@@ -6,6 +6,9 @@ $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
 
+$certificateExpirationInMonths = 600 # 600 months == 50 years
+
+
 $currentScriptPath = $MyInvocation.MyCommand.Path | Split-Path -Parent
 $exportPath = "$currentScriptPath/certificates"
 $certificatePassword = ConvertTo-SecureString -String 'P@ssw0rd' -Force -AsPlainText
@@ -22,17 +25,17 @@ $certificatePassword = ConvertTo-SecureString -String 'P@ssw0rd' -Force -AsPlain
 # Generate self-signed certificates
 # =====================================================================
 
-$rootCA = New-SelfSignedRootCACertificate -Subject "CN=APIM Sample Root CA"
+$rootCA = New-SelfSignedRootCACertificate -Subject "CN=APIM Sample Root CA" -ExpiresInMonths $certificateExpirationInMonths
 
 # create certificates for dev environment
-$devIntermediateCA = New-SelfSignedIntermediateCACertificate -Subject "CN=APIM Sample DEV Intermediate CA" -Signer $rootCA
-$devClient01 = New-SelfSignedClientCertificate -Subject "CN=Client 01" -DnsName "Client 01" -Signer $devIntermediateCA
-$devClient02 = New-SelfSignedClientCertificate -Subject "CN=Client 02" -DnsName "Client 02" -Signer $devIntermediateCA
+$devIntermediateCA = New-SelfSignedIntermediateCACertificate -Subject "CN=APIM Sample DEV Intermediate CA" -Signer $rootCA -ExpiresInMonths $certificateExpirationInMonths
+$devClient01 = New-SelfSignedClientCertificate -Subject "CN=Client 01" -DnsName "Client 01" -Signer $devIntermediateCA -ExpiresInMonths $certificateExpirationInMonths
+$devClient02 = New-SelfSignedClientCertificate -Subject "CN=Client 02" -DnsName "Client 02" -Signer $devIntermediateCA -ExpiresInMonths $certificateExpirationInMonths
 
 # create certificates for tst environment
-$tstIntermediateCA = New-SelfSignedIntermediateCACertificate -Subject "CN=APIM Sample TST Intermediate CA" -Signer $rootCA
-$tstClient01 = New-SelfSignedClientCertificate -Subject "CN=Client 01" -DnsName "Client 01" -Signer $tstIntermediateCA
-$tstClient02 = New-SelfSignedClientCertificate -Subject "CN=Client 02" -DnsName "Client 02" -Signer $tstIntermediateCA
+$tstIntermediateCA = New-SelfSignedIntermediateCACertificate -Subject "CN=APIM Sample TST Intermediate CA" -Signer $rootCA -ExpiresInMonths $certificateExpirationInMonths
+$tstClient01 = New-SelfSignedClientCertificate -Subject "CN=Client 01" -DnsName "Client 01" -Signer $tstIntermediateCA -ExpiresInMonths $certificateExpirationInMonths
+$tstClient02 = New-SelfSignedClientCertificate -Subject "CN=Client 02" -DnsName "Client 02" -Signer $tstIntermediateCA -ExpiresInMonths $certificateExpirationInMonths
 
 
 # =====================================================================
