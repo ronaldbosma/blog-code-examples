@@ -1,6 +1,6 @@
 param (
     [string]$ResourceGroupName = 'rg-validate-client-certificate',
-    [string]$Location = 'westeurope',
+    [string]$Location = 'norwayeast',
     [string]$ApiManagementServiceName = 'apim-validate-client-certificate',
     [string]$PublisherName = $null,
     [string]$PublisherEmail = $null
