@@ -28,8 +28,8 @@ param apiManagementIPAddress string
 
 
 // Public IP address
-resource publicIPAddress 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
-  name: 'pip-validate-client-certificate'
+resource agwPublicIPAddress 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+  name: 'pip-agw-validate-client-certificate'
   location: location
   sku: {
     name: 'Standard'
@@ -68,12 +68,15 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       }
     ]
 
+
+    // Frontend
+
     frontendIPConfigurations: [
       {
         name: 'agw-public-frontend-ip'
         properties: {
           publicIPAddress: {
-            id: publicIPAddress.id
+            id: agwPublicIPAddress.id
           }
         }
       }
@@ -169,6 +172,9 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       }
     ]
 
+
+    // Backend
+
     backendAddressPools: [
       {
         name: 'apim-gateway-backend-pool'
@@ -217,6 +223,9 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       }
     ]
 
+
+    // Rules
+    
     rewriteRuleSets: [
       {
         name: 'default-rewrite-rules'

@@ -28,6 +28,25 @@ param subnetId string
 //=============================================================================
 
 
+// API Management Public IP address
+resource apimPublicIPAddress 'Microsoft.Network/publicIPAddresses@2023-05-01' = {
+  name: 'pip-apim-validate-client-certificate'
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+  properties: {
+    publicIPAddressVersion: 'IPv4'
+    publicIPAllocationMethod: 'Static'
+    idleTimeoutInMinutes: 4
+    dnsSettings: {
+      // The label you choose to use does not matter but a label is required if this resource will be assigned to an API Management service.
+      domainNameLabel: apiManagementServiceName
+    }
+  }
+}
+
+
 // API Management
 resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
   name: apiManagementServiceName
@@ -39,6 +58,11 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
+    virtualNetworkType: 'Internal'
+    virtualNetworkConfiguration: {
+      subnetResourceId: subnetId
+    }
+    publicIpAddressId: apimPublicIPAddress.id
     certificates: [
       {
         encodedCertificate: loadTextContent('../../00-self-signed-certificates/certificates/root-ca.without-markers.cer')
@@ -49,10 +73,6 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
         storeName: 'CertificateAuthority'
       }
     ]
-    virtualNetworkType: 'Internal'
-    virtualNetworkConfiguration: {
-      subnetResourceId: subnetId
-    }
   }
 }
 

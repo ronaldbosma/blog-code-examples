@@ -25,38 +25,12 @@ param publisherName string
 // Resources
 //=============================================================================
 
+
 // Virtual Network
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2023-05-01' = {
-  name: 'vnet-validate-client-certificate'
-  location: location
-  properties: {
-    addressSpace: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-    }
-    subnets: [
-      {
-        name: 'snet-app-gateway'
-        properties: {
-          addressPrefix: '10.0.0.0/24'
-        }
-      }
-      {
-        name: 'snet-api-management'
-        properties: {
-          addressPrefix: '10.0.1.0/24'
-        }
-      }
-    ]
-  }
-
-  resource agwSubnet 'subnets' existing = {
-    name: 'snet-app-gateway'
-  }
-
-  resource apimSubnet 'subnets' existing = {
-    name: 'snet-api-management'
+module virtualNetwork './virtual-network/virtual-network.bicep' = {
+  name: 'virtualNetwork'
+  params: {
+    location: location
   }
 }
 
@@ -68,7 +42,7 @@ module apiManagement './api-management/api-management.bicep' = {
     location: location
     publisherEmail: publisherEmail
     publisherName: publisherName
-    subnetId: virtualNetwork::apimSubnet.id
+    subnetId: virtualNetwork.outputs.apimSubnetId
   }
 }
 
@@ -79,7 +53,7 @@ module appGateway './application-gateway/application-gateway.bicep' = {
   params: {
     applicationGatewayName: 'agw-validate-client-certificate'
     location: location
-    subnetId: virtualNetwork::agwSubnet.id
+    subnetId: virtualNetwork.outputs.agwSubnetId
     apiManagementServiceName: apiManagementServiceName
     apiManagementIPAddress: apiManagement.outputs.apiManagementIPAddress
   }
