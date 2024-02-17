@@ -1,0 +1,75 @@
+<policies>
+    <inbound>
+        <base />
+
+        <choose>
+            <when condition="@(!string.IsNullOrWhiteSpace(context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert")))">
+                <!-- Extract the client certificate from the header, parse it and store the value in a variable -->
+				<set-variable name="client_certificate" value="@{
+                    var clientCertHeader = context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert");
+
+                    // Decode the header value (e.g. replace %20 with a whitespace) and remove the begin and end certificate markers.
+                    // The result is the base64 encoded certificate in X.509 (.cer) format without the private key.
+                    var pem = System.Net.WebUtility.UrlDecode(clientCertHeader)
+                                                   .Replace("-----BEGIN CERTIFICATE-----", "")
+                                                   .Replace("-----END CERTIFICATE-----", "");
+
+                    // We can't store a certificate as type X509Certificate2, so we store the byte array that can be used to instantiate a X509Certificate2.
+                    return Convert.FromBase64String(pem);
+                }" />
+
+				<choose>
+                    <!-- Validate client certificate against uploaded CA and Client certificate-->
+					<when condition="@{
+                        var certificate = new X509Certificate2(context.Variables.GetValueOrDefault<byte[]>("client_certificate"));
+                        return !certificate.VerifyNoRevocation() || !context.Deployment.Certificates.Any(c => c.Value.Thumbprint == certificate.Thumbprint);
+                    }">
+						<return-response>
+                            <set-status code="401" reason="Invalid client certificate" />
+						</return-response>
+					</when>
+				</choose>
+			</when>
+
+            <otherwise>
+                <return-response>
+                    <set-status code="401" reason="Invalid credentials supplied. Supported types: client certificate." />
+                </return-response>
+            </otherwise>
+        </choose>
+
+        <!-- Returns a 200 OK with the client certificate details in the body -->
+        <return-response>
+            <set-status code="200" />
+            <set-header name="Content-Type" exists-action="override">
+                <value>application/json</value>
+            </set-header>
+            <set-body>@{
+                var certificate = new X509Certificate2(context.Variables.GetValueOrDefault<byte[]>("client_certificate"));
+                return JsonConvert.SerializeObject(new
+                {
+                    certificate = certificate.ToString(),
+                    header = context.Request.Headers.GetValueOrDefault("X-ARR-ClientCert")
+                });
+            }</set-body>
+        </return-response>
+    </inbound>
+    <backend>
+        <base />
+    </backend>
+    <outbound>
+        <base />
+    </outbound>
+    <on-error>
+        <set-header name="ErrorSource" exists-action="override">
+            <value>@(context.LastError.Source)</value>
+        </set-header>
+        <set-header name="ErrorReason" exists-action="override">
+            <value>@(context.LastError.Reason)</value>
+        </set-header>
+        <set-header name="ErrorMessage" exists-action="override">
+            <value>@(context.LastError.Message)</value>
+        </set-header>
+        <base />
+    </on-error>
+</policies>
