@@ -1,7 +1,20 @@
+####################################################################
 # Configure your host name
+####################################################################
+
 
 @baseUrl = https://apim-sample.dev
 @mtlsPort = 53029
+
+
+####################################################################
+# TLS
+####################################################################
+
+
+### Test that API Management can be reached (/status-0123456789abcdef is a default endpoint you can use)
+
+GET {{baseUrl}}/status-0123456789abcdef
 
 
 ### HTTPS (should result in a 401 Unauthorized)
@@ -10,16 +23,29 @@ GET {{baseUrl}}/client-cert/validate-from-agw
 X-ARR-ClientCert: -----BEGIN%20CERTIFICATE-----%0AMIIDRTCCAi2gAwIBAgIQeQzo7uXwGZdAjoWZctlKnjANBgkqhkiG9w0BAQsFADAq%0AMSgwJgYDVQQDDB9BUElNIFNhbXBsZSBERVYgSW50ZXJtZWRpYXRlIENBMB4XDTIz%0AMTAyNzA5MDUxMVoXDTI0MTAyNzA5MTUxMVowFDESMBAGA1UEAwwJQ2xpZW50IDAx%0AMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1xe%2B8R5APbjCS2%2BtWOhJ%0AEvnM3OQ5%2FxxUp%2B8JIoB7EGyh%2BkLyDTi1ojN2KlYNwOeRVsWidzqQUYvncxCHAWwT%0AlrVOw4bPmmNhWPVPXcewJMPX5frgOY42jh4ieNOrN5uGLlzjMHOfqlfs27KAIY52%0Ag4LetKcyHNz7GyJVZxw13232IIF7kXpOOYKLidVPsLlglGvNfklTo14QowwmbjOw%0AXpUSlgnjiM8LYvTsPmVJZJIcyW38E%2B%2BmkVVUcNROgXWGwe%2FxvtANF3XyUz7TuspC%0AUZ2MWO9KSdD2q%2FU0hol3TD6mvct2G%2BuXFVvd0EpHITg0nE62vMr5nZs7ABEdsZZZ%0A%2BQIDAQABo30wezAOBgNVHQ8BAf8EBAMCBaAwFAYDVR0RBA0wC4IJQ2xpZW50IDAx%0AMBMGA1UdJQQMMAoGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFCQPsevDBm6M8UfXD3nQ%0ACGalHN7dMB0GA1UdDgQWBBRDlvjxOrBYk8qkIMnC2QiqBdducTANBgkqhkiG9w0B%0AAQsFAAOCAQEAjBVjqG1gaqRh8VqfyaLpFN0lyLdID%2FrqcG0QWG1f8Mt42khF1LLe%0AKnYpVhIix29p4k2mypytVOXSEnAtTDg8nMiOD1lfCnc76Mjf5PQ10937lQKsFPtn%0A1MeXYHZBnNQWxpNjX4FZnsFNWm7JPdaYBu5GVU5C4uB72Ax5dlEhoZX169%2BpfgGA%0AMPojv%2FaTI%2BCl73gyGwD5Ddb2Bv6BtzKWf3HOtQB%2FAxSv%2BDDmZ8cXcJlWBpoWNGLm%0ADOmHsoaoRve2X7g6gPatic8T2Al%2BV7LJRHv%2F1jcdHY2sgjP8CsmQbv1R2eCB%2Fijv%0AVlh0wgG8nEGkhd8oSkARIle86Zdlr9V53Q%3D%3D%0A-----END%20CERTIFICATE-----%0A
 
 
+
+####################################################################
+# mTLS
+####################################################################
+
+
+### Test that API Management can be reached (/status-0123456789abcdef is a default endpoint you can use)
+
+GET {{baseUrl}}:{{mtlsPort}}/status-0123456789abcdef
+
+
 ### mTLS (should return the X-ARR-ClientCert header value and certificate details)
 
 GET {{baseUrl}}:{{mtlsPort}}/client-cert/validate-from-agw
 
 
 ### Validates client certificate using validate-client-certificate policy
+### Will fail because of TLS termination on App Gateway
 
 GET {{baseUrl}}:{{mtlsPort}}/client-cert/validate-using-policy
 
 
 ### Validates client certificate using the context.Request.Certificate property
+### Will fail because of TLS termination on App Gateway
 
 GET {{baseUrl}}:{{mtlsPort}}/client-cert/validate-using-context
