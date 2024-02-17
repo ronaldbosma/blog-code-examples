@@ -92,7 +92,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2023-05-01' =
       {
         name: 'port-mtls'
         properties: {
-          port: 50001
+          port: 53029
         }
       }
     ]

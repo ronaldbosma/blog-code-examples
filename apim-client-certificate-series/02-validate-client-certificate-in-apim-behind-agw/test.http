@@ -1,7 +1,7 @@
 # Configure your host name
 
 @baseUrl = https://apim-sample.dev
-@mtlsPort = 50001
+@mtlsPort = 53029
 
 
 ### HTTPS (should result in a 401 Unauthorized)
