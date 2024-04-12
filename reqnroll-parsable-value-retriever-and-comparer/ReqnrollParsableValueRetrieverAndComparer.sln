@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02-GenericTypes", "GenericTypes\02-GenericTypes.csproj", "{F2E07449-378A-4537-9F33-F19E065ACF7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "03-Reflection", "03-Reflection\03-Reflection.csproj", "{49D33091-042B-461C-BC24-160B5017B2C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49D33091-042B-461C-BC24-160B5017B2C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49D33091-042B-461C-BC24-160B5017B2C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49D33091-042B-461C-BC24-160B5017B2C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49D33091-042B-461C-BC24-160B5017B2C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
