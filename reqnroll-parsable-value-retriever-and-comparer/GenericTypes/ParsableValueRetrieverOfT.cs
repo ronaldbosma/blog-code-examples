@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Reqnroll.Assist;
 
-namespace ReqnrollParsableValueRetrieverAndComparer.Init
+namespace ReqnrollParsableValueRetrieverAndComparer.GenericTypes
 {
 
     /// <summary>

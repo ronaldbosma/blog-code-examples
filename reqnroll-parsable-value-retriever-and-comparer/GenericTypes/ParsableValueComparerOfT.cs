@@ -1,7 +1,7 @@
 ﻿using System.Globalization;
 using Reqnroll.Assist;
 
-namespace ReqnrollParsableValueRetrieverAndComparer.Init
+namespace ReqnrollParsableValueRetrieverAndComparer.GenericTypes
 {
     /// <summary>
     /// Generic Value Comparer that can be used by DataTable Helpers to compare a value of type that implements <see cref="IParsable{T}"/>.

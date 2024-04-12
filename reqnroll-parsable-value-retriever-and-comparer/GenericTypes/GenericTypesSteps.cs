@@ -2,7 +2,7 @@
 using Reqnroll.Assist;
 using ReqnrollParsableValueRetrieverAndComparer.Shared;
 
-namespace ReqnrollParsableValueRetrieverAndComparer.Init
+namespace ReqnrollParsableValueRetrieverAndComparer.GenericTypes
 {
     [Binding]
     internal class GenericTypesSteps
