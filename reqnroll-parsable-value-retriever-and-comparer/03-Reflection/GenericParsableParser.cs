@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Reflection;
 
 namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
 {
@@ -57,7 +56,7 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
             }
 
             // Get the TryParse method of TSelf with signature: TryParse(String, IFormatProvider, out TSelf)
-            MethodInfo parseMethod = parsableType.GetMethod("TryParse", [typeof(string), typeof(CultureInfo), parsableType.MakeByRefType()])!;
+            var parseMethod = parsableType.GetMethod("TryParse", [typeof(string), typeof(CultureInfo), parsableType.MakeByRefType()]);
             if (parseMethod == null)
             {
                 throw new Exception($"Unable to get method with signature Parse(String, IFormatProvider, out TSelf) from type {parsableType}");
