@@ -23,8 +23,8 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
         /// </summary>
         public bool Compare(string expectedValue, object actualValue)
         {
-            var expectedObject = GenericParsableParser.Parse(actualValue.GetType(), expectedValue, CultureInfo.CurrentCulture);
-            return actualValue.Equals(expectedObject);
+            var isParsed = GenericParsableParser.TryParse(actualValue.GetType(), expectedValue, CultureInfo.CurrentCulture, out object? expectedObject);
+            return isParsed && actualValue.Equals(expectedObject);
         }
     }
 }

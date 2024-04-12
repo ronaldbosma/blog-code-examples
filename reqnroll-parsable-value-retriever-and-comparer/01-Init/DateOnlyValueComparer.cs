@@ -22,10 +22,8 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Init
         /// </summary>
         public bool Compare(string expectedValue, object actualValue)
         {
-            var expectedDate = DateOnly.Parse(expectedValue);
-            var actualDate = (DateOnly)actualValue;
-
-            return expectedDate == actualDate;
+            var isExpectedDate = DateOnly.TryParse(expectedValue, out DateOnly expectedDate);
+            return isExpectedDate && actualValue.Equals(expectedDate);
         }
     }
 }

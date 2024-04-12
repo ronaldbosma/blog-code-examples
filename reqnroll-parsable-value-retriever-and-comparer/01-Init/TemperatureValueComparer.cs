@@ -23,10 +23,8 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Init
         /// </summary>
         public bool Compare(string expectedValue, object actualValue)
         {
-            var expectedTemperature = Temperature.Parse(expectedValue, null);
-            var actualTemperature = (Temperature)actualValue;
-
-            return expectedTemperature == actualTemperature;
+            var isExpectedTemperature = Temperature.TryParse(expectedValue, null, out Temperature? expectedTemperature);
+            return isExpectedTemperature && actualValue.Equals(expectedTemperature);
         }
     }
 }
