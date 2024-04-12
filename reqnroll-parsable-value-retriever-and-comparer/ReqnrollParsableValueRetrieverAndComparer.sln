@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "01-Init", "01-Init\01-Init.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{6EEE5016-E461-4B4B-A865-6F79DD04FE3C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02-GenericTypes", "GenericTypes\02-GenericTypes.csproj", "{F2E07449-378A-4537-9F33-F19E065ACF7C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6EEE5016-E461-4B4B-A865-6F79DD04FE3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EEE5016-E461-4B4B-A865-6F79DD04FE3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EEE5016-E461-4B4B-A865-6F79DD04FE3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2E07449-378A-4537-9F33-F19E065ACF7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
