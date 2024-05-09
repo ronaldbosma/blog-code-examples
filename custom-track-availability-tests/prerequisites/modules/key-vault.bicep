@@ -12,12 +12,9 @@ param tenantId string
 @description('Location to use for all resources')
 param location string
 
-@description('The name of the Key Vault that will contain the client certificate')
+@description('The name of the Key Vault that will contain the secrets')
 @maxLength(24)
 param keyVaultName string
-
-@description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
-param keyVaultAdministratorId string
 
 @description('The default action on the Key Vault when no rule from ipRules and from virtualNetworkRules match.')
 @allowed([ 'Allow', 'Deny' ])
@@ -49,19 +46,5 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
       bypass: 'AzureServices'
       ipRules: empty(keyVaultAllowedIpAddress) ? [] : [ { value: keyVaultAllowedIpAddress } ]
     }
-  }
-}
-
-// Grant the specified administrator access to the Key Vault
-
-var keyVaultAdministratorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
-
-resource grantAdministratorKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('grant-${keyVaultAdministratorId}-${keyVaultName}-${keyVaultAdministratorRole}')
-  scope: keyVault
-  properties: {
-    roleDefinitionId: keyVaultAdministratorRole
-    principalId: keyVaultAdministratorId
-    principalType: 'User'
   }
 }

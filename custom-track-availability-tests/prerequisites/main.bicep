@@ -6,7 +6,7 @@
 // Parameters
 //=============================================================================
 
-@description('Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet.')
+@description('Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.')
 param tenantId string = subscription().tenantId
 
 @description('Location to use for all resources')
@@ -15,13 +15,13 @@ param location string = resourceGroup().location
 @description('The name of the Log Analytics workspace that will be created')
 param logAnalyticsWorkspaceName string
 
-@description('The name of the App Insights instance that will be created and used by API Management')
+@description('The name of the App Insights instance that will be created and used by API other resources')
 param appInsightsName string
 
 @description('Retention in days of the logging')
 param retentionInDays int = 30
 
-@description('The name of the Key Vault that will contain the client certificate')
+@description('The name of the Key Vault that will contain the secrets')
 @maxLength(24)
 param keyVaultName string
 
@@ -54,7 +54,6 @@ module keyVault 'modules/key-vault.bicep' = {
     tenantId: tenantId
     location: location
     keyVaultName: keyVaultName
-    keyVaultAdministratorId: keyVaultAdministratorId
     keyVaultNetworkAclsDefaultAction: keyVaultNetworkAclsDefaultAction
     keyVaultAllowedIpAddress: keyVaultAllowedIpAddress
   }
@@ -67,6 +66,7 @@ module appInsights 'modules/app-insights.bicep' = {
     logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
     appInsightsName: appInsightsName
     retentionInDays: retentionInDays
+    keyVaultName: keyVaultName
   }
 }
 
@@ -81,5 +81,18 @@ module apiManagement 'modules/api-management.bicep' = {
   }
   dependsOn: [
     appInsights
+  ]
+}
+
+module keyVaultPermissions 'modules/key-vault-permissions.bicep' = {
+  name: 'keyVaultPermissions'
+  params: {
+    keyVaultName: keyVaultName
+    keyVaultAdministratorId: keyVaultAdministratorId
+    apiManagementServiceName: apiManagementServiceName
+  }
+  dependsOn: [
+    keyVault
+    apiManagement
   ]
 }
