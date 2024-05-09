@@ -6,7 +6,6 @@
 // Parameters
 //=============================================================================
 
-
 @description('Specifies the Azure Active Directory tenant ID that should be used for authenticating requests to the key vault. Get it by using Get-AzSubscription cmdlet.')
 param tenantId string = subscription().tenantId
 
@@ -49,88 +48,38 @@ param apiManagementPublisherEmail string
 // Resources
 //=============================================================================
 
-
-// Log Analytics Workspace
-
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10-01' = {
-  name: logAnalyticsWorkspaceName
-  location: location
-  properties: {
-    retentionInDays: retentionInDays
-    sku: {
-      name: 'Standalone'
-    }
-  }
-}
-
-
-// Application Insights
-
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
-  name: appInsightsName
-  location: location
-  kind: 'web'
-  properties: {
-    Application_Type: 'web'
-    publicNetworkAccessForIngestion: 'Enabled'
-    publicNetworkAccessForQuery: 'Enabled'
-    WorkspaceResourceId: logAnalyticsWorkspace.id
-    RetentionInDays: retentionInDays
-  }
-}
-
-
-// Key Vault (see also: https://learn.microsoft.com/en-us/azure/key-vault/secrets/quick-create-bicep?tabs=CLI)
-
-resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
-  name: keyVaultName
-  location: location
-  properties: {
+module keyVault 'modules/key-vault.bicep' = {
+  name: 'keyVault'
+  params: {
     tenantId: tenantId
-    enableRbacAuthorization: true
-    enableSoftDelete: true
-    softDeleteRetentionInDays: 90
-    sku: {
-      name: 'standard'
-      family: 'A'
-    }
-    networkAcls: {
-      defaultAction: keyVaultNetworkAclsDefaultAction
-      bypass: 'AzureServices'
-      ipRules: empty(keyVaultAllowedIpAddress) ? [] : [ { value: keyVaultAllowedIpAddress } ]
-    }
+    location: location
+    keyVaultName: keyVaultName
+    keyVaultAdministratorId: keyVaultAdministratorId
+    keyVaultNetworkAclsDefaultAction: keyVaultNetworkAclsDefaultAction
+    keyVaultAllowedIpAddress: keyVaultAllowedIpAddress
   }
 }
 
-// API Management - Consumption tier (see also: https://learn.microsoft.com/en-us/azure/api-management/quickstart-bicep?tabs=CLI)
-
-resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
-  name: apiManagementServiceName
-  location: location
-  sku: {
-    name: 'Consumption'
-    capacity: 0
+module appInsights 'modules/app-insights.bicep' = {
+  name: 'appInsights'
+  params: {
+    location: location
+    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
+    appInsightsName: appInsightsName
+    retentionInDays: retentionInDays
   }
-  properties: {
+}
+
+module apiManagement 'modules/api-management.bicep' = {
+  name: 'apiManagement'
+  params: {
+    location: location
+    apiManagementServiceName: apiManagementServiceName
     publisherName: apiManagementPublisherName
     publisherEmail: apiManagementPublisherEmail
+    appInsightsName: appInsightsName
   }
-  identity: {
-    type: 'SystemAssigned'
-  }
-}
-
-
-// Grant the specified administrator access to the Key Vault
-
-var keyVaultAdministratorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
-
-resource grantAdministratorKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('grant-${keyVaultAdministratorId}-${keyVaultName}-${keyVaultAdministratorRole}')
-  scope: keyVault
-  properties: {
-    roleDefinitionId: keyVaultAdministratorRole
-    principalId: keyVaultAdministratorId
-    principalType: 'User'
-  }
+  dependsOn: [
+    appInsights
+  ]
 }
