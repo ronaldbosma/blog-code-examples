@@ -1,78 +1,30 @@
 # Prerequisites
 
-This is a diagram of the resources that will be deployed as part of the prerequisites:
+This is a diagram of the resources defined in [prerequisites.bicep](./prerequisites.bicep) that will be deployed as part of the prerequisites:
 
 ![Prerequisites](./prerequisites.drawio.png)
 
-The [main.bicep](./main.bicep) defines the following resources:
-- Key Vault with RBAC authorization enabled (the firewall is not enabled).
-- Azure API Management Consumption tier instance with a system-assigned identity.
-- Role assignment to assign the specified user the 'Key Vault Administrator' role.
-
-The [deploy.ps1](./deploy.ps1) script deploys the resources using the Azure CLI. It will:
+The [deploy-prerequisites.ps1](./deploy-prerequisites.ps1) script deploys the resources using the Azure CLI. It will:
 - Create a new resource group if it does not exist.
-- If `KeyVaultAdministratorId`, `PublisherName` or `PublisherEmail` is not provided, the script will get this data from the signed in user.
-- Validate the deployment of [main.bicep](./main.bicep) to the resource group.
-- Deploy [main.bicep](./main.bicep) to the resource group.
+- If `KeyVaultAdministratorId` is not provided, the script will get this data from the signed in user.
+- Validate the deployment of the Bicep file to the resource group.
+- Deploy the resources in the Bicep file to the resource group.
+
+The `deploy-prerequisites.ps1` script has the following parameters:
+
+| Parameter | Description | Default Value |
+|-|-|-|
+| Workload | The name of your workload. Maximum length is 12 characters. | N/A |
+| Environment | The environment to deploy the resources to. | `dev` |
+| Location | The location to deploy the resources to. | `norwayeast` |
+| Instance | The instance of the workload. | `01` |
+| ResourceGroupName | The name of the resource group to deploy the resources to. | Generated from the workload, environment, location, and instance. |
+| KeyVaultAdministratorId | The object id of the user that should be added as an administrator to the key vault. | The object id of the logged in user. |
+
+The workload, environment, location and instance are used to generate the names of the different resources, following the naming convention described on: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
 
 You can deploy the prerequisites using the following snippet:
 
 ```powershell
-$resourceGroupName = '<your-resource-group-name>'
-$functionAppName = '<your-function-app-name>'
-$logAnalyticsWorkspaceName = '<your-log-analytics-workspace-name>'
-$appInsightsName = '<your-application-insights-name>'
-$keyVaultName = '<your-key-vault-name>'
-$apiManagementServiceName = '<your-api-management-service-name>'
-
-./deploy.ps1 -ResourceGroupName $resourceGroupName `
-             -LogAnalyticsWorkspaceName $logAnalyticsWorkspaceName `
-             -AppInsightsName $appInsightsName `
-             -KeyVaultName $keyVaultName `
-             -ApiManagementServiceName $apiManagementServiceName
-```
-
-This example will deploy the Key Vault with `Allow public access from all networks` enabled.
-
-You can find the parameters for `deploy.ps1` PowerShell script and corresponding Bicep parameters of the `main.bicep` in the table below:
-
-| PS Parameter | Bicep Parameter | Description |
-|-|-|-|
-| N/A | tenantId | The Azure AD tenant ID. Default: tenant id of the resource group. |
-| Location | location | The location for the resources. Default: `norwayeast` |
-| ResourceGroupName | N/A | The name of the resource group to which the resources in the `main.bicep` are deployed to. Will be created if it doesn't exist |
-| FunctionAppName | functionAppName | The name of the Azure Function App to be created. |
-| StorageAccountName | storageAccountName | The name of the Storage Account that will be used by the Function App. |
-| LogAnalyticsWorkspaceName | logAnalyticsWorkspaceName | The name of the Log Analytics workspace to be created. |
-| AppInsightsName | appInsightsName | The name of the Application Insights instance to be created. |
-| N/A | retentionInDays | The retention period for the Log Analytics workspace and Application Insights. Default: `30` |
-| KeyVaultName | keyVaultName | The name of the Key Vault to be created. |
-| KeyVaultAdministratorId | keyVaultAdministratorId | The object ID of the user to be assigned the 'Key Vault Administrator' role. If `$null` then the id of the logged in uer is used. If an empty string is specified, the role is not assigned. |
-| KeyVaultNetworkAclsDefaultAction | keyVaultNetworkAclsDefaultAction | Defaults to `Allow`. Set to `Deny` to enable `Allow public access from specific virtual networks and IP addresses` and optionally add an allowed ip addres to `KeyVaultAllowedIpAddress` |
-| KeyVaultAllowedIpAddress | keyVaultAllowedIpAddress | The allowed IP address for the Key Vault. Default: empty |
-| ApiManagementServiceName | apiManagementServiceName | The name of the API Management service to be created. |
-| ApiManagementPublisherName | apiManagementPublisherName | The name of the publisher of the API Management service. If not specified, the display name of the logged in user is used. |
-| ApiManagementPublisherEmail | apiManagementPublisherEmail | The email of the publisher of the API Management service. If not specified, the email of the logged in user is used. |
-
-
-## Enable Key Vault Firewall
-
-If you want to enable `Allow public access from specific virtual networks and IP addresses`, set the parameter `KeyVaultNetworkAclsDefaultAction` to `Deny` and optionally pass your ip address in `KeyVaultAllowedIpAddress` so you can access the Key Vault.
-
-Here's an example:
-
-```powershell
-$resourceGroupName = '<your-resource-group-name>'
-$functionAppName = '<your-function-app-name>'
-$logAnalyticsWorkspaceName = '<your-log-analytics-workspace-name>'
-$appInsightsName = '<your-application-insights-name>'
-$keyVaultName = '<your-key-vault-name>'
-$apiManagementServiceName = '<your-api-management-service-name>'
-$yourIpAddress = '<your-ip-address>'
-
-./deploy.ps1 -ResourceGroupName $resourceGroupName `
-             -KeyVaultName $keyVaultName `
-             -ApiManagementServiceName $apiManagementServiceName `
-             -KeyVaultNetworkAclsDefaultAction "Deny" `
-             -KeyVaultAllowedIpAddress $yourIpAddress
+./deploy.ps1 -Workload '<your-workload>'
 ```
