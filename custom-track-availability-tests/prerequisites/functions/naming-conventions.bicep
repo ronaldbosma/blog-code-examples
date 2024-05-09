@@ -55,7 +55,7 @@ func getResourcesTypesToNormalize() array => [
 
 func getPrefix(resourceType string) string => getPrefixMap()[resourceType]
 
-// Prefixes for resources that could be deployed on the application layer.
+// Prefixes for commonly used resources.
 // Source for abbreviations: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-abbreviations
 func getPrefixMap() object => {
   actionGroup: 'ag'
