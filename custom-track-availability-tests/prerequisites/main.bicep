@@ -15,6 +15,10 @@ param location string = resourceGroup().location
 @description('The name of the Function App that will be created')
 param functionAppName string
 
+@description('Name of the storage account that will be used by the Function App')
+@maxLength(24)
+param storageAccountName string
+
 @description('The name of the Log Analytics workspace that will be created')
 param logAnalyticsWorkspaceName string
 
@@ -62,6 +66,14 @@ module keyVault 'modules/key-vault.bicep' = {
   }
 }
 
+module storageAccount 'modules/storage-account.bicep' = {
+  name: 'storageAccount'
+  params: {
+    location: location
+    storageAccountName: storageAccountName
+  }
+}
+
 module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bicep' = {
   name: 'identitiesAndRoleAssignments'
   params: {
@@ -73,6 +85,7 @@ module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bic
   }
   dependsOn: [
     keyVault
+    storageAccount
   ]
 }
 
@@ -94,7 +107,7 @@ module apiManagement 'modules/api-management.bicep' = {
     apiManagementServiceName: apiManagementServiceName
     publisherName: apiManagementPublisherName
     publisherEmail: apiManagementPublisherEmail
-    apimIdentityName: identitiesAndPermissions.outputs.apimIdentityName
+    apimIdentityName: identitiesAndRoleAssignments.outputs.apimIdentityName
     appInsightsName: appInsightsName
     keyVaultName: keyVaultName
   }

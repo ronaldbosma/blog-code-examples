@@ -42,6 +42,7 @@ You can find the parameters for `deploy.ps1` PowerShell script and corresponding
 | Location | location | The location for the resources. Default: `norwayeast` |
 | ResourceGroupName | N/A | The name of the resource group to which the resources in the `main.bicep` are deployed to. Will be created if it doesn't exist |
 | FunctionAppName | functionAppName | The name of the Azure Function App to be created. |
+| StorageAccountName | storageAccountName | The name of the Storage Account that will be used by the Function App. |
 | LogAnalyticsWorkspaceName | logAnalyticsWorkspaceName | The name of the Log Analytics workspace to be created. |
 | AppInsightsName | appInsightsName | The name of the Application Insights instance to be created. |
 | N/A | retentionInDays | The retention period for the Log Analytics workspace and Application Insights. Default: `30` |
