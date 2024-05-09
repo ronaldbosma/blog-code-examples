@@ -72,6 +72,7 @@ resource appInsightsInstrumentationKeyNamedValue 'Microsoft.ApiManagement/servic
   parent: apiManagementService
   properties: {
     displayName: 'appin-instrumentation-key'
+    secret: true
     keyVault: {
       secretIdentifier: appInsightsInstrumentationKeySecret.properties.secretUri
     
