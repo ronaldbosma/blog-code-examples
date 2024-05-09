@@ -16,7 +16,7 @@ Set-StrictMode -Version Latest
 # =============================================================================
 
 if (-not($ResourceGroupName)) {
-    $ResourceGroupName = "rg-$WorkloadName-$Environment-$Location-$Instance".ToLower()
+    $ResourceGroupName = "rg-$Workload-$Environment-$Location-$Instance".ToLower()
 }
 
 # Create the resource group if it doesn't exist
