@@ -3,6 +3,13 @@
 //=============================================================================
 
 //=============================================================================
+// Imports
+//=============================================================================
+
+import { getResourceName } from './functions/naming-conventions.bicep'
+
+
+//=============================================================================
 // Parameters
 //=============================================================================
 
@@ -12,25 +19,41 @@ param tenantId string = subscription().tenantId
 @description('Location to use for all resources')
 param location string = resourceGroup().location
 
+@description('The name of the workload to deploy')
+@maxLength(12) // The maximum length of the storage account name and key vault name is 24 characters. To prevent errors the workfload name should be short (about 12 characters).
+param workload string
+
+@description('The name of the environment to deploy to')
+@allowed([
+  'dev'
+  'tst'
+  'acc'
+  'prd'
+])
+param environment string = 'dev'
+
+@description('The instance number to will be added to the deployed resources names to make them unique')
+param instance string = '01'
+
 @description('The name of the Function App that will be created')
-param functionAppName string
+param functionAppName string = getResourceName('functionApp', workload, environment, location, instance)
 
 @description('Name of the storage account that will be used by the Function App')
 @maxLength(24)
-param storageAccountName string
+param storageAccountName string = getResourceName('storageAccount', workload, environment, location, instance)
 
 @description('The name of the Log Analytics workspace that will be created')
-param logAnalyticsWorkspaceName string
+param logAnalyticsWorkspaceName string = getResourceName('logAnalyticsWorkspace', workload, environment, location, instance)
 
 @description('The name of the App Insights instance that will be created and used by API other resources')
-param appInsightsName string
+param appInsightsName string = getResourceName('applicationInsights', workload, environment, location, instance)
 
 @description('Retention in days of the logging')
 param retentionInDays int = 30
 
 @description('The name of the Key Vault that will contain the secrets')
 @maxLength(24)
-param keyVaultName string
+param keyVaultName string = getResourceName('keyVault', workload, environment, location, instance)
 
 @description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
 param keyVaultAdministratorId string
@@ -43,13 +66,14 @@ param keyVaultNetworkAclsDefaultAction string = 'Allow'
 param keyVaultAllowedIpAddress string = ''
 
 @description('The name of the API Management Service that will be created')
-param apiManagementServiceName string
+param apiManagementServiceName string = getResourceName('apiManagement', workload, environment, location, instance)
 
 @description('The name of the owner of the API Management service')
-param apiManagementPublisherName string
+param apiManagementPublisherName string = 'admin@example.org'
 
 @description('The email address of the owner of the API Management service')
-param apiManagementPublisherEmail string
+param apiManagementPublisherEmail string = 'admin@example.org'
+
 
 //=============================================================================
 // Resources
@@ -115,3 +139,16 @@ module apiManagement 'modules/api-management.bicep' = {
     appInsights
   ]
 }
+
+
+//=============================================================================
+// Resources
+//=============================================================================
+
+// Return the names of the resources
+output functionAppName string = functionAppName
+output storageAccountName string = storageAccountName
+output logAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
+output appInsightsName string = appInsightsName
+output keyVaultName string = keyVaultName
+output apiManagementServiceName string = apiManagementServiceName
