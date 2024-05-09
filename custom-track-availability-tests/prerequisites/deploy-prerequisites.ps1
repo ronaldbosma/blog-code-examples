@@ -16,6 +16,7 @@ Set-StrictMode -Version Latest
 # =============================================================================
 
 if (-not($ResourceGroupName)) {
+    # This might not follow the naming convention used in the Bicep script to the letter, but it's close enough
     $ResourceGroupName = "rg-$Workload-$Environment-$Location-$Instance".ToLower()
 }
 
