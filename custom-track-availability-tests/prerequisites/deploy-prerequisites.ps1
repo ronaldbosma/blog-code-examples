@@ -64,7 +64,7 @@ az deployment group validate `
 
 
 # =============================================================================
-#  Deployment Resources
+#  Deploy Resources
 # =============================================================================
     
 # Print the time and date before starting the deployment so you can estimate when it's finished if you have an expected duration
