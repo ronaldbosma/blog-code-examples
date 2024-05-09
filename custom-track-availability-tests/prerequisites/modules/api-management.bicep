@@ -21,12 +21,20 @@ param publisherName string
 @description('The name of the App Insights instance that will be created and used by API Management')
 param appInsightsName string
 
+@description('The name of the Key Vault that will contain the secrets')
+@maxLength(24)
+param keyVaultName string
+
 //=============================================================================
 // Existing resources
 //=============================================================================
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
+}
+
+resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
+  name: keyVaultName
 }
 
 //=============================================================================
@@ -52,16 +60,22 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
 }
 
 
-// Store App Insights instrumentation key in named value.
-// NOTE: If you want to comply to the Azure Policy "API Management secret named values should be stored in Azure Key Vault",
-//       you'll need to store the instrumentation key in Key Vault.
+// Store App Insights instrumentation key in named value. Use the secret URI from the Key Vault secret to reference the secret in the named value
+
+resource appInsightsInstrumentationKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
+  name: 'applicationinsights-instrumentationkey'
+  parent: keyVault
+}
 
 resource appInsightsInstrumentationKeyNamedValue 'Microsoft.ApiManagement/service/namedValues@2020-06-01-preview' = {
   name: 'appin-instrumentation-key'
   parent: apiManagementService
   properties: {
     displayName: 'appin-instrumentation-key'
-    value: appInsights.properties.InstrumentationKey
+    keyVault: {
+      secretIdentifier: appInsightsInstrumentationKeySecret.properties.secretUri
+    
+    }
   }
 }
 
@@ -91,29 +105,5 @@ resource apimInsightsDiagnostics 'Microsoft.ApiManagement/service/diagnostics@20
     alwaysLog: 'allErrors'
     loggerId: apimAppInsightsLogger.id
     httpCorrelationProtocol: 'W3C' // Enable logging to app insights in W3C format
-    backend: {
-      request: {
-        headers: [
-          'CorrelationId'
-        ]
-      }
-      response: {
-        headers: [
-          'CorrelationId'
-        ]
-      }
-    }
-    frontend: {
-      request: {
-        headers: [
-          'CorrelationId'
-        ]
-      }
-      response: {
-        headers: [
-          'CorrelationId'
-        ]
-      }
-    }
   }
 }

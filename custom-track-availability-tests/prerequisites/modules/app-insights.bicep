@@ -19,6 +19,7 @@ param appInsightsName string
 param retentionInDays int = 30
 
 @description('The name of the Key Vault that will contain the secrets')
+@maxLength(24)
 param keyVaultName string
 
 //=============================================================================
