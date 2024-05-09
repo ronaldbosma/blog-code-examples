@@ -19,7 +19,8 @@ func getResourceNameByConvention(resourceType string, workload string, environme
 // Sanitize
 //=============================================================================
 
-func sanitizeResourceName(value string) string => trim(toLower(removeWhiteSpaces(removeUnderScores(removeDots(removeCommas(removeColons(removeSemiColons(value))))))))
+// Sanitize the resource name by removing illegal characters and converting it to lower case.
+func sanitizeResourceName(value string) string => toLower(removeWhiteSpaces(removeUnderScores(removeDots(removeCommas(removeColons(removeSemiColons(value)))))))
 func removeWhiteSpaces(value string) string => replace(value, ' ', '')
 func removeUnderScores(value string) string => replace(value, '_', '')
 func removeDots(value string) string => replace(value, '.', '')
