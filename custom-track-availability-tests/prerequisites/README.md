@@ -8,6 +8,7 @@ The [main.bicep](./main.bicep) defines the following resources:
 The [deploy.ps1](./deploy.ps1) script deploys the resources using the Azure CLI. It will:
 - Create a new resource group if it does not exist.
 - If `KeyVaultAdministratorId`, `PublisherName` or `PublisherEmail` is not provided, the script will get this data from the signed in user.
+- Validate the deployment of [main.bicep](./main.bicep) to the resource group.
 - Deploy [main.bicep](./main.bicep) to the resource group.
 
 You can deploy the prerequisites using the following snippet:
