@@ -23,8 +23,10 @@ The `deploy-prerequisites.ps1` script has the following parameters:
 
 The workload, environment, location and instance are used to generate the names of the different resources, following the naming convention described on: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
 
+> Take note that [user-defined functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/user-defined-functions) defined in [naming-conventions.bicep](./functions/naming-conventions.bicep) are used to generate the names of the resources. Your Bicep CLI version needs to be up-to-date.
+
 You can deploy the prerequisites using the following snippet:
 
 ```powershell
-./deploy.ps1 -Workload '<your-workload>'
+./deploy-prerequisites.ps1 -Workload "<your-workload>"
 ```
