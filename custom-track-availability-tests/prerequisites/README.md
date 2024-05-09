@@ -1,5 +1,9 @@
 # Prerequisites
 
+This is a diagram of the resources that will be deployed as part of the prerequisites:
+
+![Prerequisites](./prerequisites.drawio.png)
+
 The [main.bicep](./main.bicep) defines the following resources:
 - Key Vault with RBAC authorization enabled (the firewall is not enabled).
 - Azure API Management Consumption tier instance with a system-assigned identity.
