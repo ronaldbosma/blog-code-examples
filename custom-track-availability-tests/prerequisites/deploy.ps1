@@ -1,6 +1,8 @@
 param (
     [string]$Location = 'norwayeast',
     [string]$ResourceGroupName = 'rg-custom-track-availability-tests',
+    [string]$LogAnalyticsWorkspaceName = "log-custom-track-availability-tests",
+    [string]$AppInsightsName = "appi-custom-track-availability-tests",
     [string]$KeyVaultName = 'kv-custom-avail-tests',
     [string]$KeyVaultAdministratorId = $null,
     [string]$KeyVaultNetworkAclsDefaultAction = "Allow",
@@ -50,7 +52,9 @@ az deployment group create `
     --name "deploy-custom-track-availability-tests-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
     --template-file './main.bicep' `
-    --parameters keyVaultName=$KeyVaultName `
+    --parameters logAnalyticsWorkspaceName=$LogAnalyticsWorkspaceName `
+                 appInsightsName=$AppInsightsName `
+                 keyVaultName=$KeyVaultName `
                  keyVaultAdministratorId=$KeyVaultAdministratorId `
                  keyVaultNetworkAclsDefaultAction=$KeyVaultNetworkAclsDefaultAction `
                  keyVaultAllowedIpAddress=$KeyVaultAllowedIpAddress `

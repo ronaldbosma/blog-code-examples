@@ -14,10 +14,14 @@ You can deploy the prerequisites using the following snippet:
 
 ```powershell
 $resourceGroupName = '<your-resource-group-name>'
+$logAnalyticsWorkspaceName = '<your-log-analytics-workspace-name>'
+$appInsightsName = '<your-application-insights-name>'
 $keyVaultName = '<your-key-vault-name>'
 $apiManagementServiceName = '<your-api-management-service-name>'
 
 ./deploy.ps1 -ResourceGroupName $resourceGroupName `
+             -LogAnalyticsWorkspaceName $logAnalyticsWorkspaceName `
+             -AppInsightsName $appInsightsName `
              -KeyVaultName $keyVaultName `
              -ApiManagementServiceName $apiManagementServiceName
 ```
@@ -31,6 +35,9 @@ You can find the parameters for `deploy.ps1` PowerShell script and corresponding
 | N/A | tenantId | The Azure AD tenant ID. Default: tenant id of the resource group. |
 | Location | location | The location for the resources. Default: `norwayeast` |
 | ResourceGroupName | N/A | The name of the resource group to which the resources in the `main.bicep` are deployed to. Will be created if it doesn't exist |
+| LogAnalyticsWorkspaceName | logAnalyticsWorkspaceName | The name of the Log Analytics workspace to be created. |
+| AppInsightsName | appInsightsName | The name of the Application Insights instance to be created. |
+| N/A | retentionInDays | The retention period for the Log Analytics workspace and Application Insights. Default: `30` |
 | KeyVaultName | keyVaultName | The name of the Key Vault to be created. |
 | KeyVaultAdministratorId | keyVaultAdministratorId | The object ID of the user to be assigned the 'Key Vault Administrator' role. If `$null` then the id of the logged in uer is used. If an empty string is specified, the role is not assigned. |
 | KeyVaultNetworkAclsDefaultAction | keyVaultNetworkAclsDefaultAction | Defaults to `Allow`. Set to `Deny` to enable `Allow public access from specific virtual networks and IP addresses` and optionally add an allowed ip addres to `KeyVaultAllowedIpAddress` |
