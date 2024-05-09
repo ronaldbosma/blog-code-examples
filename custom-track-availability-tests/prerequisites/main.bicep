@@ -59,8 +59,8 @@ module keyVault 'modules/key-vault.bicep' = {
   }
 }
 
-module identitiesAndPermissions 'modules/identities-and-permissions.bicep' = {
-  name: 'identitiesAndPermissions'
+module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bicep' = {
+  name: 'identitiesAndRoleAssignments'
   params: {
     location: location
     keyVaultName: keyVaultName
