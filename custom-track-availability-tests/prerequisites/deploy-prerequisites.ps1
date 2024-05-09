@@ -54,7 +54,7 @@ Write-Host "Start deployment validation at: $(Get-Date -Format "dd-MM-yyyy HH:mm
 az deployment group validate `
     --name "validate-custom-track-availability-tests-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
-    --template-file './main.bicep' `
+    --template-file './prerequisites.bicep' `
     --parameters workload=$Workload `
                  environment=$Environment `
                  instance=$Instance `
@@ -73,7 +73,7 @@ Write-Host "Start deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
 az deployment group create `
     --name "deploy-custom-track-availability-tests-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
-    --template-file './main.bicep' `
+    --template-file './prerequisites.bicep' `
     --parameters workload=$Workload `
                  environment=$Environment `
                  instance=$Instance `
