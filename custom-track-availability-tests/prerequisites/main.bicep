@@ -59,6 +59,19 @@ module keyVault 'modules/key-vault.bicep' = {
   }
 }
 
+module identitiesAndPermissions 'modules/identities-and-permissions.bicep' = {
+  name: 'identitiesAndPermissions'
+  params: {
+    location: location
+    keyVaultName: keyVaultName
+    keyVaultAdministratorId: keyVaultAdministratorId
+    apiManagementServiceName: apiManagementServiceName
+  }
+  dependsOn: [
+    keyVault
+  ]
+}
+
 module appInsights 'modules/app-insights.bicep' = {
   name: 'appInsights'
   params: {
@@ -77,23 +90,11 @@ module apiManagement 'modules/api-management.bicep' = {
     apiManagementServiceName: apiManagementServiceName
     publisherName: apiManagementPublisherName
     publisherEmail: apiManagementPublisherEmail
+    apimIdentityName: identitiesAndPermissions.outputs.apimIdentityName
     appInsightsName: appInsightsName
     keyVaultName: keyVaultName
   }
   dependsOn: [
     appInsights
-  ]
-}
-
-module keyVaultPermissions 'modules/key-vault-permissions.bicep' = {
-  name: 'keyVaultPermissions'
-  params: {
-    keyVaultName: keyVaultName
-    keyVaultAdministratorId: keyVaultAdministratorId
-    apiManagementServiceName: apiManagementServiceName
-  }
-  dependsOn: [
-    keyVault
-    apiManagement
   ]
 }

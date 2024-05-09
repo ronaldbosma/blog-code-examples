@@ -18,6 +18,9 @@ param publisherEmail string
 @description('The name of the owner of the API Management service')
 param publisherName string
 
+@description('The name of the user-assigned managed identity of API management')
+param apimIdentityName string
+
 @description('The name of the App Insights instance that will be created and used by API Management')
 param appInsightsName string
 
@@ -28,6 +31,12 @@ param keyVaultName string
 //=============================================================================
 // Existing resources
 //=============================================================================
+
+// APIM User Managed Identity
+
+resource apimIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
+  name: apimIdentityName
+}
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
@@ -55,7 +64,10 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
     publisherName: publisherName
   }
   identity: {
-    type: 'SystemAssigned'
+    type: 'UserAssigned'
+    userAssignedIdentities: {
+      '${apimIdentity.id}': {}
+    }
   }
 }
 
@@ -75,7 +87,7 @@ resource appInsightsInstrumentationKeyNamedValue 'Microsoft.ApiManagement/servic
     secret: true
     keyVault: {
       secretIdentifier: appInsightsInstrumentationKeySecret.properties.secretUri
-    
+      identityClientId: apimIdentity.properties.clientId
     }
   }
 }
