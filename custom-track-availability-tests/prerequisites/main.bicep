@@ -12,6 +12,9 @@ param tenantId string = subscription().tenantId
 @description('Location to use for all resources')
 param location string = resourceGroup().location
 
+@description('The name of the Function App that will be created')
+param functionAppName string
+
 @description('The name of the Log Analytics workspace that will be created')
 param logAnalyticsWorkspaceName string
 
@@ -63,9 +66,10 @@ module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bic
   name: 'identitiesAndRoleAssignments'
   params: {
     location: location
+    functionAppName: functionAppName
+    apiManagementServiceName: apiManagementServiceName
     keyVaultName: keyVaultName
     keyVaultAdministratorId: keyVaultAdministratorId
-    apiManagementServiceName: apiManagementServiceName
   }
   dependsOn: [
     keyVault

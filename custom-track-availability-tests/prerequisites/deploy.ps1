@@ -1,6 +1,7 @@
 param (
     [string]$Location = 'norwayeast',
     [string]$ResourceGroupName = 'rg-custom-track-availability-tests',
+    [string]$FunctionAppName = 'func-custom-track-availability-tests',
     [string]$LogAnalyticsWorkspaceName = "log-custom-track-availability-tests",
     [string]$AppInsightsName = "appi-custom-track-availability-tests",
     [string]$KeyVaultName = 'kv-custom-avail-tests',
@@ -64,7 +65,8 @@ az deployment group validate `
     --name "validate-custom-track-availability-tests-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
     --template-file './main.bicep' `
-    --parameters logAnalyticsWorkspaceName=$LogAnalyticsWorkspaceName `
+    --parameters functionAppName=$FunctionAppName `
+                 logAnalyticsWorkspaceName=$LogAnalyticsWorkspaceName `
                  appInsightsName=$AppInsightsName `
                  keyVaultName=$KeyVaultName `
                  keyVaultAdministratorId=$KeyVaultAdministratorId `

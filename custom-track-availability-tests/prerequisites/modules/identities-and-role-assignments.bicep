@@ -9,15 +9,18 @@
 @description('Location to use for all resources')
 param location string
 
+@description('The name of the Function App that will be granted permissions')
+param functionAppName string
+
+@description('The name of the API Management Service that will be granted permissions')
+param apiManagementServiceName string
+
 @description('The name of the Key Vault that will contain the secrets')
 @maxLength(24)
 param keyVaultName string
 
 @description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
 param keyVaultAdministratorId string
-
-@description('The name of the API Management Service that will be granted permissions')
-param apiManagementServiceName string
 
 //=============================================================================
 // Variables
@@ -40,6 +43,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 //=============================================================================
 // Resources
 //=============================================================================
+
+// Create a user-assigned managed identity for the Function App
+
+resource functionAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: 'id-${functionAppName}'
+  location: location
+}
+
 
 // Create a user-assigned managed identity for the API Management Service
 
@@ -78,4 +89,5 @@ resource grantAdministratorKeyVaultAccess 'Microsoft.Authorization/roleAssignmen
 // Outputs
 //=============================================================================
 
+output functionAppIdentityName string = functionAppIdentity.name
 output apimIdentityName string = apimIdentity.name

@@ -19,6 +19,7 @@ You can deploy the prerequisites using the following snippet:
 
 ```powershell
 $resourceGroupName = '<your-resource-group-name>'
+$functionAppName = '<your-function-app-name>'
 $logAnalyticsWorkspaceName = '<your-log-analytics-workspace-name>'
 $appInsightsName = '<your-application-insights-name>'
 $keyVaultName = '<your-key-vault-name>'
@@ -40,6 +41,7 @@ You can find the parameters for `deploy.ps1` PowerShell script and corresponding
 | N/A | tenantId | The Azure AD tenant ID. Default: tenant id of the resource group. |
 | Location | location | The location for the resources. Default: `norwayeast` |
 | ResourceGroupName | N/A | The name of the resource group to which the resources in the `main.bicep` are deployed to. Will be created if it doesn't exist |
+| FunctionAppName | functionAppName | The name of the Azure Function App to be created. |
 | LogAnalyticsWorkspaceName | logAnalyticsWorkspaceName | The name of the Log Analytics workspace to be created. |
 | AppInsightsName | appInsightsName | The name of the Application Insights instance to be created. |
 | N/A | retentionInDays | The retention period for the Log Analytics workspace and Application Insights. Default: `30` |
@@ -48,8 +50,8 @@ You can find the parameters for `deploy.ps1` PowerShell script and corresponding
 | KeyVaultNetworkAclsDefaultAction | keyVaultNetworkAclsDefaultAction | Defaults to `Allow`. Set to `Deny` to enable `Allow public access from specific virtual networks and IP addresses` and optionally add an allowed ip addres to `KeyVaultAllowedIpAddress` |
 | KeyVaultAllowedIpAddress | keyVaultAllowedIpAddress | The allowed IP address for the Key Vault. Default: empty |
 | ApiManagementServiceName | apiManagementServiceName | The name of the API Management service to be created. |
-| PublisherName | publisherName | The name of the publisher of the API Management service. If not specified, the display name of the logged in user is used. |
-| PublisherEmail | publisherEmail | The email of the publisher of the API Management service. If not specified, the email of the logged in user is used. |
+| ApiManagementPublisherName | apiManagementPublisherName | The name of the publisher of the API Management service. If not specified, the display name of the logged in user is used. |
+| ApiManagementPublisherEmail | apiManagementPublisherEmail | The email of the publisher of the API Management service. If not specified, the email of the logged in user is used. |
 
 
 ## Enable Key Vault Firewall
@@ -60,6 +62,9 @@ Here's an example:
 
 ```powershell
 $resourceGroupName = '<your-resource-group-name>'
+$functionAppName = '<your-function-app-name>'
+$logAnalyticsWorkspaceName = '<your-log-analytics-workspace-name>'
+$appInsightsName = '<your-application-insights-name>'
 $keyVaultName = '<your-key-vault-name>'
 $apiManagementServiceName = '<your-api-management-service-name>'
 $yourIpAddress = '<your-ip-address>'
