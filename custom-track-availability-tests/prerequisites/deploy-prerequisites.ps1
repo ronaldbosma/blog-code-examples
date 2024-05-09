@@ -1,8 +1,8 @@
 param (
     [Parameter(Mandatory)][ValidateLength(5,12)][string]$Workload, # To prevent errors, we keep it short
-    [string]$Environment = 'dev',
-    [string]$Location = 'norwayeast',
-    [string]$Instance = '01',
+    [string]$Environment = "dev",
+    [string]$Location = "norwayeast",
+    [string]$Instance = "01",
     [string]$ResourceGroupName = $null,
     [string]$KeyVaultAdministratorId = $null
 )
