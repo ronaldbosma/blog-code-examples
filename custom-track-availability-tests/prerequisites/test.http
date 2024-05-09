@@ -1,1 +1,4 @@
+# API Management Default Health Endpoint 
+# NOTE: the Cusomption tier provides the `internal-status-0123456789abcdef` endpoint, while other tiers provide `status-0123456789abcdef`
+
 GET https://apim-custom-track-availability-tests.azure-api.net/internal-status-0123456789abcdef
