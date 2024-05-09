@@ -78,6 +78,7 @@ module apiManagement 'modules/api-management.bicep' = {
     publisherName: apiManagementPublisherName
     publisherEmail: apiManagementPublisherEmail
     appInsightsName: appInsightsName
+    keyVaultName: keyVaultName
   }
   dependsOn: [
     appInsights
