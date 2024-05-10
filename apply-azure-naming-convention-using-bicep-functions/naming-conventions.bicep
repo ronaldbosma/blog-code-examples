@@ -108,10 +108,10 @@ func getPrefixMap() object => {
 // Environments
 //=============================================================================
 
-func abbreviateEnvironment(environment string) string => getEnvironments()[toLower(environment)]
+func abbreviateEnvironment(environment string) string => getEnvironmentMap()[toLower(environment)]
 
 // By using a map for the environments, we can keep the names short but also only allow a specific set of values.
-func getEnvironments() object => {
+func getEnvironmentMap() object => {
   dev: 'dev'
   development: 'dev'
   tst: 'tst'
