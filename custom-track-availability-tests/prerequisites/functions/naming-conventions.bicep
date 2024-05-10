@@ -7,8 +7,8 @@
 // Source: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
 @export()
 func getResourceName(resourceType string, workload string, environment string, region string, instance string) string => 
-  shouldBeNormalized(resourceType) 
-    ? normalizeResourceName(resourceType, workload, environment, region, instance)
+  shouldBeShortened(resourceType) 
+    ? getShortenedResourceName(resourceType, workload, environment, region, instance)
     : getResourceNameByConvention(resourceType, workload, environment, region, instance)
 
 func getResourceNameByConvention(resourceType string, workload string, environment string, region string, instance string) string => 
@@ -16,38 +16,44 @@ func getResourceNameByConvention(resourceType string, workload string, environme
 
 
 //=============================================================================
-// Sanitize
+// Shorten Names
 //=============================================================================
 
-// Sanitize the resource name by removing illegal characters and converting it to lower case.
-func sanitizeResourceName(value string) string => toLower(removeWhiteSpaces(removeUnderScores(removeDots(removeCommas(removeColons(removeSemiColons(value)))))))
-func removeWhiteSpaces(value string) string => replace(value, ' ', '')
-func removeUnderScores(value string) string => replace(value, '_', '')
-func removeDots(value string) string => replace(value, '.', '')
-func removeCommas(value string) string => replace(value, ',', '')
-func removeColons(value string) string => replace(value, ':', '')
-func removeSemiColons(value string) string => replace(value, ';', '')
+func shouldBeShortened(resourceType string) bool => contains(getResourcesTypesToShorten(), resourceType)
 
-
-//=============================================================================
-// Normalize / Shorten
-//=============================================================================
-
-// Check if the resource name should be normalized.
-func shouldBeNormalized(resourceType string) bool => contains(getResourcesTypesToNormalize(), resourceType)
-
-// We'll remove hyphens because it's an illegal character or to shorten the name, preventing errors when deploying.
-func normalizeResourceName(resourceType string, workload string, environment string, region string, instance string) string =>
-  removeHyphens(getResourceNameByConvention(resourceType, workload, environment, region, instance))
-
-func removeHyphens(value string) string => replace(value, '-', '')
-
-// This is a list of resources that should be 'normalized'.
-func getResourcesTypesToNormalize() array => [
+// This is a list of resources that should be shortened.
+func getResourcesTypesToShorten() array => [
   'keyVault'        // Has max length of 24
   'storageAccount'  // Has max length of 24 and only allows letters and numbers
   'virtualMachine'  // Has max length of 15 for Windows
 ]
+
+func getShortenedResourceName(resourceType string, workload string, environment string, region string, instance string) string =>
+  resourceType == 'virtualMachine'
+    ? getVirtualMachineName(workload, environment, region, instance)
+    : shortenString(getResourceNameByConvention(resourceType, workload, environment, region, instance))
+
+// Virtual machines have a max length of 15 characters so we use uniqueString to generate a short unique name
+func getVirtualMachineName(workload string, environment string, region string, instance string) string =>
+  'vm${substring(uniqueString(workload, environment, region), 0, 13-length(shortenString(instance)))}${shortenString(instance)}'
+
+// Shorten the string by removing hyphens and sanitizing the resource name.
+func shortenString(value string) string => removeHyphens(sanitizeResourceName(value))
+func removeHyphens(value string) string => replace(value, '-', '')
+
+
+//=============================================================================
+// Sanitize
+//=============================================================================
+
+// Sanitize the resource name by removing illegal characters and converting it to lower case.
+func sanitizeResourceName(value string) string => toLower(removeColons(removeCommas(removeDots(removeSemicolons(removeUnderscores(removeWhiteSpaces(value)))))))
+func removeColons(value string) string => replace(value, ':', '')
+func removeCommas(value string) string => replace(value, ',', '')
+func removeDots(value string) string => replace(value, '.', '')
+func removeSemicolons(value string) string => replace(value, ';', '')
+func removeUnderscores(value string) string => replace(value, '_', '')
+func removeWhiteSpaces(value string) string => replace(value, ' ', '')
 
 
 //=============================================================================
@@ -68,7 +74,6 @@ func getPrefixMap() object => {
   appServicePlan: 'asp'
   containerInstance: 'ci'
   functionApp: 'func'
-  integrationAccount: 'ia'
   keyVault: 'kv'
   loadBalancerInternal: 'lbi'
   loadBalancerExternal: 'lbe'
@@ -103,10 +108,10 @@ func getPrefixMap() object => {
 // Environments
 //=============================================================================
 
-func abbreviateEnvironment(environment string) string => getEnvironments()[toLower(environment)]
+func abbreviateEnvironment(environment string) string => getEnvironmentMap()[toLower(environment)]
 
 // By using a map for the environments, we can keep the names short but also only allow a specific set of values.
-func getEnvironments() object => {
+func getEnvironmentMap() object => {
   dev: 'dev'
   development: 'dev'
   tst: 'tst'
