@@ -435,10 +435,10 @@ test testSanitizUpperCaseToLowerCase 'test-get-resource-name.bicep' = {
 test testSanitizeTrailingHyphenWhenInstanceIsEmpty 'test-get-resource-name.bicep' = {
   params: {
     resourceType: 'virtualNetwork'
-    workload: 'Sample Workload'
+    workload: 'sample'
     environment: 'dev'
     region: 'norwayeast'
     instance: ''
-    expectedResult: 'vnet-sampleworkload-dev-nwe'
+    expectedResult: 'vnet-sample-dev-nwe'
   }
 }
