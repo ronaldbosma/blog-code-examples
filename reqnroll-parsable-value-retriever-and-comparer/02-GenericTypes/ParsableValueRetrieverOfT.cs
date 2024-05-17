@@ -3,7 +3,6 @@ using Reqnroll.Assist;
 
 namespace ReqnrollParsableValueRetrieverAndComparer.GenericTypes
 {
-
     /// <summary>
     /// Generic Value Retriever that can be used by DataTable Helpers to convert a string to <see cref="IParsable{T}"/>.
     /// </summary>
