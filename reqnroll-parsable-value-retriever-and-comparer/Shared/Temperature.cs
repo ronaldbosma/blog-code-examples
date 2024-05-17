@@ -7,37 +7,9 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Shared
     {
         private readonly static Regex TemperatureRegex = new(@"^(-?\d+) (°C|°F)$");
 
-        public int DegreesCelsius { get; init; }
+        public int Degrees { get; init; }
 
-        public int DegreesFahrenheit { get; init; }
-
-        /// <summary>
-        /// Creates a <see cref="Temperature"/> object from the specified <paramref name="degreesCelsius"/>.
-        /// </summary>
-        public static Temperature FromDegreesCelsius(int degreesCelsius)
-        {
-            decimal degreesFahrenheit = (decimal)degreesCelsius * 9 / 5 + 32;
-
-            return new Temperature
-            {
-                DegreesCelsius = degreesCelsius,
-                DegreesFahrenheit = (int)Math.Round(degreesFahrenheit, 0, MidpointRounding.AwayFromZero)
-            };
-        }
-
-        /// <summary>
-        /// Creates a <see cref="Temperature"/> object from the specified <paramref name="degreesFahrenheit"/>.
-        /// </summary>
-        public static Temperature FromDegreesFahrenheit(int degreesFahrenheit)
-        {
-            decimal degreesCelsius = ((decimal)degreesFahrenheit - 32) * 5 / 9;
-
-            return new Temperature
-            {
-                DegreesCelsius = (int)Math.Round(degreesCelsius, 0, MidpointRounding.AwayFromZero),
-                DegreesFahrenheit = degreesFahrenheit
-            };
-        }
+        public TemperatureUnit Unit { get; init; }
 
         /// <summary>
         /// Parse <paramref name="temperature"/> into a <see cref="Temperature"/> object.
@@ -75,10 +47,14 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Shared
 
                 if (regexMatches.Count == 1)
                 {
-                    var temperatureValue = int.Parse(regexMatches[0].Groups[1].Value);
-                    var temperatureUnit = regexMatches[0].Groups[2].Value;
+                    var degrees = int.Parse(regexMatches[0].Groups[1].Value);
+                    var unit = regexMatches[0].Groups[2].Value;
 
-                    result = temperatureUnit == "°C" ? FromDegreesCelsius(temperatureValue) : FromDegreesFahrenheit(temperatureValue);
+                    result = new Temperature
+                    {
+                        Degrees = degrees,
+                        Unit = unit == "°C" ? TemperatureUnit.Celsius : TemperatureUnit.Fahrenheit
+                    };
                     return true;
                 }
             }
