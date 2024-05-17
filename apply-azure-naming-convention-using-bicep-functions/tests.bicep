@@ -431,3 +431,14 @@ test testSanitizUpperCaseToLowerCase 'test-get-resource-name.bicep' = {
     expectedResult: 'vnet-sampleworkload-dev-nwe-main'
   }
 }
+
+test testSanitizeTrailingHyphenWhenInstanceIsEmpty 'test-get-resource-name.bicep' = {
+  params: {
+    resourceType: 'virtualNetwork'
+    workload: 'Sample Workload'
+    environment: 'dev'
+    region: 'norwayeast'
+    instance: ''
+    expectedResult: 'vnet-sampleworkload-dev-nwe'
+  }
+}
