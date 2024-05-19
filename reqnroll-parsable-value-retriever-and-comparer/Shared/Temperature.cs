@@ -41,26 +41,28 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Shared
         /// <returns>True if <paramref name="temperature"/> could be parsed, else false.</returns>
         public static bool TryParse([NotNullWhen(true)] string? s, IFormatProvider? provider, [MaybeNullWhen(false)] out Temperature result)
         {
-            if (s != null)
+            result = null;
+
+            if (string.IsNullOrWhiteSpace(s))
             {
-                var regexMatches = TemperatureRegex.Matches(s);
-
-                if (regexMatches.Count == 1)
-                {
-                    var degrees = int.Parse(regexMatches[0].Groups[1].Value);
-                    var unit = regexMatches[0].Groups[2].Value;
-
-                    result = new Temperature
-                    {
-                        Degrees = degrees,
-                        Unit = unit == "°C" ? TemperatureUnit.Celsius : TemperatureUnit.Fahrenheit
-                    };
-                    return true;
-                }
+                return false;
+            }
+            
+            var regexMatches = TemperatureRegex.Matches(s);
+            if (regexMatches.Count != 1)
+            {
+                return false;
             }
 
-            result = null;
-            return false;
+            var degrees = int.Parse(regexMatches[0].Groups[1].Value);
+            var unit = regexMatches[0].Groups[2].Value;
+
+            result = new Temperature
+            {
+                Degrees = degrees,
+                Unit = unit == "°C" ? TemperatureUnit.Celsius : TemperatureUnit.Fahrenheit
+            };
+            return true;
         }
     }
 }
