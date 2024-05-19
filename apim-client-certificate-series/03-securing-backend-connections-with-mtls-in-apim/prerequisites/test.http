@@ -1,0 +1,8 @@
+### Call default health endpoint on APIM Client instance; This call should succeed
+
+GET https://{{your-apim-client-name}}.azure-api.net/internal-status-0123456789abcdef
+
+
+### Call default health endpoint on APIM Backend instance; This call should fail with 403 if no client certificate is provided
+
+GET https://{{your-apim-backend-name}}.azure-api.net/internal-status-0123456789abcdef
