@@ -16,6 +16,9 @@ param apiManagementServiceBackendName string
 @maxLength(24)
 param keyVaultName string
 
+@description('The name of the secret in the Key Vault that contains the client certificate')
+param clientCertificateSecretName string = 'generated-client-certificate'
+
 
 //=============================================================================
 // Existing Resources
@@ -33,8 +36,8 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
   name: keyVaultName
 }
 
-resource generatedClientCertificateSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' existing = {
-  name: 'generated-client-certificate'
+resource clientCertificateSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' existing = {
+  name: clientCertificateSecretName
   parent: keyVault
 }
 
@@ -44,12 +47,12 @@ resource generatedClientCertificateSecret 'Microsoft.KeyVault/vaults/secrets@202
 
 // Create client certificate in API Management that references Key Vault
 
-resource generatedClientCertificate 'Microsoft.ApiManagement/service/certificates@2022-08-01' = {
-  name: 'generated-client-certificate'
+resource clientCertificate 'Microsoft.ApiManagement/service/certificates@2022-08-01' = {
+  name: 'client-certificate'
   parent: apiManagementServiceClient
   properties: {
     keyVault: {
-      secretIdentifier: generatedClientCertificateSecret.properties.secretUri
+      secretIdentifier: clientCertificateSecret.properties.secretUri
     }
   }
 }
@@ -64,7 +67,7 @@ resource testBackend 'Microsoft.ApiManagement/service/backends@2022-08-01' = {
     protocol: 'http'
     credentials: {
       certificateIds: [
-        generatedClientCertificate.id
+        clientCertificate.id
       ]
     }
     tls: {
