@@ -40,6 +40,14 @@ param keyVaultAllowedIpAddress string = ''
 
 
 //=============================================================================
+// Variables
+//=============================================================================
+
+var keyVaultSecretsUserRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
+var keyVaultAdministratorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
+
+
+//=============================================================================
 // Resources
 //=============================================================================
 
@@ -66,7 +74,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
 }
 
 
-// API Management - Consumption tier (see also: https://learn.microsoft.com/en-us/azure/api-management/quickstart-bicep?tabs=CLI)
+// API Management Instances - Consumption tier (see also: https://learn.microsoft.com/en-us/azure/api-management/quickstart-bicep?tabs=CLI)
 
 // APIM instance that will serve as the client side of the connection
 resource apiManagementServiceClient 'Microsoft.ApiManagement/service@2022-08-01' = {
@@ -101,10 +109,9 @@ resource apiManagementServiceBackend 'Microsoft.ApiManagement/service@2022-08-01
 }
 
 
-// Grant API Management access to the Key Vault
+// Role Assignments
 
-var keyVaultSecretsUserRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6')
-
+// Grant client API Management instance access to the Key Vault
 resource grantApimKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('grant-${apiManagementServiceClientName}-${keyVaultName}-${keyVaultSecretsUserRole}')
   scope: keyVault
@@ -117,9 +124,6 @@ resource grantApimKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-0
 
 
 // Grant the signed in user access to the Key Vault
-
-var keyVaultAdministratorRole = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '00482a5a-887f-4fb3-b363-3b7fe8e74483')
-
 resource grantAdministratorKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
   name: guid('grant-${keyVaultAdministratorId}-${keyVaultName}-${keyVaultAdministratorRole}')
   scope: keyVault
