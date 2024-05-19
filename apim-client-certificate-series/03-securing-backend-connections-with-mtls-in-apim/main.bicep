@@ -41,6 +41,7 @@ resource clientCertificateSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' 
   parent: keyVault
 }
 
+
 //=============================================================================
 // Resources
 //=============================================================================
@@ -80,12 +81,12 @@ resource testBackend 'Microsoft.ApiManagement/service/backends@2022-08-01' = {
 
 // Create the API that uses the backend
 
-resource testApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
-  name: 'test-api'
+resource backendApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
+  name: 'backend-api'
   parent: apiManagementServiceClient
   properties: {
-    displayName: 'Test API'
-    path: 'test'
+    displayName: 'Backend API'
+    path: 'backend'
     protocols: [ 
       'https' 
     ]
@@ -96,7 +97,17 @@ resource testApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
   resource policies 'policies' = {
     name: 'policy'
     properties: {
-      value: '<policies><inbound><base /><set-backend-service backend-id="${testBackend.name}" /></inbound><backend><base /></backend><outbound><base /></outbound><on-error><base /></on-error></policies>'
+      value: '''
+        <policies>
+          <inbound>
+            <base />
+            <set-backend-service backend-id="test-backend" />
+          </inbound>
+          <backend><base /></backend>
+          <outbound><base /></outbound>
+          <on-error><base /></on-error>
+        </policies>
+      '''
     }
   }
 
@@ -109,4 +120,8 @@ resource testApi 'Microsoft.ApiManagement/service/apis@2022-08-01' = {
       urlTemplate: '/internal-status-0123456789abcdef'
     }
   }
+
+  dependsOn: [
+    testBackend
+  ]
 }
