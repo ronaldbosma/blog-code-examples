@@ -343,3 +343,6 @@ MigrationBackup/
 
 # Local files
 *.local.*
+
+# draw.io temp files
+*.drawio.bkp
