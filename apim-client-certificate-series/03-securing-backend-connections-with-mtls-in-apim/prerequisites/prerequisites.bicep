@@ -96,7 +96,7 @@ resource apiManagementServiceBackend 'Microsoft.ApiManagement/service@2022-08-01
   properties: {
     publisherEmail: publisherEmail
     publisherName: publisherName
-    enableClientCertificate: true
+    enableClientCertificate: true // This will enforce that all requests to the backend must be authenticated with a client certificate
   }
 }
 
