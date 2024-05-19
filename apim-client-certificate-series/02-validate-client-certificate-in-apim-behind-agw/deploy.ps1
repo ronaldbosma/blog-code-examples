@@ -22,7 +22,6 @@ if ((az group exists --name $ResourceGroupName) -eq "false")
 # NOTE: depending on the access rights of the signed in user, this might fail.
 if (($null -eq $PublisherName) -or ($null -eq $PublisherEmail))
 {
-    Write-Host "what"
     $signedInUser = az ad signed-in-user show | ConvertFrom-Json
     if ($null -eq $PublisherName)
     {
