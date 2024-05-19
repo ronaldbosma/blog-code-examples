@@ -3,7 +3,8 @@ param (
     [string]$Location = 'norwayeast',
     [string]$ApiManagementServiceClientName = 'apim-secure-backend-with-mtls-client',
     [string]$ApiManagementServiceBackendName = 'apim-secure-backend-with-mtls-backend',
-    [string]$KeyVaultName = 'kvsecurebackendwithmtls'
+    [string]$KeyVaultName = 'kvsecurebackendwithmtls',
+    [string]$ClientCertificateSecretName = 'generated-client-certificate'
 )
 
 $ErrorActionPreference = 'Stop'
@@ -21,4 +22,5 @@ az deployment group create `
     --parameters apiManagementServiceClientName=$ApiManagementServiceClientName `
                  apiManagementServiceBackendName=$ApiManagementServiceBackendName `
                  keyVaultName=$KeyVaultName `
+                 clientCertificateSecretName=$ClientCertificateSecretName `
     --verbose
