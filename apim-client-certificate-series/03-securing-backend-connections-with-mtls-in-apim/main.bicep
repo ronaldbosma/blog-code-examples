@@ -29,10 +29,30 @@ resource apiManagementServiceBackend 'Microsoft.ApiManagement/service@2022-08-01
   name: apiManagementServiceBackendName
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' existing = {
+  name: keyVaultName
+}
+
+resource generatedClientCertificateSecret 'Microsoft.KeyVault/vaults/secrets@2023-07-01' existing = {
+  name: 'generated-client-certificate'
+  parent: keyVault
+}
+
 //=============================================================================
 // Resources
 //=============================================================================
 
+// Create client certificate in API Management that references Key Vault
+
+resource generatedClientCertificate 'Microsoft.ApiManagement/service/certificates@2022-08-01' = {
+  name: 'generated-client-certificate'
+  parent: apiManagementServiceClient
+  properties: {
+    keyVault: {
+      secretIdentifier: generatedClientCertificateSecret.properties.secretUri
+    }
+  }
+}
 
 // Create the backend inside the client API Management service
 
@@ -42,6 +62,11 @@ resource testBackend 'Microsoft.ApiManagement/service/backends@2022-08-01' = {
   properties: {
     url: apiManagementServiceBackend.properties.gatewayUrl
     protocol: 'http'
+    credentials: {
+      certificateIds: [
+        generatedClientCertificate.id
+      ]
+    }
     tls: {
       validateCertificateChain: true
       validateCertificateName: true
