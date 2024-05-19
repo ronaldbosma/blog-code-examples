@@ -59,7 +59,7 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
             var parseMethod = parsableType.GetMethod("TryParse", [typeof(string), typeof(CultureInfo), parsableType.MakeByRefType()]);
             if (parseMethod == null)
             {
-                throw new Exception($"Unable to get method with signature Parse(String, IFormatProvider, out TSelf) from type {parsableType}");
+                throw new Exception($"Unable to get method with signature TryParse(String, IFormatProvider, out TSelf) from type {parsableType}");
             }
 
             // Invoke the TryParse method
@@ -67,7 +67,7 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
             var tryParseResult = (bool?)parseMethod.Invoke(parsableInstance, parameters);
             if (tryParseResult == null)
             {
-                throw new Exception($"Parse method on type {parsableType} unexpectedly return null for value: {s}");
+                throw new Exception($"TryParse method on type {parsableType} unexpectedly returned null for value: {s}");
             }
 
             // Set result to the parsed result if TryParse was successful
