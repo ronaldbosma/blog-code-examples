@@ -4,7 +4,7 @@ using System.Globalization;
 namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
 {
     /// <summary>
-    /// Helper class to work with the <see cref="IParsable{TSelf}"/> interface when you don't now TSelf at compile time.
+    /// Helper class to work with the <see cref="IParsable{TSelf}"/> interface when you don't know TSelf at compile time.
     /// </summary>
     internal static class GenericParsableParser
     {
