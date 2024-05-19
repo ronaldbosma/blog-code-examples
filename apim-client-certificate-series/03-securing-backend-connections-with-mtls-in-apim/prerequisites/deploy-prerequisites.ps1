@@ -55,5 +55,8 @@ az deployment group create `
                  apiManagementServiceBackendName=$ApiManagementServiceBackendName `
                  publisherName=$PublisherName `
                  publisherEmail=$PublisherEmail `
+                 keyVaultName=$KeyVaultName `
                  keyVaultAdministratorId=$KeyVaultAdministratorId `
+                 keyVaultNetworkAclsDefaultAction=$KeyVaultNetworkAclsDefaultAction `
+                 keyVaultAllowedIpAddress=$KeyVaultAllowedIpAddress `
     --verbose
