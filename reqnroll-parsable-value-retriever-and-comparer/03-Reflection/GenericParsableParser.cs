@@ -9,6 +9,19 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
     internal static class GenericParsableParser
     {
         /// <summary>
+        /// Checks if the type implements IParsable<TSelf> where TSelf is a supported type.
+        /// </summary>
+        public static bool ImplementsSupportedIParsable(Type type)
+        {
+            return type.GetInterfaces().Any(i =>
+                i.IsGenericType &&
+                i.GetGenericTypeDefinition() == typeof(IParsable<>) &&
+                // IParsable<string> is exluded because we can't dynamically create an instance of string
+                i.GetGenericArguments()[0] != typeof(string)
+            );
+        }
+
+        /// <summary>
         /// Parses <paramref name="s"/> to <paramref name="targetType"/>.
         /// </summary>
         public static object Parse(Type targetType, string s, IFormatProvider? formatProvider)
@@ -74,19 +87,6 @@ namespace ReqnrollParsableValueRetrieverAndComparer.Reflection
             result = (bool)tryParseResult ? parameters[2] : null;
 
             return (bool)tryParseResult;
-        }
-
-        /// <summary>
-        /// Checks if the type implements IParsable<TSelf> where TSelf is a supported type.
-        /// </summary>
-        public static bool ImplementsSupportedIParsable(Type type)
-        {
-            return type.GetInterfaces().Any(i =>
-                i.IsGenericType &&
-                i.GetGenericTypeDefinition() == typeof(IParsable<>) &&
-                // IParsable<string> is exluded because we can't dynamically create an instance of string
-                i.GetGenericArguments()[0] != typeof(string)
-            );
         }
     }
 }
