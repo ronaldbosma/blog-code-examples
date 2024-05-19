@@ -2,4 +2,4 @@
 # - This request should fail with a 403 if no client certificate is configured on the backend in the APIM Client instance
 # - This request should succeed if a valid client certificate is configured on the backendin the APIM Client instance
 
-GET https://{{your-apim-client-name}}.azure-api.net/test/internal-status-0123456789abcdef
+GET https://{{your-apim-client-name}}.azure-api.net/backend/internal-status-0123456789abcdef
