@@ -1,4 +1,8 @@
-This folder contains an example on how to apply Azure naming conventions using user-defined functions in Bicep. It also uses the Bicep Test Framework to test the functions.
+This folder contains an example on how to apply Azure naming conventions using user-defined functions in Bicep. It also uses the Bicep Test Framework to test the functions. You can run the tests using the following command:
+
+```bash
+bicep test .\tests.bicep
+```
 
 Files:
 - [naming-conventions.bicep](./naming-conventions.bicep): contains user-defined functions to apply Azure naming conventions.
