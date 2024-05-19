@@ -48,7 +48,7 @@ Write-Host "Start deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
 
 # Deploy the resources with Bicep
 az deployment group create `
-    --name "deploy-secure-backend-with-mtls-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
+    --name "deploy-prerequisites-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
     --template-file './prerequisites.bicep' `
     --parameters apiManagementServiceClientName=$ApiManagementServiceClientName `
