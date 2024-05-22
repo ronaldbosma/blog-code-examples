@@ -19,10 +19,10 @@ param apiManagementServiceClientName string
 param apiManagementServiceBackendName string
 
 @description('The email address of the owner of the API Management service')
-param publisherEmail string
+param publisherEmail string = 'publisher@example.org'
 
 @description('The name of the owner of the API Management service')
-param publisherName string
+param publisherName string = 'publisher@example.org'
 
 @description('The name of the Key Vault that will contain the client certificate')
 @maxLength(24)

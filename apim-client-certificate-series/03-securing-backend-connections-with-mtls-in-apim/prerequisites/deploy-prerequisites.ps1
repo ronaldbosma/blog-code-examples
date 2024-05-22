@@ -3,8 +3,6 @@ param (
     [string]$Location = 'norwayeast',
     [string]$ApiManagementServiceClientName = 'apim-secure-backend-with-mtls-client',
     [string]$ApiManagementServiceBackendName = 'apim-secure-backend-with-mtls-backend',
-    [string]$PublisherName = $null,
-    [string]$PublisherEmail = $null,
     [string]$KeyVaultName = 'kvsecurebackendwithmtls',
     [string]$KeyVaultNetworkAclsDefaultAction = "Allow",
     [string]$KeyVaultAllowedIpAddress = "",
@@ -23,19 +21,11 @@ if ((az group exists --name $ResourceGroupName) -eq "false")
 }
 
 
-# If the Publisher Name and/or Email was not specified, try to get the signed in user and use theirs.
+# If the Key Vault Administrator Id was not specified, try to get the signed in user and use theirs.
 # NOTE: depending on the access rights of the signed in user, this might fail.
-if (-not($PublisherName) -or -not($PublisherEmail) -or -not($KeyVaultAdministratorId))
+if (-not($KeyVaultAdministratorId))
 {
     $signedInUser = az ad signed-in-user show | ConvertFrom-Json
-    if (-not($PublisherName))
-    {
-        $PublisherName = $signedInUser.displayName
-    }
-    if (-not($PublisherEmail))
-    {
-        $PublisherEmail = $signedInUser.mail
-    }
     if (-not($KeyVaultAdministratorId))
     {
         $KeyVaultAdministratorId = $signedInUser.id
@@ -53,8 +43,6 @@ az deployment group create `
     --template-file './prerequisites.bicep' `
     --parameters apiManagementServiceClientName=$ApiManagementServiceClientName `
                  apiManagementServiceBackendName=$ApiManagementServiceBackendName `
-                 publisherName=$PublisherName `
-                 publisherEmail=$PublisherEmail `
                  keyVaultName=$KeyVaultName `
                  keyVaultAdministratorId=$KeyVaultAdministratorId `
                  keyVaultNetworkAclsDefaultAction=$KeyVaultNetworkAclsDefaultAction `
