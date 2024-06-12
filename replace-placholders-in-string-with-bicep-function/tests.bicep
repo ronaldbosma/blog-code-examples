@@ -1,3 +1,9 @@
+//=============================================================================
+// Tests for the replacePlaceholders function
+// 
+// - Run the tests with the command:  bicep test .\tests.bicep
+//=============================================================================
+
 test ReplacePlaceholders_NoPlaceholderInInput_InputReturned 'test-replace-placeholders.bicep' = {
   params: {
     input: 'zero'
