@@ -8,6 +8,9 @@ param (
     [string]
     $ModulePath,
 
+    [string]
+    $IncludeTestFiles = "*",
+
     [Parameter(Mandatory = $false)]
     [switch]
     $Publish,
@@ -37,7 +40,7 @@ if ($Publish) {
     }
 }
 
-$tests = (Get-ChildItem -Path $($ModulePath) -Recurse | Where-Object {$_.Name -like "*.Tests.ps1"}).FullName
+$tests = (Get-ChildItem -Path $($ModulePath) -Include $IncludeTestFiles -Recurse | Where-Object {$_.Name -like "*.Tests.ps1"}).FullName
 
 if ($Publish) {
     $files = (Get-ChildItem -Recurse | Where-Object {$_.Name -like "*.psm1" -or $_.Name -like "*.ps1" -and $_.FullName -notlike "*\Pipelines\*"}).FullName
