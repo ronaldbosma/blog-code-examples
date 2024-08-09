@@ -11,3 +11,12 @@ Rule "APIMPolicy.Rules.InboundBasePolicy" -If { $TargetObject.PolicyType?.Starts
     $Assert.HasField($policy.inbound, "base")
     $Assert.HasFieldValue($policy, "inbound.FirstChild.Name", "base")
 }
+
+# Synopsis: The first policy inside the outbound section should be the base policy.
+Rule "APIMPolicy.Rules.OutboundBasePolicy" -Type "APIMPolicy.Types.API", "APIMPolicy.Types.Operation" {
+    $policy = $TargetObject.Content.DocumentElement
+    
+    $Assert.HasField($policy, "outbound")
+    $Assert.HasField($policy.outbound, "base")
+    $Assert.HasFieldValue($policy, "outbound.FirstChild.Name", "base")
+}
