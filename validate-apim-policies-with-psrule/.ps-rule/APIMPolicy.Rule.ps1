@@ -12,6 +12,15 @@ Rule "APIMPolicy.Rules.InboundBasePolicy" -If { $TargetObject.PolicyType?.Starts
     $Assert.HasFieldValue($policy, "inbound.FirstChild.Name", "base")
 }
 
+# Synopsis: The backend section should only have the base policy to make sure the request is forwarded, and because only one policy is allowed.
+Rule "APIMPolicy.Rules.BackendBasePolicy" -Type "APIMPolicy.Types.Workspace", "APIMPolicy.Types.Product", "APIMPolicy.Types.API", "APIMPolicy.Types.Operation" {
+    $policy = $TargetObject.Content.DocumentElement
+    
+    $Assert.HasField($policy, "backend")
+    $Assert.HasField($policy.backend, "base")
+    $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
+}
+
 # Synopsis: The outbound section should include the base policy so generic logic like error handling can be applied.
 Rule "APIMPolicy.Rules.OutboundBasePolicy" -Type "APIMPolicy.Types.Workspace", "APIMPolicy.Types.Product", "APIMPolicy.Types.API", "APIMPolicy.Types.Operation" {
     $policy = $TargetObject.Content.DocumentElement
