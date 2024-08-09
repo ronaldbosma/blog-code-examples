@@ -15,6 +15,7 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Global.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
+            PolicyType = "APIMPolicy.Types.Global"
         }
 
     })
@@ -33,6 +34,7 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.API.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
+            PolicyType = "APIMPolicy.Types.API"
         }
 
     })
@@ -51,6 +53,7 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Operation.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
+            PolicyType = "APIMPolicy.Types.Operation"
         }
 
     })

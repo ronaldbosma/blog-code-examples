@@ -5,7 +5,8 @@
 function New-APIPolicy([Parameter(Mandatory=$true)]$Xml)
 {
     return [PSCustomObject]@{
-        PSTypeName = "APIMPolicy.Types.API"
+        PSTypeName = "APIMPolicy.Types.API" # This is necessary for the -Type filter on a Rule to work
+        PolicyType = "APIMPolicy.Types.API"
         Name = "api.cshtml"
         Content = [xml]$Xml
     }
@@ -14,7 +15,8 @@ function New-APIPolicy([Parameter(Mandatory=$true)]$Xml)
 function New-OperationPolicy([Parameter(Mandatory=$true)]$Xml)
 {
     return [PSCustomObject]@{
-        PSTypeName = "APIMPolicy.Types.Operation"
+        PSTypeName = "APIMPolicy.Types.Operation" # This is necessary for the -Type filter on a Rule to work
+        PolicyType = "APIMPolicy.Types.Operation"
         Name = "operation.cshtml"
         Content = [xml]$Xml
     }
