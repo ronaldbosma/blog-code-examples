@@ -36,6 +36,7 @@ function Assert-PSRuleSucceeded {
         [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord]$RuleRecord
     )
     
+    $RuleRecord | Should -not -BeNullOrEmpty
     $RuleRecord.IsSuccess() | Should -Be $True
 }
 
@@ -46,6 +47,7 @@ function Assert-PSRuleFailedWithReason {
         [Parameter(Mandatory=$true)][string]$ExpectedReasonPattern
     )
     
+    $RuleRecord | Should -not -BeNullOrEmpty
     $RuleRecord.IsSuccess() | Should -Be $False
     $RuleRecord.Reason.Length | Should -BeGreaterOrEqual 1
     $RuleRecord.Reason[0] | Should -BeLike $ExpectedReasonPattern
