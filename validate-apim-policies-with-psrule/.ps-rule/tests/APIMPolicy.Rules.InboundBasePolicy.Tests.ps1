@@ -8,7 +8,7 @@ BeforeAll {
     }
 
     # Load functions
-    . ./Functions.ps1
+    . $PSScriptRoot/Functions.ps1
 }
 
 Describe "APIMPolicy.Rules.InboundBasePolicy" {
@@ -89,7 +89,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
-    
+
     It "Should return false if the inbound section is missing" {
         $policy = New-APIPolicy @"
             <policies>
