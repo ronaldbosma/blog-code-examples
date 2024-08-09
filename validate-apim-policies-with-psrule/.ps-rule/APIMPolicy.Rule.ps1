@@ -64,3 +64,27 @@ Rule "APIMPolicy.Rules.UseBackendEntity" `
         $Assert.HasField($setBackendServicePolicy, "backend-id")
     }
 }
+
+# Synopsis: The subscription key header (Ocp-Apim-Subscription-Key) should be removed in the inbound section of the global policy to prevent it from being forwarded to the backend.
+Rule "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" -Type "APIMPolicy.Types.Global" {
+    $policy = $TargetObject.Content.DocumentElement
+    
+    $Assert.HasField($policy, "inbound")
+    
+    # Select all set-header policies from the inbound section that are direct children.
+    # We only check the first level, because the header should always be removed and not optionally (e.g. when it's nested in a choose>when).
+    # The expression is surround by @(...) because the result is a single XmlElement if only one is found, but we want an array.
+    $setHeaderPolicies = @( $policy.inbound.ChildNodes | Where-Object { $_.LocalName -eq "set-header" -and $_.name -eq "Ocp-Apim-Subscription-Key" -and $_."exists-action" -eq "delete" } )
+
+    if ($setHeaderPolicies.Count -gt 0) {
+        $Assert.Pass()
+    } else {
+        $Assert.Fail("Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section.")
+    }
+
+    # $result = $Assert.Greater($setHeaderPolicies, "Count", 0).WithReason("Unable tou find a set-header policy in the inbound section.")
+    # $result.AddReason("Unable tou find a set-header policy in the inbound section.")
+
+    # $result
+
+}
