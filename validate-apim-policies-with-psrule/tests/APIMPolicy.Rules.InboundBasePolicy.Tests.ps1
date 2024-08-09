@@ -100,4 +100,21 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound*not exist*"
     }
+
+
+    It "Should apply to operation" {
+        $policy = New-OperationPolicy @"
+            <policies>
+                <inbound>
+                    <first />
+                    <base />
+                    <third />
+                </inbound>
+            </policies>
+"@
+
+        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
+        
+        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
+    }
 }
