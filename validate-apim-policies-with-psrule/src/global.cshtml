@@ -1,5 +1,7 @@
 <policies>
-    <inbound />
+    <inbound>
+        <set-backend-service backend-id="test" />
+    </inbound>
     <backend>
         <forward-request />
     </backend>
