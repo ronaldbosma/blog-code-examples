@@ -15,7 +15,6 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Global.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
-            PolicyType = "APIMPolicy.Types.Global"
         }
 
     })
@@ -34,7 +33,6 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Workspace.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
-            PolicyType = "APIMPolicy.Types.Workspace"
         }
 
     })
@@ -53,7 +51,6 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Product.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
-            PolicyType = "APIMPolicy.Types.Product"
         }
 
     })
@@ -72,7 +69,6 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.API.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
-            PolicyType = "APIMPolicy.Types.API"
         }
 
     })
@@ -91,7 +87,6 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Operation.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
-            PolicyType = "APIMPolicy.Types.Operation"
         }
 
     })
@@ -110,7 +105,6 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Fragment.Import' -Initialize {
         [PSCustomObject]@{
             Name = $name
             Content = [Xml](Get-Content -Path $_.FullName -Raw)
-            PolicyType = "APIMPolicy.Types.Fragment"
         }
 
     })

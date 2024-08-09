@@ -36,7 +36,6 @@ function New-Policy([Parameter(Mandatory=$true)]$Type, [Parameter(Mandatory=$tru
 {
     return [PSCustomObject]@{
         PSTypeName = $Type # This is necessary for the -Type filter on a Rule to work
-        PolicyType = $Type
         Name = $Name
         Content = [xml]$Xml
     }

@@ -4,7 +4,7 @@
 
 
 # Synopsis: The first policy inside the inbound section should be the base policy to make sure important logic like security checks are applied first.
-Rule "APIMPolicy.Rules.InboundBasePolicy" -If { $TargetObject.PolicyType?.StartsWith("APIMPolicy.Types.") -and $TargetObject.PolicyType -ne "APIMPolicy.Types.Global" -and $TargetObject.PolicyType -ne "APIMPolicy.Types.Fragment" } {
+Rule "APIMPolicy.Rules.InboundBasePolicy" -If { $PSRule.TargetType.StartsWith("APIMPolicy.Types.") -and $PSRule.TargetType -ne "APIMPolicy.Types.Global" -and $PSRule.TargetType -ne "APIMPolicy.Types.Fragment" } {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "inbound")
@@ -50,7 +50,7 @@ Rule "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" -Type "APIMPolicy.Type
 # Synopsis: A set-backend-service policy should use a backend entity (by setting the backend-id attribute) so it's reusable and easier to maintain.
 Rule "APIMPolicy.Rules.UseBackendEntity" `
     -If { 
-        $TargetObject.PolicyType?.StartsWith("APIMPolicy.Types.") -and `
+        $PSRule.TargetType.StartsWith("APIMPolicy.Types.") -and `
         $TargetObject.Content.DocumentElement.SelectNodes(".//*[local-name()='set-backend-service']").Count -ne 0 
     } `
 {
@@ -81,10 +81,4 @@ Rule "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" -Type "APIMPolicy.Types.Glob
     } else {
         $Assert.Fail("Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section.")
     }
-
-    # $result = $Assert.Greater($setHeaderPolicies, "Count", 0).WithReason("Unable tou find a set-header policy in the inbound section.")
-    # $result.AddReason("Unable tou find a set-header policy in the inbound section.")
-
-    # $result
-
 }
