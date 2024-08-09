@@ -4,30 +4,25 @@
 
 function New-GlobalPolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return [PSCustomObject]@{
-        PSTypeName = "APIMPolicy.Types.Global" # This is necessary for the -Type filter on a Rule to work
-        PolicyType = "APIMPolicy.Types.Global"
-        Name = "global.cshtml"
-        Content = [xml]$Xml
-    }
+    return New-Policy -Type "APIMPolicy.Types.Global" -Name "global.cshtml" -Xml $Xml
 }
 
 function New-APIPolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return [PSCustomObject]@{
-        PSTypeName = "APIMPolicy.Types.API" # This is necessary for the -Type filter on a Rule to work
-        PolicyType = "APIMPolicy.Types.API"
-        Name = "test.api.cshtml"
-        Content = [xml]$Xml
-    }
+    return New-Policy -Type "APIMPolicy.Types.API" -Name "test.api.cshtml" -Xml $Xml
 }
 
 function New-OperationPolicy([Parameter(Mandatory=$true)]$Xml)
 {
+    return New-Policy -Type "APIMPolicy.Types.Operation" -Name "test.operation.cshtml" -Xml $Xml
+}
+
+function New-Policy([Parameter(Mandatory=$true)]$Type, [Parameter(Mandatory=$true)]$Name, [Parameter(Mandatory=$true)]$Xml)
+{
     return [PSCustomObject]@{
-        PSTypeName = "APIMPolicy.Types.Operation" # This is necessary for the -Type filter on a Rule to work
-        PolicyType = "APIMPolicy.Types.Operation"
-        Name = "test.operation.cshtml"
+        PSTypeName = $Type # This is necessary for the -Type filter on a Rule to work
+        PolicyType = $Type
+        Name = $Name
         Content = [xml]$Xml
     }
 }
