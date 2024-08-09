@@ -13,11 +13,26 @@ BeforeAll {
 
 Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
+    It "Should return true if base policy is the only policy in the inbound section" {
+        $policy = New-APIPolicy @"
+            <policies>
+                <inbound>
+                    <base />
+                </inbound>
+            </policies>
+"@
+
+        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
+        
+        $result.IsSuccess() | Should -Be $True
+    }
+
     It "Should return true if base policy is the first policy in the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
                     <base />
+                    <second />
                 </inbound>
             </policies>
 "@
@@ -40,6 +55,8 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
         $result.IsSuccess() | Should -Be $False
+        $result.Reason.Length | Should -BeGreaterOrEqual 1
+        $result.Reason[0] | Should -BeLike "*inbound.FirstChild.Name*first*"
     }
 
     It "Should return false if the base policy is missing from the inbound section" {
@@ -54,11 +71,11 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
         $result.IsSuccess() | Should -Be $False
-        $result.Reason.Length | Should -Be 1
+        $result.Reason.Length | Should -BeGreaterOrEqual 1
         $result.Reason[0] | Should -BeLike "*base*not exist*"
     }
 
-    It "Should return false if inbound section is empty" {
+    It "Should return false if the inbound section is empty" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound />
@@ -68,7 +85,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
         $result.IsSuccess() | Should -Be $False
-        $result.Reason.Length | Should -Be 1
+        $result.Reason.Length | Should -BeGreaterOrEqual 1
         $result.Reason[0] | Should -BeLike "*base*not exist*"
     }
 

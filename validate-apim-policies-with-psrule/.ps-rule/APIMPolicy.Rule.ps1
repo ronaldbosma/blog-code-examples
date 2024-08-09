@@ -9,4 +9,5 @@ Rule 'APIMPolicy.Rules.InboundBasePolicy' {
     
     $Assert.HasField($policy, "inbound")
     $Assert.HasField($policy.inbound, "base")
+    $Assert.HasFieldValue($policy, "inbound.FirstChild.Name", "base")
 }
