@@ -24,7 +24,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result.IsSuccess() | Should -Be $True
+        $result | Assert-PSRuleSucceeded
     }
 
     It "Should return true if base policy is the first policy in the inbound section" {
@@ -39,7 +39,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result.IsSuccess() | Should -Be $True
+        $result | Assert-PSRuleSucceeded
     }
 
     It "Should return false if base policy is NOT the first policy in the inbound section" {
@@ -54,9 +54,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result.IsSuccess() | Should -Be $False
-        $result.Reason.Length | Should -BeGreaterOrEqual 1
-        $result.Reason[0] | Should -BeLike "*inbound.FirstChild.Name*first*"
+        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
     }
 
     It "Should return false if the base policy is missing from the inbound section" {
@@ -70,9 +68,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
-        $result.IsSuccess() | Should -Be $False
-        $result.Reason.Length | Should -BeGreaterOrEqual 1
-        $result.Reason[0] | Should -BeLike "*base*not exist*"
+        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
     It "Should return false if the inbound section is empty" {
@@ -84,9 +80,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
-        $result.IsSuccess() | Should -Be $False
-        $result.Reason.Length | Should -BeGreaterOrEqual 1
-        $result.Reason[0] | Should -BeLike "*base*not exist*"
+        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
     It "Should return false if the inbound section is missing" {
@@ -97,8 +91,6 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
-        $result.IsSuccess() | Should -Be $False
-        $result.Reason.Length | Should -BeGreaterOrEqual 1
-        $result.Reason[0] | Should -BeLike "*inbound*not exist*"
+        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound*not exist*"
     }
 }
