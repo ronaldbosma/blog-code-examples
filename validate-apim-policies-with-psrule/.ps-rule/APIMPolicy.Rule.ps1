@@ -4,7 +4,7 @@
 
 
 # Synopsis: The first policy inside the inbound section should be the base policy.
-Rule 'APIMPolicy.Rules.InboundBasePolicy' {
+Rule "APIMPolicy.Rules.InboundBasePolicy" -Type "APIMPolicy.Types.API", "APIMPolicy.Types.Operation" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "inbound")
