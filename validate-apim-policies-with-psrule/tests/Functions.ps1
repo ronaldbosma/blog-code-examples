@@ -67,10 +67,19 @@ function Assert-RuleFailedWithReason {
         [Parameter(Mandatory=$true)][string]$ExpectedReasonPattern
     )
     
+    $RuleRecord | Assert-RuleFailed
+    $RuleRecord.Reason[0] | Should -BeLike $ExpectedReasonPattern
+}
+
+function Assert-RuleFailed {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord]$RuleRecord
+    )
+    
     $RuleRecord | Should -not -BeNullOrEmpty
     $RuleRecord.IsSuccess() | Should -Be $False
     $RuleRecord.Reason.Length | Should -BeGreaterOrEqual 1
-    $RuleRecord.Reason[0] | Should -BeLike $ExpectedReasonPattern
 }
 
 function Assert-RuleSkipped {

@@ -91,47 +91,43 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
 
     It "Should return false if the inbound section is missing" {
-        $policy = New-APIPolicy @"
-            <policies>
-            </policies>
-"@
-
+        $policy = New-APIPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
-
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*inbound*not exist*"
     }
 
 
-    It "Should apply to operation" {
-        $policy = New-OperationPolicy @"
-            <policies>
-                <inbound>
-                    <first />
-                    <base />
-                    <third />
-                </inbound>
-            </policies>
-"@
-
+    It "Should apply to workspace" {
+        $policy = New-WorkspacePolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
-        
-        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
+        $result | Assert-RuleFailed
+    }
+
+
+    It "Should apply to product" {
+        $policy = New-ProductPolicy "<policies></policies>"
+        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
+        $result | Assert-RuleFailed
+    }
+
+
+    It "Should apply to operation" {
+        $policy = New-OperationPolicy "<policies></policies>"
+        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
+        $result | Assert-RuleFailed
     }
 
     
     It "Should no apply to global" {
-        $policy = New-GlobalPolicy @"
-            <policies>
-                <inbound>
-                    <first />
-                    <base />
-                    <third />
-                </inbound>
-            </policies>
-"@
-
+        $policy = New-GlobalPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
-        
+        $result | Assert-RuleSkipped
+    }
+
+    
+    It "Should no apply to policy fragment" {
+        $policy = New-PolicyFragment "<fragment></fragment>"
+        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         $result | Assert-RuleSkipped
     }
 }
