@@ -24,3 +24,9 @@ To execute the tests, open a PowerShell terminal, navigate to the `tests` folder
 ```powershell
 .\Invoke-PesterTests.ps1 -ModulePath .
 ```
+
+You can filter the test files using the `-IncludeTestFiles` parameter. For example, to test only the rules that are in files with `UseBackend` in the name, execute the following command:
+
+```powershell
+.\Invoke-PesterTests.ps1 -ModulePath . -IncludeTestFiles "*UseBackend*"
+```
