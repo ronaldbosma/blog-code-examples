@@ -48,7 +48,7 @@ Rule "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" -Type "APIMPolicy.Type
 }
 
 # Synopsis: A set-backend-service policy should use a backend entity (by setting the backend-id attribute) so it's reusable and easier to maintain.
-Rule "APIMPolicy.Rules.SetBackendServiceFromBackendEntity" `
+Rule "APIMPolicy.Rules.UseBackendEntity" `
     -If { 
         $TargetObject.PolicyType?.StartsWith("APIMPolicy.Types.") -and `
         $TargetObject.Content.DocumentElement.SelectNodes(".//*[local-name()='set-backend-service']").Count -ne 0 
