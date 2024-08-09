@@ -33,6 +33,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
                 <inbound>
                     <base />
                     <second />
+                    <third />
                 </inbound>
             </policies>
 "@
@@ -48,6 +49,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
                 <inbound>
                     <first />
                     <base />
+                    <third />
                 </inbound>
             </policies>
 "@
