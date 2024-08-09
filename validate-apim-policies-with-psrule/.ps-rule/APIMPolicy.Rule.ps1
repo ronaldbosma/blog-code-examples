@@ -29,7 +29,6 @@ Rule "APIMPolicy.Rules.OutboundBasePolicy" -Type "APIMPolicy.Types.Workspace", "
     $Assert.HasField($policy.outbound, "base")
 }
 
-
 # Synopsis: The on-error section should include the base policy so generic logic like error handling can be applied.
 Rule "APIMPolicy.Rules.OnErrorBasePolicy" -Type "APIMPolicy.Types.Workspace", "APIMPolicy.Types.Product", "APIMPolicy.Types.API", "APIMPolicy.Types.Operation" {
     $policy = $TargetObject.Content.DocumentElement
