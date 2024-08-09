@@ -23,6 +23,44 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Global.Import' -Initialize {
     $PSRule.ImportWithType('APIMPolicy.Types.Global', $policies);
 }
 
+# Synopsis: Imports XML policy files of Workspaces for analysis. File names should end with: .workspace.cshtml
+Export-PSRuleConvention 'APIMPolicy.Conventions.Workspace.Import' -Initialize {
+    $policies = @(Get-ChildItem -Path '.' -Include '*.workspace.cshtml' -Recurse -File | ForEach-Object {
+
+        # Use the relative path of the file as the object name, this makes it easier to e.g. apply suppressions
+        # Example: .\src\my.workspace.cshtml
+        $name = $_.FullName | Resolve-Path -Relative
+
+        [PSCustomObject]@{
+            Name = $name
+            Content = [Xml](Get-Content -Path $_.FullName -Raw)
+            PolicyType = "APIMPolicy.Types.Workspace"
+        }
+
+    })
+
+    $PSRule.ImportWithType('APIMPolicy.Types.Workspace', $policies);
+}
+
+# Synopsis: Imports XML policy files of Products for analysis. File names should end with: .product.cshtml
+Export-PSRuleConvention 'APIMPolicy.Conventions.Product.Import' -Initialize {
+    $policies = @(Get-ChildItem -Path '.' -Include '*.product.cshtml' -Recurse -File | ForEach-Object {
+
+        # Use the relative path of the file as the object name, this makes it easier to e.g. apply suppressions
+        # Example: .\src\my.product.cshtml
+        $name = $_.FullName | Resolve-Path -Relative
+
+        [PSCustomObject]@{
+            Name = $name
+            Content = [Xml](Get-Content -Path $_.FullName -Raw)
+            PolicyType = "APIMPolicy.Types.Product"
+        }
+
+    })
+
+    $PSRule.ImportWithType('APIMPolicy.Types.Product', $policies);
+}
+
 # Synopsis: Imports XML policy files of APIs for analysis. File names should end with: .api.cshtml
 Export-PSRuleConvention 'APIMPolicy.Conventions.API.Import' -Initialize {
     $policies = @(Get-ChildItem -Path '.' -Include '*.api.cshtml' -Recurse -File | ForEach-Object {
@@ -59,4 +97,23 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Operation.Import' -Initialize {
     })
 
     $PSRule.ImportWithType('APIMPolicy.Types.Operation', $policies);
+}
+
+# Synopsis: Imports XML policy files of Policy Fragments for analysis. File names should end with: .fragment.cshtml
+Export-PSRuleConvention 'APIMPolicy.Conventions.Fragment.Import' -Initialize {
+    $policies = @(Get-ChildItem -Path '.' -Include '*.fragment.cshtml' -Recurse -File | ForEach-Object {
+
+        # Use the relative path of the file as the object name, this makes it easier to e.g. apply suppressions
+        # Example: .\src\my.fragment.cshtml
+        $name = $_.FullName | Resolve-Path -Relative
+
+        [PSCustomObject]@{
+            Name = $name
+            Content = [Xml](Get-Content -Path $_.FullName -Raw)
+            PolicyType = "APIMPolicy.Types.Fragment"
+        }
+
+    })
+
+    $PSRule.ImportWithType('APIMPolicy.Types.Fragment', $policies);
 }
