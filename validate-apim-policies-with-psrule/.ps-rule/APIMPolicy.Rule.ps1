@@ -50,7 +50,7 @@ Rule "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" -Type "APIMPolicy.Type
 # Synopsis: A set-backend-service policy should use a backend entity (by setting the backend-id attribute) so it's reusable and easier to maintain.
 Rule "APIMPolicy.Rules.UseBackendEntity" `
     -If { 
-        $PSRule.TargetType.StartsWith("APIMPolicy.Types.") -and `
+        $PSRule.TargetType.StartsWith("APIMPolicy.Types.") -and 
         $TargetObject.Content.DocumentElement.SelectNodes(".//*[local-name()='set-backend-service']").Count -ne 0 
     } `
 {
@@ -59,7 +59,7 @@ Rule "APIMPolicy.Rules.UseBackendEntity" `
     # Select all set-backend-service policies
     $setBackendServicePolicies = $policy.SelectNodes(".//*[local-name()='set-backend-service']")
 
-    # Check that each backend has the backend-id attribute set
+    # Check that each set-backend-service policy has the backend-id attribute set
     foreach ($setBackendServicePolicy in $setBackendServicePolicies) {
         $Assert.HasField($setBackendServicePolicy, "backend-id")
     }
@@ -71,9 +71,9 @@ Rule "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" -Type "APIMPolicy.Types.Glob
     
     $Assert.HasField($policy, "inbound")
     
-    # Select all set-header policies from the inbound section that are direct children.
+    # Select all set-header policies that remove the Ocp-Apim-Subscription-Key header from the inbound section that are direct children.
     # We only check the first level, because the header should always be removed and not optionally (e.g. when it's nested in a choose>when).
-    # The expression is surround by @(...) because the result is a single XmlElement if only one is found, but we want an array.
+    # The expression is surround by @(...) because the result is a single XmlElement if only one occurence is found, but we want an array.
     $removeSubscriptionKeyPolicies = @( $policy.inbound.ChildNodes | Where-Object { 
         $_.LocalName -eq "set-header" -and 
         $_.name -eq "Ocp-Apim-Subscription-Key" -and 
