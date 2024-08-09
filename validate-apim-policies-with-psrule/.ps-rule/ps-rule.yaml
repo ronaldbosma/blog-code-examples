@@ -5,5 +5,8 @@ binding:
 convention:
   include:
   - 'APIMPolicy.Conventions.Global.Import'
+  - 'APIMPolicy.Conventions.Workspace.Import'
+  - 'APIMPolicy.Conventions.Product.Import'
   - 'APIMPolicy.Conventions.API.Import'
   - 'APIMPolicy.Conventions.Operation.Import'
+  - 'APIMPolicy.Conventions.Fragment.Import'
