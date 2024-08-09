@@ -37,3 +37,12 @@ Rule "APIMPolicy.Rules.OnErrorBasePolicy" -Type "APIMPolicy.Types.Workspace", "A
     $Assert.HasField($policy, "on-error")
     $Assert.HasField($policy."on-error", "base")
 }
+
+# Synopsis: The backend section in the global policy should only have the forward-request policy to make sure the request is forwarded, and because only one policy is allowed.
+Rule "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" -Type "APIMPolicy.Types.Global" {
+    $policy = $TargetObject.Content.DocumentElement
+    
+    $Assert.HasField($policy, "backend")
+    $Assert.HasField($policy.backend, "forward-request")
+    $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
+}
