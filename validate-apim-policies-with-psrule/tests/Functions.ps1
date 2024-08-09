@@ -25,7 +25,7 @@ function Invoke-CustomPSRule([Parameter(Mandatory=$true)]$InputObject, [Paramete
     # The Path should point to the directoy containing the rule files, else they won't be loaded
     # The Option should point to the PSRule configuraton file, else they conventions won't be loaded
 
-    return Invoke-PSRule -InputObject $InputObject -Name $Rule -Path ".." -Option "../ps-rule.yaml"
+    return Invoke-PSRule -InputObject $InputObject -Name $Rule -Path "$PSScriptRoot/../.ps-rule" -Option "$PSScriptRoot/../.ps-rule/ps-rule.yaml"
 }
 
 function Assert-PSRuleSucceeded {
