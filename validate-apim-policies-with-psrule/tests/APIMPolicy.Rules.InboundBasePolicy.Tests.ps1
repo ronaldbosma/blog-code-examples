@@ -24,7 +24,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result | Assert-PSRuleSucceeded
+        $result | Assert-RuleSucceeded
     }
 
 
@@ -41,7 +41,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result | Assert-PSRuleSucceeded
+        $result | Assert-RuleSucceeded
     }
 
 
@@ -58,7 +58,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
+        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
     }
 
 
@@ -73,7 +73,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
-        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
+        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
 
@@ -86,7 +86,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
-        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
+        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
 
@@ -98,7 +98,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
 
-        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound*not exist*"
+        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*inbound*not exist*"
     }
 
 
@@ -115,6 +115,23 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         
-        $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
+        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
+    }
+
+    
+    It "Should no apply to global" {
+        $policy = New-GlobalPolicy @"
+            <policies>
+                <inbound>
+                    <first />
+                    <base />
+                    <third />
+                </inbound>
+            </policies>
+"@
+
+        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
+        
+        $result | Assert-RuleSkipped
     }
 }
