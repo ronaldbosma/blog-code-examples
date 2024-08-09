@@ -49,6 +49,8 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
                 <inbound>
                     <set-backend-service backend-id="test" />
                     <set-backend-service base-url="https://test.nl" />
+                    <set-backend-service backend-id="test" />
+                    <set-backend-service base-url="https://test.nl" />
                 </inbound>
             </policies>
 "@
