@@ -118,14 +118,14 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
     }
 
     
-    It "Should no apply to global" {
+    It "Should not apply to global" {
         $policy = New-GlobalPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         $result | Assert-RuleSkipped
     }
 
     
-    It "Should no apply to policy fragment" {
+    It "Should not apply to policy fragment" {
         $policy = New-PolicyFragment "<fragment></fragment>"
         $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.InboundBasePolicy"
         $result | Assert-RuleSkipped
