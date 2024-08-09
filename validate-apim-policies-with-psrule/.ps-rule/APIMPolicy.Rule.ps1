@@ -46,3 +46,21 @@ Rule "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" -Type "APIMPolicy.Type
     $Assert.HasField($policy.backend, "forward-request")
     $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
 }
+
+# Synopsis: A set-backend-service policy should use a backend entity (by setting the backend-id attribute) so it's reusable and easier to maintain.
+Rule "APIMPolicy.Rules.SetBackendServiceFromBackendEntity" `
+    -If { 
+        $TargetObject.PolicyType?.StartsWith("APIMPolicy.Types.") -and `
+        $TargetObject.Content.DocumentElement.SelectNodes(".//*[local-name()='set-backend-service']").Count -ne 0 
+    } `
+{
+    $policy = $TargetObject.Content.DocumentElement
+
+    # Select all set-backend-service policies
+    $setBackendServicePolicies = $policy.SelectNodes(".//*[local-name()='set-backend-service']")
+
+    # Check that each backend has the backend-id attribute set
+    foreach ($setBackendServicePolicy in $setBackendServicePolicies) {
+        $Assert.HasField($setBackendServicePolicy, "backend-id")
+    }
+}
