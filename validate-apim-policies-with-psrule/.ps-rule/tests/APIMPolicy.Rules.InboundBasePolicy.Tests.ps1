@@ -27,6 +27,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result | Assert-PSRuleSucceeded
     }
 
+
     It "Should return true if base policy is the first policy in the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
@@ -42,6 +43,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         
         $result | Assert-PSRuleSucceeded
     }
+
 
     It "Should return false if base policy is NOT the first policy in the inbound section" {
         $policy = New-APIPolicy @"
@@ -59,6 +61,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*inbound.FirstChild.Name*first*"
     }
 
+
     It "Should return false if the base policy is missing from the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
@@ -73,6 +76,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
+
     It "Should return false if the inbound section is empty" {
         $policy = New-APIPolicy @"
             <policies>
@@ -85,6 +89,7 @@ Describe "APIMPolicy.Rules.InboundBasePolicy" {
         $result | Assert-PSRuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
 
+    
     It "Should return false if the inbound section is missing" {
         $policy = New-APIPolicy @"
             <policies>
