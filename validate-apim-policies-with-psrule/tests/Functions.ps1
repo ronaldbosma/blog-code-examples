@@ -93,7 +93,7 @@ function Assert-RuleSkipped {
 function Assert-RuleSucceededForTarget {
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord[]]$RuleRecords,
+        [Parameter(Mandatory=$true)][PSRule.Rules.RuleRecord[]]$RuleRecords,
         [Parameter(Mandatory=$true)][string]$TargetName
     )
 
@@ -105,7 +105,7 @@ function Assert-RuleSucceededForTarget {
 function Assert-RuleFailedForTarget {
     [CmdletBinding()]
     Param (
-        [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord[]]$RuleRecords,
+        [Parameter(Mandatory=$true)][PSRule.Rules.RuleRecord[]]$RuleRecords,
         [Parameter(Mandatory=$true)][string]$TargetName
     )
 
