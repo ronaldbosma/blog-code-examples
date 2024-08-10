@@ -3,6 +3,23 @@
 #>
 
 
+# Synopsis: APIM policy file names should end with one of the following extensions: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
+Rule 'APIMPolicy.Rules.FileExtension' -Type ".cshtml" {
+    
+    $knownLevel = $TargetObject.Name -eq "global.cshtml" -or `
+                  $TargetObject.Name.EndsWith(".workspace.cshtml") -or 
+                  $TargetObject.Name.EndsWith(".product.cshtml") -or 
+                  $TargetObject.Name.EndsWith(".api.cshtml") -or 
+                  $TargetObject.Name.EndsWith(".operation.cshtml") -or 
+                  $TargetObject.Name.EndsWith(".fragment.cshtml")
+
+    if ($knownLevel) {
+        $Assert.Pass()
+    } else {
+        $Assert.Fail("Unknown file extension, expected: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml")
+    }
+}
+
 # Synopsis: The first policy inside the inbound section should be the base policy to make sure important logic like security checks are applied first.
 Rule "APIMPolicy.Rules.InboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIMPolicy" {
     $policy = $TargetObject.Content.DocumentElement

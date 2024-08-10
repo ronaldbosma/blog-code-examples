@@ -98,7 +98,10 @@ function Assert-RuleSucceededForTarget {
         [Parameter(Mandatory=$true)][string]$TargetName
     )
 
-    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.EndsWith($TargetName) };
+    # The path separator can be either \ or /, so we change all to / to make the comparison work
+    $TargetName = $TargetName.Replace("\", "/");
+    
+    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.Replace("\", "/").EndsWith($TargetName) };
     $ruleResult | Should -Not -BeNullOrEmpty;
     $ruleResult.IsSuccess() | Should -Be $True
 }
@@ -110,7 +113,10 @@ function Assert-RuleFailedForTarget {
         [Parameter(Mandatory=$true)][string]$TargetName
     )
 
-    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.EndsWith($TargetName) };
+    # The path separator can be either \ or /, so we change all to / to make the comparison work
+    $TargetName = $TargetName.Replace("\", "/");
+
+    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.Replace("\", "/").EndsWith($TargetName) };
     $ruleResult | Should -Not -BeNullOrEmpty;
     $ruleResult.IsSuccess() | Should -Be $False
 }
