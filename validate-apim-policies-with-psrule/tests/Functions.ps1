@@ -89,3 +89,27 @@ function Assert-RuleSkipped {
     
     $RuleRecord | Should -BeNull
 }
+
+function Assert-RuleSucceededForTarget {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord[]]$RuleRecords,
+        [Parameter(Mandatory=$true)][string]$TargetName
+    )
+
+    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.EndsWith($TargetName) };
+    $ruleResult | Should -Not -BeNullOrEmpty;
+    $ruleResult.IsSuccess() | Should -Be $True
+}
+
+function Assert-RuleFailedForTarget {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord[]]$RuleRecords,
+        [Parameter(Mandatory=$true)][string]$TargetName
+    )
+
+    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.EndsWith($TargetName) };
+    $ruleResult | Should -Not -BeNullOrEmpty;
+    $ruleResult.IsSuccess() | Should -Be $False
+}
