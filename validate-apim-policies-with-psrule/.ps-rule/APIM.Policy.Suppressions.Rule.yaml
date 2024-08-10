@@ -3,7 +3,7 @@
 apiVersion: github.com/microsoft/PSRule/v1
 kind: SuppressionGroup
 metadata:
-  name: 'SuppressBasePolicyRelatedRulesForFilesInSuppressedFolder'
+  name: 'SuppressAPIMPolicyRulesForFilesInSuppressedFolder'
 spec:
   rule:
   - 'APIM.Policy.BackendBasePolicy'
