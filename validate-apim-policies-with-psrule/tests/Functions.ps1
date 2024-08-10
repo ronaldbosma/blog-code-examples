@@ -98,12 +98,7 @@ function Assert-RuleSucceededForTarget {
         [Parameter(Mandatory=$true)][string]$TargetName
     )
 
-    # The path separator can be either \ or /, so we change all to / to make the comparison work
-    $TargetName = $TargetName.Replace("\", "/");
-    
-    $ruleResult = $RuleRecords | Where-Object { $_.TargetName.Replace("\", "/").EndsWith($TargetName) };
-    $ruleResult | Should -Not -BeNullOrEmpty;
-    $ruleResult.IsSuccess() | Should -Be $True
+    Assert-RuleOutcomeForTarget -RuleRecords $RuleRecords -TargetName $TargetName -ExpectedOutcome $True
 }
 
 function Assert-RuleFailedForTarget {
@@ -113,10 +108,21 @@ function Assert-RuleFailedForTarget {
         [Parameter(Mandatory=$true)][string]$TargetName
     )
 
+    Assert-RuleOutcomeForTarget -RuleRecords $RuleRecords -TargetName $TargetName -ExpectedOutcome $False
+}
+
+function Assert-RuleOutcomeForTarget {
+    [CmdletBinding()]
+    Param (
+        [Parameter(Mandatory=$true)][PSRule.Rules.RuleRecord[]]$RuleRecords,
+        [Parameter(Mandatory=$true)][string]$TargetName,
+        [Parameter(Mandatory=$true)][bool]$ExpectedOutcome
+    )
+
     # The path separator can be either \ or /, so we change all to / to make the comparison work
     $TargetName = $TargetName.Replace("\", "/");
 
     $ruleResult = $RuleRecords | Where-Object { $_.TargetName.Replace("\", "/").EndsWith($TargetName) };
     $ruleResult | Should -Not -BeNullOrEmpty;
-    $ruleResult.IsSuccess() | Should -Be $False
+    $ruleResult.IsSuccess() | Should -Be $ExpectedOutcome
 }
