@@ -2,6 +2,23 @@
     This file contains PSRule rules that can be used to validate Azure API Management policy files.
 #>
 
+# Synopsis: The backend section should only have the base policy to make sure the request is forwarded, and because only one policy is allowed.
+Rule "APIM.Policy.BackendBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
+    $policy = $TargetObject.Content.DocumentElement
+    
+    $Assert.HasField($policy, "backend")
+    $Assert.HasField($policy.backend, "base")
+    $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
+}
+
+# Synopsis: The backend section in the global policy should only have the forward-request policy to make sure the request is forwarded, and because only one policy is allowed.
+Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Level -eq "Global" } -Type "APIM.Policy" {
+    $policy = $TargetObject.Content.DocumentElement
+    
+    $Assert.HasField($policy, "backend")
+    $Assert.HasField($policy.backend, "forward-request")
+    $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
+}
 
 # Synopsis: APIM policy file names should end with one of the following extensions: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
 Rule 'APIM.Policy.FileExtension' -Type ".cshtml" {
@@ -29,23 +46,6 @@ Rule "APIM.Policy.InboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and
     $Assert.HasFieldValue($policy, "inbound.FirstChild.Name", "base")
 }
 
-# Synopsis: The backend section should only have the base policy to make sure the request is forwarded, and because only one policy is allowed.
-Rule "APIM.Policy.BackendBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
-    $policy = $TargetObject.Content.DocumentElement
-    
-    $Assert.HasField($policy, "backend")
-    $Assert.HasField($policy.backend, "base")
-    $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
-}
-
-# Synopsis: The outbound section should include the base policy so generic logic like error handling can be applied.
-Rule "APIM.Policy.OutboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
-    $policy = $TargetObject.Content.DocumentElement
-    
-    $Assert.HasField($policy, "outbound")
-    $Assert.HasField($policy.outbound, "base")
-}
-
 # Synopsis: The on-error section should include the base policy so generic logic like error handling can be applied.
 Rule "APIM.Policy.OnErrorBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
@@ -54,29 +54,12 @@ Rule "APIM.Policy.OnErrorBasePolicy" -If { $TargetObject.Level -ne "Global" -and
     $Assert.HasField($policy."on-error", "base")
 }
 
-# Synopsis: The backend section in the global policy should only have the forward-request policy to make sure the request is forwarded, and because only one policy is allowed.
-Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Level -eq "Global" } -Type "APIM.Policy" {
+# Synopsis: The outbound section should include the base policy so generic logic like error handling can be applied.
+Rule "APIM.Policy.OutboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
-    $Assert.HasField($policy, "backend")
-    $Assert.HasField($policy.backend, "forward-request")
-    $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
-}
-
-# Synopsis: A set-backend-service policy should use a backend entity (by setting the backend-id attribute) so it's reusable and easier to maintain.
-Rule "APIM.Policy.UseBackendEntity" `
-    -If { $TargetObject.Content.DocumentElement.SelectNodes(".//*[local-name()='set-backend-service']").Count -ne 0  } `
-    -Type "APIM.Policy" `
-{
-    $policy = $TargetObject.Content.DocumentElement
-
-    # Select all set-backend-service policies
-    $setBackendServicePolicies = $policy.SelectNodes(".//*[local-name()='set-backend-service']")
-
-    # Check that each set-backend-service policy has the backend-id attribute set
-    foreach ($setBackendServicePolicy in $setBackendServicePolicies) {
-        $Assert.HasField($setBackendServicePolicy, "backend-id")
-    }
+    $Assert.HasField($policy, "outbound")
+    $Assert.HasField($policy.outbound, "base")
 }
 
 # Synopsis: The subscription key header (Ocp-Apim-Subscription-Key) should be removed in the inbound section of the global policy to prevent it from being forwarded to the backend.
@@ -98,5 +81,21 @@ Rule "APIM.Policy.RemoveSubscriptionKeyHeader" -If { $TargetObject.Level -eq "Gl
         $Assert.Pass()
     } else {
         $Assert.Fail("Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section.")
+    }
+}
+
+# Synopsis: A set-backend-service policy should use a backend entity (by setting the backend-id attribute) so it's reusable and easier to maintain.
+Rule "APIM.Policy.UseBackendEntity" `
+    -If { $TargetObject.Content.DocumentElement.SelectNodes(".//*[local-name()='set-backend-service']").Count -ne 0  } `
+    -Type "APIM.Policy" `
+{
+    $policy = $TargetObject.Content.DocumentElement
+
+    # Select all set-backend-service policies
+    $setBackendServicePolicies = $policy.SelectNodes(".//*[local-name()='set-backend-service']")
+
+    # Check that each set-backend-service policy has the backend-id attribute set
+    foreach ($setBackendServicePolicy in $setBackendServicePolicies) {
+        $Assert.HasField($setBackendServicePolicy, "backend-id")
     }
 }
