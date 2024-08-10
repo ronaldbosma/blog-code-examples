@@ -8,9 +8,10 @@
 Export-PSRuleConvention 'APIM.Policy.Conventions.Import' -Initialize {
     $policies = @(Get-ChildItem -Path '.' -Include '*.cshtml' -Recurse -File | ForEach-Object {
 
-        # Use the relative path of the file as the object name, this makes it easier to e.g. apply suppressions
-        # Example: .\src\my.api.cshtml
-        $name = $_.FullName | Resolve-Path -Relative
+        # Use the relative path of the file as the object name, this makes it easier to e.g. apply suppressions.
+        # Also replace backslashes with forward slashes, so the path doesn't differ between Windows and Linux.
+        # Example: ./src/my.api.cshtml
+        $name = ($_.FullName | Resolve-Path -Relative).Replace('\', '/')
 
         # Determine the level of the policy based on the file name
         $level = "Unknown"
