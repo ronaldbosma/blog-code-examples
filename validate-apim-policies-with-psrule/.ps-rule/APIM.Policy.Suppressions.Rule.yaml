@@ -30,6 +30,6 @@ spec:
     allOf:
     - name: '.'
       endsWith: 'src/suppressed/global.cshtml'
-    # The filter on name is actually enough, but this is a sample of how to filter on level
+    # The filter on name is actually enough, but this shows a sample of how to filter on level
     - field: 'level'
       equals: 'Global'
