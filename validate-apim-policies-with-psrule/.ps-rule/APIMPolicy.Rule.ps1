@@ -70,9 +70,9 @@ Rule "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" -Type "APIMPolicy.Types.Glob
     
     $Assert.HasField($policy, "inbound")
     
-    # Select all set-header policies that remove the Ocp-Apim-Subscription-Key header from the inbound section that are direct children.
-    # We only check the first level, because the header should always be removed and not optionally (e.g. when it's nested in a choose>when).
-    # The expression is surround by @(...) because the result is a single XmlElement if only one occurence is found, but we want an array.
+    # Select all set-header policies that remove the Ocp-Apim-Subscription-Key header.
+    # We only check direct children of the inbound section, because the header should always be removed and not optionally (e.g. when it's nested in a choose.when).
+    # The expression is surround by @(...) because the result is a XmlElement if only one occurence is found, but we want an array.
     $removeSubscriptionKeyPolicies = @( $policy.inbound.ChildNodes | Where-Object { 
         $_.LocalName -eq "set-header" -and 
         $_.name -eq "Ocp-Apim-Subscription-Key" -and 
