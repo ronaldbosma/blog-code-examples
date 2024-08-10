@@ -1,3 +1,7 @@
+<#
+    Tests for the APIMPolicy.Rules.RemoveSubscriptionKeyHeader rule.
+#>
+
 BeforeAll {
     # Setup error handling
     $ErrorActionPreference = 'Stop';

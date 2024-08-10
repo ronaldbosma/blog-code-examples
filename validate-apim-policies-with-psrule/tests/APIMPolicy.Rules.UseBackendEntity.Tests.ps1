@@ -1,3 +1,7 @@
+<#
+    Tests for the APIMPolicy.Rules.UseBackendEntity rule.
+#>
+
 BeforeAll {
     # Setup error handling
     $ErrorActionPreference = 'Stop';

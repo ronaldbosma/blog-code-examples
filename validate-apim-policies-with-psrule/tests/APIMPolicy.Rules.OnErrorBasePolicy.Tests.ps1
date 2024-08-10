@@ -1,3 +1,7 @@
+<#
+    Tests for APIMPolicy.Rules.OnErrorBasePolicy rule.
+#>
+
 BeforeAll {
     # Setup error handling
     $ErrorActionPreference = 'Stop';
