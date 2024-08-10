@@ -5,7 +5,7 @@
 
 
 # Synopsis: Imports the APIM XML policy file for analysis. File names should match: *.cshtml
-Export-PSRuleConvention 'APIMPolicy.Conventions.Import' -Initialize {
+Export-PSRuleConvention 'APIM.Policy.Conventions.Import' -Initialize {
     $policies = @(Get-ChildItem -Path '.' -Include '*.cshtml' -Recurse -File | ForEach-Object {
 
         # Use the relative path of the file as the object name, this makes it easier to e.g. apply suppressions
@@ -31,5 +31,5 @@ Export-PSRuleConvention 'APIMPolicy.Conventions.Import' -Initialize {
         }
     })
 
-    $PSRule.ImportWithType('APIMPolicy', $policies);
+    $PSRule.ImportWithType('APIM.Policy', $policies);
 }

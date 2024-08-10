@@ -26,9 +26,9 @@ BeforeAll {
     }
 }
 
-Describe "APIMPolicy" {
-    It "APIMPolicy.Rules.BackendBasePolicy" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.BackendBasePolicy' } );
+Describe "APIM.Policy" {
+    It "APIM.Policy.BackendBasePolicy" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.BackendBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
         Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
@@ -42,16 +42,16 @@ Describe "APIMPolicy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.BackendForwardRequestGlobalPolicy' } );
+    It "APIM.Policy.BackendForwardRequestGlobalPolicy" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.BackendForwardRequestGlobalPolicy' } );
         $ruleResults.Count | Should -Be 2
 
         Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
     }
     
-    It "APIMPolicy.Rules.FileExtension" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.FileExtension' } );
+    It "APIM.Policy.FileExtension" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.FileExtension' } );
         $ruleResults.Count | Should -Be 13
 
         Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
@@ -68,8 +68,8 @@ Describe "APIMPolicy" {
         Assert-RuleFailedForTarget $ruleResults "unknown-level.cshtml"
     }
 
-    It "APIMPolicy.Rules.InboundBasePolicy" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.InboundBasePolicy' } );
+    It "APIM.Policy.InboundBasePolicy" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.InboundBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
         Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
@@ -83,8 +83,8 @@ Describe "APIMPolicy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIMPolicy.Rules.OnErrorBasePolicy" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.OnErrorBasePolicy' } );
+    It "APIM.Policy.OnErrorBasePolicy" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.OnErrorBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
         Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
@@ -98,8 +98,8 @@ Describe "APIMPolicy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIMPolicy.Rules.OutboundBasePolicy" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.OutboundBasePolicy' } );
+    It "APIM.Policy.OutboundBasePolicy" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.OutboundBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
         Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
@@ -113,16 +113,16 @@ Describe "APIMPolicy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.RemoveSubscriptionKeyHeader' } );
+    It "APIM.Policy.RemoveSubscriptionKeyHeader" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.RemoveSubscriptionKeyHeader' } );
         $ruleResults.Count | Should -Be 2
 
         Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
     }
     
-    It "APIMPolicy.Rules.UseBackendEntity" {
-        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIMPolicy.Rules.UseBackendEntity' } );
+    It "APIM.Policy.UseBackendEntity" {
+        $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.UseBackendEntity' } );
         $ruleResults.Count | Should -Be 12
 
         Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"

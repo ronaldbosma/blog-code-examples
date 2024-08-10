@@ -1,5 +1,5 @@
 <#
-    Tests for APIMPolicy.Rules.OutboundBasePolicy rule
+    Tests for APIM.Policy.OutboundBasePolicy rule
 #>
 
 BeforeAll {
@@ -15,7 +15,7 @@ BeforeAll {
     . $PSScriptRoot/Functions.ps1
 }
 
-Describe "APIMPolicy.Rules.OutboundBasePolicy" {
+Describe "APIM.Policy.OutboundBasePolicy" {
 
     It "Should return true if base policy is the only policy in the outbound section" {
         $policy = New-APIPolicy @"
@@ -26,7 +26,7 @@ Describe "APIMPolicy.Rules.OutboundBasePolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         
         $result | Assert-RuleSucceeded
     }
@@ -43,7 +43,7 @@ Describe "APIMPolicy.Rules.OutboundBasePolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleSucceeded
     }
 
@@ -57,7 +57,7 @@ Describe "APIMPolicy.Rules.OutboundBasePolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
 
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
@@ -70,7 +70,7 @@ Describe "APIMPolicy.Rules.OutboundBasePolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
 
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*base*not exist*"
     }
@@ -78,42 +78,42 @@ Describe "APIMPolicy.Rules.OutboundBasePolicy" {
 
     It "Should return false if the outbound section is missing" {
         $policy = New-APIPolicy "<policies></policies>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*outbound*not exist*"
     }
 
 
     It "Should apply to workspace" {
         $policy = New-WorkspacePolicy "<policies></policies>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleFailed
     }
 
 
     It "Should apply to product" {
         $policy = New-ProductPolicy "<policies></policies>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleFailed
     }
 
 
     It "Should apply to operation" {
         $policy = New-OperationPolicy "<policies></policies>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleFailed
     }
 
     
     It "Should not apply to global" {
         $policy = New-GlobalPolicy "<policies></policies>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleSkipped
     }
 
     
     It "Should not apply to policy fragment" {
         $policy = New-PolicyFragment "<fragment></fragment>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.OutboundBasePolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleSkipped
     }
 }

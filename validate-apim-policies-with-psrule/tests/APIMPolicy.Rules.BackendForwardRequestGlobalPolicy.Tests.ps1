@@ -1,5 +1,5 @@
 <#
-    Tests for APIMPolicy.Rules.BackendForwardRequestGlobalPolicy rule
+    Tests for APIM.Policy.BackendForwardRequestGlobalPolicy rule
 #>
 
 BeforeAll {
@@ -15,7 +15,7 @@ BeforeAll {
     . $PSScriptRoot/Functions.ps1
 }
 
-Describe "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
+Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
 
     It "Should return true if forward-request policy is the only policy in the backend section" {
         $policy = New-GlobalPolicy @"
@@ -26,7 +26,7 @@ Describe "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
         
         $result | Assert-RuleSucceeded
     }
@@ -41,7 +41,7 @@ Describe "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
 
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*forward-request*not exist*"
     }
@@ -54,7 +54,7 @@ Describe "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
 
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*forward-request*not exist*"
     }
@@ -71,7 +71,7 @@ Describe "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
 
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend.ChildNodes.Count*3*"
     }
@@ -79,7 +79,7 @@ Describe "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy" {
 
     It "Should return false if the backend section is missing" {
         $policy = New-GlobalPolicy "<policies></policies>"
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.BackendForwardRequestGlobalPolicy"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend*not exist*"
     }
 }

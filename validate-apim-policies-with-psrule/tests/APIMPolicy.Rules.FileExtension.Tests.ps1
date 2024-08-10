@@ -1,5 +1,5 @@
 <#
-    Tests for APIMPolicy.Rules.FileExtension rule
+    Tests for APIM.Policy.FileExtension rule
 #>
 
 BeforeAll {
@@ -15,7 +15,7 @@ BeforeAll {
     . $PSScriptRoot/Functions.ps1
 }
 
-Describe "APIMPolicy.Rules.FileExtension" {
+Describe "APIM.Policy.FileExtension" {
 
     It "Should return true if the file name is global.cshtml" {
         $file = [PSCustomObject]@{
@@ -23,7 +23,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "global.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSucceeded
     }
 
@@ -34,7 +34,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "test.workspace.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSucceeded
     }
 
@@ -45,7 +45,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "test.product.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSucceeded
     }
 
@@ -56,7 +56,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "test.api.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSucceeded
     }
 
@@ -67,7 +67,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "test.operation.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSucceeded
     }
 
@@ -78,7 +78,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "test.fragment.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSucceeded
     }
 
@@ -89,7 +89,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "unknown.cshtml"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unknown file extension, expected: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml"
     }
 
@@ -100,7 +100,7 @@ Describe "APIMPolicy.Rules.FileExtension" {
             Name = "skip.txt"
         }
 
-        $result = Invoke-CustomPSRule $file "APIMPolicy.Rules.FileExtension"
+        $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
         $result | Assert-RuleSkipped
     }
 }

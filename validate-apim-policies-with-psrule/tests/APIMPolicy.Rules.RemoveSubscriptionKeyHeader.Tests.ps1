@@ -1,5 +1,5 @@
 <#
-    Tests for the APIMPolicy.Rules.RemoveSubscriptionKeyHeader rule.
+    Tests for the APIM.Policy.RemoveSubscriptionKeyHeader rule.
 #>
 
 BeforeAll {
@@ -15,7 +15,7 @@ BeforeAll {
     . $PSScriptRoot/Functions.ps1
 }
 
-Describe "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
+Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
 
     It "Should return true if the subscription key header is removed in the inbound section" {
         $policy = New-GlobalPolicy @"
@@ -26,7 +26,7 @@ Describe "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.RemoveSubscriptionKeyHeader"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.RemoveSubscriptionKeyHeader"
         
         $result | Assert-RuleSucceeded
     }
@@ -39,7 +39,7 @@ Describe "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.RemoveSubscriptionKeyHeader"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.RemoveSubscriptionKeyHeader"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section."
     }
@@ -54,7 +54,7 @@ Describe "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.RemoveSubscriptionKeyHeader"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.RemoveSubscriptionKeyHeader"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section."
     }
@@ -69,7 +69,7 @@ Describe "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.RemoveSubscriptionKeyHeader"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.RemoveSubscriptionKeyHeader"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section."
     }
@@ -88,7 +88,7 @@ Describe "APIMPolicy.Rules.RemoveSubscriptionKeyHeader" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.RemoveSubscriptionKeyHeader"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.RemoveSubscriptionKeyHeader"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section."
     }

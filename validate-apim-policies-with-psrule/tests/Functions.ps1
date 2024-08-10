@@ -35,7 +35,7 @@ function New-PolicyFragment([Parameter(Mandatory=$true)]$Xml)
 function New-Policy([Parameter(Mandatory=$true)]$Level, [Parameter(Mandatory=$true)]$Name, [Parameter(Mandatory=$true)]$Xml)
 {
     return [PSCustomObject]@{
-        PSTypeName = "APIMPolicy" # This is necessary for the -Type filter on a Rule to work
+        PSTypeName = "APIM.Policy" # This is necessary for the -Type filter on a Rule to work
         Name = $Name
         Level = $Level
         Content = [xml]$Xml

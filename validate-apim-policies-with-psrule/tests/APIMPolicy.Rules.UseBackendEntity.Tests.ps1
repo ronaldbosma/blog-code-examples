@@ -1,5 +1,5 @@
 <#
-    Tests for the APIMPolicy.Rules.UseBackendEntity rule.
+    Tests for the APIM.Policy.UseBackendEntity rule.
 #>
 
 BeforeAll {
@@ -15,7 +15,7 @@ BeforeAll {
     . $PSScriptRoot/Functions.ps1
 }
 
-Describe "APIMPolicy.Rules.UseBackendEntity" {
+Describe "APIM.Policy.UseBackendEntity" {
 
     It "Should return true if the backend-id attribute is set on the set-backend-service policy" {
         $policy = New-APIPolicy @"
@@ -26,7 +26,7 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         
         $result | Assert-RuleSucceeded
     }
@@ -41,7 +41,7 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
@@ -59,7 +59,7 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
@@ -78,7 +78,7 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
@@ -91,7 +91,7 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
             </policies>
 "@
 
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         
         $result | Assert-RuleSkipped
     }
@@ -99,35 +99,35 @@ Describe "APIMPolicy.Rules.UseBackendEntity" {
 
     It "Should apply to global policy" {
         $policy = New-GlobalPolicy '<policies><inbound><set-backend-service base-url="https://test.nl" /></inbound></policies>'
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
 
 
     It "Should apply to workspace policy" {
         $policy = New-WorkspacePolicy '<policies><inbound><set-backend-service base-url="https://test.nl" /></inbound></policies>'
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
 
 
     It "Should apply to product policy" {
         $policy = New-ProductPolicy '<policies><inbound><set-backend-service base-url="https://test.nl" /></inbound></policies>'
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
 
 
     It "Should apply to operation policy" {
         $policy = New-OperationPolicy '<policies><inbound><set-backend-service base-url="https://test.nl" /></inbound></policies>'
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
 
 
     It "Should apply to policy fragment" {
         $policy = New-PolicyFragment '<policies><inbound><set-backend-service base-url="https://test.nl" /></inbound></policies>'
-        $result = Invoke-CustomPSRule $policy "APIMPolicy.Rules.UseBackendEntity"
+        $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend-id*not exist*"
     }
 }

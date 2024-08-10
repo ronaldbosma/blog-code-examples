@@ -4,4 +4,4 @@ binding:
 # Include the APIM policy conventions to load the policy XML files
 convention:
   include:
-  - 'APIMPolicy.Conventions.Import'
+  - 'APIM.Policy.Conventions.Import'
