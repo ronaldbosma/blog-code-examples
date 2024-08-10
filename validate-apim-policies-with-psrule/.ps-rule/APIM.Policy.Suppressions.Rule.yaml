@@ -27,6 +27,9 @@ metadata:
 spec:
   rule: []
   if:
-    name: '.'
-    endsWith:
-    - 'src/suppressed/global.cshtml'
+    allOf:
+    - name: '.'
+      endsWith: 'src/suppressed/global.cshtml'
+    # The filter on name is actually enough, but this is a sample of how to filter on level
+    - field: 'level'
+      equals: 'Global'
