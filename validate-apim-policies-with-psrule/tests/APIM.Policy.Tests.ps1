@@ -27,7 +27,7 @@ BeforeAll {
 }
 
 Describe "APIM.Policy" {
-    It "APIM.Policy.BackendBasePolicy" {
+    It "BackendBasePolicy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.BackendBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
@@ -42,7 +42,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIM.Policy.BackendForwardRequestGlobalPolicy" {
+    It "BackendForwardRequestGlobalPolicy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.BackendForwardRequestGlobalPolicy' } );
         $ruleResults.Count | Should -Be 2
 
@@ -50,7 +50,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
     }
     
-    It "APIM.Policy.FileExtension" {
+    It "FileExtension" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.FileExtension' } );
         $ruleResults.Count | Should -Be 13
 
@@ -68,7 +68,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "unknown-level.cshtml"
     }
 
-    It "APIM.Policy.InboundBasePolicy" {
+    It "InboundBasePolicy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.InboundBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
@@ -83,7 +83,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIM.Policy.OnErrorBasePolicy" {
+    It "OnErrorBasePolicy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.OnErrorBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
@@ -98,7 +98,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIM.Policy.OutboundBasePolicy" {
+    It "OutboundBasePolicy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.OutboundBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
@@ -113,7 +113,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "bad.operation.cshtml"
     }
     
-    It "APIM.Policy.RemoveSubscriptionKeyHeader" {
+    It "RemoveSubscriptionKeyHeader" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.RemoveSubscriptionKeyHeader' } );
         $ruleResults.Count | Should -Be 2
 
@@ -121,7 +121,7 @@ Describe "APIM.Policy" {
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
     }
     
-    It "APIM.Policy.UseBackendEntity" {
+    It "UseBackendEntity" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.UseBackendEntity' } );
         $ruleResults.Count | Should -Be 12
 
