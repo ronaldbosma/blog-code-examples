@@ -20,7 +20,7 @@ Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Level -
     $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
 }
 
-# Synopsis: APIM policy file names should end with one of the following extensions: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
+# Synopsis: APIM policy file name should be global.cshtml or end with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
 Rule 'APIM.Policy.FileExtension' -Type ".cshtml" {
     
     $knownLevel = $TargetObject.Name -eq "global.cshtml" -or `
@@ -33,7 +33,7 @@ Rule 'APIM.Policy.FileExtension' -Type ".cshtml" {
     if ($knownLevel) {
         $Assert.Pass()
     } else {
-        $Assert.Fail("Unknown file extension, expected: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml")
+        $Assert.Fail("Unknown file name. Expected global.cshtml or name ending with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml")
     }
 }
 

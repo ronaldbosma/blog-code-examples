@@ -90,7 +90,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unknown file extension, expected: global.cshtml, .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml"
+        $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "Unknown file name. Expected global.cshtml or name ending with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml"
     }
 
 
