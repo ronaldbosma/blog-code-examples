@@ -14,7 +14,7 @@ Export-PSRuleConvention 'APIM.Policy.Conventions.Import' -Initialize {
         $name = ($_.FullName | Resolve-Path -Relative).Replace('\', '/')
 
         # Determine the level of the policy based on the file name
-        $level = "Unknown"
+        $level = $null
         if ($_.Name -eq "global.cshtml") { $level = "Global" }
         elseif ($_.Name.EndsWith(".workspace.cshtml")) { $level = "Workspace" }
         elseif ($_.Name.EndsWith(".product.cshtml")) { $level = "Product" }
@@ -23,7 +23,7 @@ Export-PSRuleConvention 'APIM.Policy.Conventions.Import' -Initialize {
         elseif ($_.Name.EndsWith(".fragment.cshtml")) { $level = "Fragment" }
 
         # Only create an object to analyse if the level is known
-        if ($level -ne "Unknown") {
+        if ($null -ne $level) {
             [PSCustomObject]@{
                 Name = $name
                 Level = $level
