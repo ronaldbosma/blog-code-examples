@@ -4,39 +4,40 @@
 
 function New-GlobalPolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return New-Policy -Type "APIMPolicy.Types.Global" -Name "global.cshtml" -Xml $Xml
+    return New-Policy -Level "Global" -Name "global.cshtml" -Xml $Xml
 }
 
 function New-WorkspacePolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return New-Policy -Type "APIMPolicy.Types.Workspace" -Name "test.workspace.cshtml" -Xml $Xml
+    return New-Policy -Level "Workspace" -Name "test.workspace.cshtml" -Xml $Xml
 }
 
 function New-ProductPolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return New-Policy -Type "APIMPolicy.Types.Product" -Name "test.product.cshtml" -Xml $Xml
+    return New-Policy -Level "Product" -Name "test.product.cshtml" -Xml $Xml
 }
 
 function New-APIPolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return New-Policy -Type "APIMPolicy.Types.API" -Name "test.api.cshtml" -Xml $Xml
+    return New-Policy -Level "API" -Name "test.api.cshtml" -Xml $Xml
 }
 
 function New-OperationPolicy([Parameter(Mandatory=$true)]$Xml)
 {
-    return New-Policy -Type "APIMPolicy.Types.Operation" -Name "test.operation.cshtml" -Xml $Xml
+    return New-Policy -Level "Operation" -Name "test.operation.cshtml" -Xml $Xml
 }
 
 function New-PolicyFragment([Parameter(Mandatory=$true)]$Xml)
 {
-    return New-Policy -Type "APIMPolicy.Types.Fragment" -Name "test.fragment.cshtml" -Xml $Xml
+    return New-Policy -Level "Fragment" -Name "test.fragment.cshtml" -Xml $Xml
 }
 
-function New-Policy([Parameter(Mandatory=$true)]$Type, [Parameter(Mandatory=$true)]$Name, [Parameter(Mandatory=$true)]$Xml)
+function New-Policy([Parameter(Mandatory=$true)]$Level, [Parameter(Mandatory=$true)]$Name, [Parameter(Mandatory=$true)]$Xml)
 {
     return [PSCustomObject]@{
-        PSTypeName = $Type # This is necessary for the -Type filter on a Rule to work
+        PSTypeName = "APIMPolicy" # This is necessary for the -Type filter on a Rule to work
         Name = $Name
+        Level = $Level
         Content = [xml]$Xml
     }
 }
