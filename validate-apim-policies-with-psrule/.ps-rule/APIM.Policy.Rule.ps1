@@ -101,6 +101,10 @@ Rule "APIM.Policy.UseBackendEntity" `
 }
 
 # Synopsis: A policy file should contain valid XML
-Rule "APIM.Policy.ValidXml" -Type "APIM.PolicyWithInvalidXml" {
-    $Assert.Fail($TargetObject.Error)
+Rule "APIM.Policy.ValidXml" -Type "APIM.Policy", "APIM.PolicyWithInvalidXml" {
+    if ($PSRule.TargetType -eq "APIM.Policy") {
+        $Assert.Pass()
+    } else {
+        $Assert.Fail($TargetObject.Error)
+    }
 }

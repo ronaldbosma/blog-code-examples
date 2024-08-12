@@ -16,6 +16,17 @@ BeforeAll {
 }
 
 Describe "APIM.Policy.ValidXml" {
+    It "Should succeed for objects of type APIM.Policy" {
+        $input = [PSCustomObject]@{
+            PSTypeName = "APIM.Policy" # This is necessary for the -Type filter on a Rule to work
+            Name = "valid-xml.api.cshtml"
+        }
+
+        $result = Invoke-CustomPSRule $input "APIM.Policy.ValidXml"
+        $result | Assert-RuleSucceeded
+    }
+
+
     It "Should return false for objects of type APIM.PolicyWithInvalidXml" {
         $input = [PSCustomObject]@{
             PSTypeName = "APIM.PolicyWithInvalidXml" # This is necessary for the -Type filter on a Rule to work
@@ -25,16 +36,5 @@ Describe "APIM.Policy.ValidXml" {
 
         $result = Invoke-CustomPSRule $input "APIM.Policy.ValidXml"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "This error message"
-    }
-
-    
-    It "Should be skipped for objects of type APIM.Policy" {
-        $input = [PSCustomObject]@{
-            PSTypeName = "APIM.Policy" # This is necessary for the -Type filter on a Rule to work
-            Name = "valid-xml.api.cshtml"
-        }
-
-        $result = Invoke-CustomPSRule $input "APIM.Policy.ValidXml"
-        $result | Assert-RuleSkipped
     }
 }

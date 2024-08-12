@@ -12,6 +12,7 @@ spec:
   - 'APIM.Policy.OnErrorBasePolicy'
   - 'APIM.Policy.OutboundBasePolicy'
   - 'APIM.Policy.UseBackendEntity'
+  - 'APIM.Policy.ValidXml'
   if:
     name: '.'
     contains:

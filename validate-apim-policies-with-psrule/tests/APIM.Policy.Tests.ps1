@@ -143,7 +143,20 @@ Describe "APIM.Policy" {
 
     It "ValidXml" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.ValidXml' } );
-        $ruleResults.Count | Should -Be 1
+        $ruleResults.Count | Should -Be 13
+
+        Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "good.fragment.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "bad/global.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "bad.workspace.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "bad.product.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "bad.api.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "bad.operation.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "bad.fragment.cshtml"
 
         Assert-RuleFailedForTarget $ruleResults "invalid-xml.operation.cshtml"
     }
