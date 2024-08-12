@@ -2,6 +2,11 @@
     <inbound>
         <base />
         <set-backend-service backend-id="test" />
+
+        <!-- This is valid XML because the generic '.As<string>()' method calls is replaced by '.As&lt;string&gt;()', which is also by APIM -->
+        <set-body>@{
+            return context.Request.Body.As&lt;string&gt;();
+        }</set-body>
     </inbound>
 
     <backend>
