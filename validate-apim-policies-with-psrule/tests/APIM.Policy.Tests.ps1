@@ -52,7 +52,7 @@ Describe "APIM.Policy" {
     
     It "FileExtension" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.FileExtension' } );
-        $ruleResults.Count | Should -Be 14
+        $ruleResults.Count | Should -Be 15
 
         Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
         Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
@@ -64,7 +64,8 @@ Describe "APIM.Policy" {
         Assert-RuleSucceededForTarget $ruleResults "bad.product.cshtml"
         Assert-RuleSucceededForTarget $ruleResults "bad.api.cshtml"
         Assert-RuleSucceededForTarget $ruleResults "bad.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "invalid-xml.operation.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "invalid-xml-1.operation.cshtml"
+        Assert-RuleSucceededForTarget $ruleResults "invalid-xml-2.operation.cshtml"
 
         Assert-RuleFailedForTarget $ruleResults "unknown-level.cshtml"
     }
@@ -143,7 +144,7 @@ Describe "APIM.Policy" {
 
     It "ValidXml" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.ValidXml' } );
-        $ruleResults.Count | Should -Be 13
+        $ruleResults.Count | Should -Be 14
 
         Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
         Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
@@ -158,6 +159,7 @@ Describe "APIM.Policy" {
         Assert-RuleSucceededForTarget $ruleResults "bad.operation.cshtml"
         Assert-RuleSucceededForTarget $ruleResults "bad.fragment.cshtml"
 
-        Assert-RuleFailedForTarget $ruleResults "invalid-xml.operation.cshtml"
+        Assert-RuleFailedForTarget $ruleResults "invalid-xml-1.operation.cshtml"
+        Assert-RuleFailedForTarget $ruleResults "invalid-xml-2.operation.cshtml"
     }
 }
