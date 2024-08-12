@@ -21,7 +21,7 @@ Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Level -
 }
 
 # Synopsis: APIM policy file name should be global.cshtml or end with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
-Rule 'APIM.Policy.FileExtension' -Type ".cshtml" {
+Rule "APIM.Policy.FileExtension" -Type ".cshtml" {
     
     $knownLevel = $TargetObject.Name -eq "global.cshtml" -or `
                   $TargetObject.Name.EndsWith(".workspace.cshtml") -or 
