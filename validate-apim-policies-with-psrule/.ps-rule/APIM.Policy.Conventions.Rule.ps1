@@ -39,7 +39,7 @@ Export-PSRuleConvention "APIM.Policy.Conventions.Import" -Initialize {
             }
             catch {
                 # Add policy files with invalid XML to a separate list, so we can report them in a separate rule.
-                # By adding them as a different type, we don't have to exclude them from every APIM Policy rule that expectes valid XML.
+                # By adding them as a different type, we don't have to exclude them from every APIM Policy rule that expects valid XML.
                 $policyFilesWithInvalidXml += [PSCustomObject]@{
                     Name = $name
                     Error = $_.Exception.Message
