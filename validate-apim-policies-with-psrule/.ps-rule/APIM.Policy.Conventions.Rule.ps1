@@ -8,6 +8,8 @@
 Export-PSRuleConvention "APIM.Policy.Conventions.Import" -Initialize {
 
     $policies = @()
+    $policyFilesWithInvalidXml = @()
+
     $policyFiles = Get-ChildItem -Path "." -Include "*.cshtml" -Recurse -File
 
     foreach ($policyFile in $policyFiles) {
@@ -27,13 +29,33 @@ Export-PSRuleConvention "APIM.Policy.Conventions.Import" -Initialize {
 
         # Only create a policy object to analyse if the level is known
         if ($null -ne $level) {
-            $policies += [PSCustomObject]@{
-                Name = $name
-                Level = $level
-                Content = [Xml](Get-Content -Path $policyFile.FullName -Raw)
+
+            # Try to load the XML content of the policy file
+            $content = $null
+            try {
+                $content = [Xml](Get-Content -Path $policyFile.FullName -Raw)
+            }
+            catch {
+                $errorMessage = $_.Exception.Message
+            }
+
+            # Create a policy object if the XML content is valid, else create a 'policy with invalid XML' object with the error message
+            $validXml = $null -ne $content -and $content -is [Xml]
+            if ($validXml) {
+                $policies += [PSCustomObject]@{
+                    Name = $name
+                    Level = $level
+                    Content = [Xml](Get-Content -Path $policyFile.FullName -Raw)
+                }
+            } else {
+                $policyFilesWithInvalidXml += [PSCustomObject]@{
+                    Name = $name
+                    Error = $errorMessage
+                }
             }
         }
     }
 
     $PSRule.ImportWithType("APIM.Policy", $policies);
+    $PSRule.ImportWithType("APIM.PolicyWithInvalidXml", $policyFilesWithInvalidXml);
 }

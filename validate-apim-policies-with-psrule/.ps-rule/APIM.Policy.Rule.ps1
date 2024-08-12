@@ -99,3 +99,8 @@ Rule "APIM.Policy.UseBackendEntity" `
         $Assert.HasField($setBackendServicePolicy, "backend-id")
     }
 }
+
+# Synopsis: A policy file should contain valid XML
+Rule "APIM.Policy.ValidXml" -Type "APIM.PolicyWithInvalidXml" {
+    $Assert.Fail($TargetObject.Error)
+}
