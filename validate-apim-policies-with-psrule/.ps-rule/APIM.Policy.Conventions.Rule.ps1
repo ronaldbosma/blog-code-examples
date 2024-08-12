@@ -1,6 +1,6 @@
 <#
-    This file contains PSRule conventions that can be used load Azure API Management policy files for PSRule analysis.
-    Documentation: https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_Conventions/
+    This file contains a PSRule convention that can be used to load Azure API Management policy files for PSRule analysis.
+    Conventions Documentation: https://microsoft.github.io/PSRule/v2/concepts/PSRule/en-US/about_PSRule_Conventions/
 #>
 
 
