@@ -18,7 +18,7 @@ Export-PSRuleConvention "APIM.Policy.Conventions.Import" -Initialize {
         # Example: ./src/my.api.cshtml
         $name = ($policyFile.FullName | Resolve-Path -Relative).Replace('\', '/')
 
-        # Determine the level of the policy based on the file name
+        # Determine the level of the policy based on the file name.
         $level = $null
         if ($policyFile.Name -eq "global.cshtml") { $level = "Global" }
         elseif ($policyFile.Name.EndsWith(".workspace.cshtml")) { $level = "Workspace" }
@@ -27,7 +27,8 @@ Export-PSRuleConvention "APIM.Policy.Conventions.Import" -Initialize {
         elseif ($policyFile.Name.EndsWith(".operation.cshtml")) { $level = "Operation" }
         elseif ($policyFile.Name.EndsWith(".fragment.cshtml")) { $level = "Fragment" }
 
-        # Only create a policy object to analyse if the level is known
+        # Only create a policy object to analyse if the level is known.
+        # The 'APIM.Policy.FileExtension' rule will report on unknown file extensions.
         if ($null -ne $level) {
             try {
                 $policies += [PSCustomObject]@{
