@@ -1,0 +1,7 @@
+binding:
+  preferTargetInfo: true # This will make sure the specified target type is used for the APIM Policies
+  
+# Include the APIM policy convention to load the policy XML files
+convention:
+  include:
+  - 'APIM.Policy.Conventions.Import'
