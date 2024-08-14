@@ -3,7 +3,7 @@
 #>
 
 # Synopsis: The backend section should only have the base policy to make sure the request is forwarded, and because only one policy is allowed.
-Rule "APIM.Policy.BackendBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
+Rule "APIM.Policy.BackendBasePolicy" -If { $TargetObject.Scope -ne "Global" -and $TargetObject.Scope -ne "Fragment" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "backend")
@@ -12,7 +12,7 @@ Rule "APIM.Policy.BackendBasePolicy" -If { $TargetObject.Level -ne "Global" -and
 }
 
 # Synopsis: The backend section in the global policy should only have the forward-request policy to make sure the request is forwarded, and because only one policy is allowed.
-Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Level -eq "Global" } -Type "APIM.Policy" {
+Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Scope -eq "Global" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "backend")
@@ -20,25 +20,25 @@ Rule "APIM.Policy.BackendForwardRequestGlobalPolicy" -If { $TargetObject.Level -
     $Assert.HasFieldValue($policy, "backend.ChildNodes.Count", 1)
 }
 
-# Synopsis: APIM policy file name should be global.cshtml or end with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
+# Synopsis: APIM policy file name should specify the scope. The name should be global.cshtml or end with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml.
 Rule "APIM.Policy.FileExtension" -Type ".cshtml" {
     
-    $knownLevel = $TargetObject.Name -eq "global.cshtml" -or `
+    $knownScope = $TargetObject.Name -eq "global.cshtml" -or `
                   $TargetObject.Name.EndsWith(".workspace.cshtml") -or 
                   $TargetObject.Name.EndsWith(".product.cshtml") -or 
                   $TargetObject.Name.EndsWith(".api.cshtml") -or 
                   $TargetObject.Name.EndsWith(".operation.cshtml") -or 
                   $TargetObject.Name.EndsWith(".fragment.cshtml")
 
-    if ($knownLevel) {
+    if ($knownScope) {
         $Assert.Pass()
     } else {
-        $Assert.Fail("Unknown file name. Expected global.cshtml or name ending with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml")
+        $Assert.Fail("Unknown API Management policy scope. Expected file name global.cshtml or name ending with: .workspace.cshtml, .product.cshtml, .api.cshtml, .operation.cshtml, or .fragment.cshtml")
     }
 }
 
 # Synopsis: The first policy inside the inbound section should be the base policy to make sure important logic like security checks are applied first.
-Rule "APIM.Policy.InboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
+Rule "APIM.Policy.InboundBasePolicy" -If { $TargetObject.Scope -ne "Global" -and $TargetObject.Scope -ne "Fragment" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "inbound")
@@ -47,7 +47,7 @@ Rule "APIM.Policy.InboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and
 }
 
 # Synopsis: The on-error section should include the base policy so generic logic like error handling can be applied.
-Rule "APIM.Policy.OnErrorBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
+Rule "APIM.Policy.OnErrorBasePolicy" -If { $TargetObject.Scope -ne "Global" -and $TargetObject.Scope -ne "Fragment" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "on-error")
@@ -55,7 +55,7 @@ Rule "APIM.Policy.OnErrorBasePolicy" -If { $TargetObject.Level -ne "Global" -and
 }
 
 # Synopsis: The outbound section should include the base policy so generic logic like error handling can be applied.
-Rule "APIM.Policy.OutboundBasePolicy" -If { $TargetObject.Level -ne "Global" -and $TargetObject.Level -ne "Fragment" } -Type "APIM.Policy" {
+Rule "APIM.Policy.OutboundBasePolicy" -If { $TargetObject.Scope -ne "Global" -and $TargetObject.Scope -ne "Fragment" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "outbound")
@@ -63,7 +63,7 @@ Rule "APIM.Policy.OutboundBasePolicy" -If { $TargetObject.Level -ne "Global" -an
 }
 
 # Synopsis: The subscription key header (Ocp-Apim-Subscription-Key) should be removed in the inbound section of the global policy to prevent it from being forwarded to the backend.
-Rule "APIM.Policy.RemoveSubscriptionKeyHeader" -If { $TargetObject.Level -eq "Global" } -Type "APIM.Policy" {
+Rule "APIM.Policy.RemoveSubscriptionKeyHeader" -If { $TargetObject.Scope -eq "Global" } -Type "APIM.Policy" {
     $policy = $TargetObject.Content.DocumentElement
     
     $Assert.HasField($policy, "inbound")

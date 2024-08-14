@@ -67,7 +67,7 @@ Describe "APIM.Policy" {
         Assert-RuleSucceededForTarget $ruleResults "invalid-xml-1.operation.cshtml"
         Assert-RuleSucceededForTarget $ruleResults "invalid-xml-2.operation.cshtml"
 
-        Assert-RuleFailedForTarget $ruleResults "unknown-level.cshtml"
+        Assert-RuleFailedForTarget $ruleResults "unknown-scope.cshtml"
     }
 
     It "InboundBasePolicy" {

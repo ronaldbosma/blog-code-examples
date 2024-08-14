@@ -18,22 +18,22 @@ Export-PSRuleConvention "APIM.Policy.Conventions.Import" -Initialize {
         # Example: ./src/my.api.cshtml
         $name = ($policyFile.FullName | Resolve-Path -Relative).Replace('\', '/')
 
-        # Determine the level of the policy based on the file name.
-        $level = $null
-        if ($policyFile.Name -eq "global.cshtml") { $level = "Global" }
-        elseif ($policyFile.Name.EndsWith(".workspace.cshtml")) { $level = "Workspace" }
-        elseif ($policyFile.Name.EndsWith(".product.cshtml")) { $level = "Product" }
-        elseif ($policyFile.Name.EndsWith(".api.cshtml")) { $level = "API" }
-        elseif ($policyFile.Name.EndsWith(".operation.cshtml")) { $level = "Operation" }
-        elseif ($policyFile.Name.EndsWith(".fragment.cshtml")) { $level = "Fragment" }
+        # Determine the scope of the policy based on the file name.
+        $scope = $null
+        if ($policyFile.Name -eq "global.cshtml") { $scope = "Global" }
+        elseif ($policyFile.Name.EndsWith(".workspace.cshtml")) { $scope = "Workspace" }
+        elseif ($policyFile.Name.EndsWith(".product.cshtml")) { $scope = "Product" }
+        elseif ($policyFile.Name.EndsWith(".api.cshtml")) { $scope = "API" }
+        elseif ($policyFile.Name.EndsWith(".operation.cshtml")) { $scope = "Operation" }
+        elseif ($policyFile.Name.EndsWith(".fragment.cshtml")) { $scope = "Fragment" }
 
-        # Only create a policy object to analyse if the level is known.
+        # Only create a policy object to analyse if the scope is recognized.
         # The 'APIM.Policy.FileExtension' rule will report on unknown file extensions.
-        if ($null -ne $level) {
+        if ($null -ne $scope) {
             try {
                 $policies += [PSCustomObject]@{
                     Name = $name
-                    Level = $level
+                    Scope = $scope
                     Content = [Xml](Get-Content -Path $policyFile.FullName -Raw)
                 }
             }
