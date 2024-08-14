@@ -1,0 +1,22 @@
+<policies>
+    <inbound>
+        <base />
+
+        <!-- This will result in an error when loading the policy as XML, because of the use of < and > in the policy expression -->
+        <set-body>@{
+            return context.Request.Body.As<string>();
+        }</set-body>
+    </inbound>
+
+    <backend>
+        <base />
+    </backend>
+
+    <outbound>
+        <base />
+    </outbound>
+
+    <on-error>
+        <base />
+    </on-error>
+</policies>
