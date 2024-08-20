@@ -28,7 +28,7 @@ Describe "APIM.Policy.UseBackendEntity" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.UseBackendEntity"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

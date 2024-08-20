@@ -28,7 +28,7 @@ Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.RemoveSubscriptionKeyHeader"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

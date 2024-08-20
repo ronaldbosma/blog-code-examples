@@ -28,7 +28,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.InboundBasePolicy"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
@@ -45,7 +45,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.InboundBasePolicy"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

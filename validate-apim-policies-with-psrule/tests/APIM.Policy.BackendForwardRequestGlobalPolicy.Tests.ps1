@@ -28,7 +28,7 @@ Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

@@ -50,7 +50,7 @@ function Invoke-CustomPSRule([Parameter(Mandatory=$true)]$InputObject, [Paramete
     return Invoke-PSRule -InputObject $InputObject -Name $Rule -Path "$PSScriptRoot/../.ps-rule" -Option "$PSScriptRoot/../.ps-rule/ps-rule.yaml"
 }
 
-function Assert-RuleSucceeded {
+function Assert-RulePassed {
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true, ValueFromPipeline)][PSRule.Rules.RuleRecord]$RuleRecord
@@ -91,7 +91,7 @@ function Assert-RuleSkipped {
     $RuleRecord | Should -BeNull
 }
 
-function Assert-RuleSucceededForTarget {
+function Assert-RulePassedForTarget {
     [CmdletBinding()]
     Param (
         [Parameter(Mandatory=$true)][PSRule.Rules.RuleRecord[]]$RuleRecords,

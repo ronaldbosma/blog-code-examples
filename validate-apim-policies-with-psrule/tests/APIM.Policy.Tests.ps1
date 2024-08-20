@@ -31,10 +31,10 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.BackendBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
         
         Assert-RuleFailedForTarget $ruleResults "bad.workspace.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad.product.cshtml"
@@ -46,7 +46,7 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.BackendForwardRequestGlobalPolicy' } );
         $ruleResults.Count | Should -Be 2
 
-        Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good/global.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
     }
     
@@ -54,18 +54,18 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.FileExtension' } );
         $ruleResults.Count | Should -Be 15
 
-        Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad/global.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "invalid-xml-1.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "invalid-xml-2.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "invalid-xml-1.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "invalid-xml-2.operation.cshtml"
 
         Assert-RuleFailedForTarget $ruleResults "unknown-scope.cshtml"
     }
@@ -74,10 +74,10 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.InboundBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
         
         Assert-RuleFailedForTarget $ruleResults "bad.workspace.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad.product.cshtml"
@@ -89,10 +89,10 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.OnErrorBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
         
         Assert-RuleFailedForTarget $ruleResults "bad.workspace.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad.product.cshtml"
@@ -104,10 +104,10 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.OutboundBasePolicy' } );
         $ruleResults.Count | Should -Be 8
 
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
         
         Assert-RuleFailedForTarget $ruleResults "bad.workspace.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad.product.cshtml"
@@ -119,7 +119,7 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.RemoveSubscriptionKeyHeader' } );
         $ruleResults.Count | Should -Be 2
 
-        Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good/global.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
     }
     
@@ -127,12 +127,12 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.UseBackendEntity' } );
         $ruleResults.Count | Should -Be 12
 
-        Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.fragment.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.fragment.cshtml"
         
         Assert-RuleFailedForTarget $ruleResults "bad/global.cshtml"
         Assert-RuleFailedForTarget $ruleResults "bad.workspace.cshtml"
@@ -146,18 +146,18 @@ Describe "APIM.Policy" {
         $ruleResults = @( $result | Where-Object { $_.RuleName -eq 'APIM.Policy.ValidXml' } );
         $ruleResults.Count | Should -Be 14
 
-        Assert-RuleSucceededForTarget $ruleResults "good/global.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "good.fragment.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad/global.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.workspace.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.product.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.api.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.operation.cshtml"
-        Assert-RuleSucceededForTarget $ruleResults "bad.fragment.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "good.fragment.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad/global.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.workspace.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.product.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.api.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.operation.cshtml"
+        Assert-RulePassedForTarget $ruleResults "bad.fragment.cshtml"
 
         Assert-RuleFailedForTarget $ruleResults "invalid-xml-1.operation.cshtml"
         Assert-RuleFailedForTarget $ruleResults "invalid-xml-2.operation.cshtml"

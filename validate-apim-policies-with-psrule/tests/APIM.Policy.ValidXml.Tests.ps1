@@ -23,7 +23,7 @@ Describe "APIM.Policy.ValidXml" {
         }
 
         $result = Invoke-CustomPSRule $input "APIM.Policy.ValidXml"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

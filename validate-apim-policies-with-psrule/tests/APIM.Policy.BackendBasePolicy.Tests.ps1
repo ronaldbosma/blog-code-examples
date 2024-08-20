@@ -28,7 +28,7 @@ Describe "APIM.Policy.BackendBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendBasePolicy"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

@@ -28,7 +28,7 @@ Describe "APIM.Policy.OnErrorBasePolicy" {
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.OnErrorBasePolicy"
         
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
@@ -44,7 +44,7 @@ Describe "APIM.Policy.OnErrorBasePolicy" {
 "@
 
         $result = Invoke-CustomPSRule $policy "APIM.Policy.OnErrorBasePolicy"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 

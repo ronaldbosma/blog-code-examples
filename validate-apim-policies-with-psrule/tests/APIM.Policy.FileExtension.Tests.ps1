@@ -24,7 +24,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
     
@@ -35,7 +35,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
@@ -46,7 +46,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
@@ -57,7 +57,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
@@ -68,7 +68,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
@@ -79,7 +79,7 @@ Describe "APIM.Policy.FileExtension" {
         }
 
         $result = Invoke-CustomPSRule $file "APIM.Policy.FileExtension"
-        $result | Assert-RuleSucceeded
+        $result | Assert-RulePassed
     }
 
 
