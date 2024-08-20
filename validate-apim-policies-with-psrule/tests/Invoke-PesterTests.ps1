@@ -4,9 +4,8 @@
 #>
 
 param (
-    [Parameter(Mandatory = $true)]
     [string]
-    $ModulePath,
+    $ModulePath = ".",
 
     [string]
     $IncludeTestFiles = "*",
