@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.UseBackendEntity" {
 
-    It "Should return true if the backend-id attribute is set on the set-backend-service policy" {
+    It "Should pass if the backend-id attribute is set on the set-backend-service policy" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.UseBackendEntity" {
     }
 
 
-    It "Should return false if the backend-id attribute is NOT set on the set-backend-service policy" {
+    It "Should fail if the backend-id attribute is NOT set on the set-backend-service policy" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -47,7 +47,7 @@ Describe "APIM.Policy.UseBackendEntity" {
     }
 
 
-    It "Should return false if the backend-id attribute is NOT set on atleast one set-backend-service policy" {
+    It "Should fail if the backend-id attribute is NOT set on atleast one set-backend-service policy" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -65,7 +65,7 @@ Describe "APIM.Policy.UseBackendEntity" {
     }
 
 
-    It "Should return false if the backend-id attribute is NOT set on a set-backend-service policy, even if it's a nested policy" {
+    It "Should fail if the backend-id attribute is NOT set on a set-backend-service policy, even if it's a nested policy" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>

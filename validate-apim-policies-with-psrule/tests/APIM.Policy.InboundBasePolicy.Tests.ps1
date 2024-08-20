@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.InboundBasePolicy" {
 
-    It "Should return true if base policy is the only policy in the inbound section" {
+    It "Should pass if base policy is the only policy in the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
     }
 
 
-    It "Should return true if base policy is the first policy in the inbound section" {
+    It "Should pass if base policy is the first policy in the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -49,7 +49,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
     }
 
 
-    It "Should return false if base policy is NOT the first policy in the inbound section" {
+    It "Should fail if base policy is NOT the first policy in the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -66,7 +66,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
     }
 
 
-    It "Should return false if the base policy is missing from the inbound section" {
+    It "Should fail if the base policy is missing from the inbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound>
@@ -81,7 +81,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
     }
 
 
-    It "Should return false if the inbound section is empty" {
+    It "Should fail if the inbound section is empty" {
         $policy = New-APIPolicy @"
             <policies>
                 <inbound />
@@ -94,7 +94,7 @@ Describe "APIM.Policy.InboundBasePolicy" {
     }
 
 
-    It "Should return false if the inbound section is missing" {
+    It "Should fail if the inbound section is missing" {
         $policy = New-APIPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIM.Policy.InboundBasePolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*inbound*not exist*"

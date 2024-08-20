@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
 
-    It "Should return true if forward-request policy is the only policy in the backend section" {
+    It "Should pass if forward-request policy is the only policy in the backend section" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <backend>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
     }
 
 
-    It "Should return false if the forward-request policy is missing from the backend section" {
+    It "Should fail if the forward-request policy is missing from the backend section" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <backend>
@@ -47,7 +47,7 @@ Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
     }
 
 
-    It "Should return false if the backend section is empty" {
+    It "Should fail if the backend section is empty" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <backend />
@@ -60,7 +60,7 @@ Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
     }
 
 
-    It "Should return false if there is more than one policy in the backend section" {
+    It "Should fail if there is more than one policy in the backend section" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <backend>
@@ -77,7 +77,7 @@ Describe "APIM.Policy.BackendForwardRequestGlobalPolicy" {
     }
 
 
-    It "Should return false if the backend section is missing" {
+    It "Should fail if the backend section is missing" {
         $policy = New-GlobalPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendForwardRequestGlobalPolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend*not exist*"

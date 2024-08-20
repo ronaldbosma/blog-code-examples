@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.BackendBasePolicy" {
 
-    It "Should return true if base policy is the only policy in the backend section" {
+    It "Should pass if base policy is the only policy in the backend section" {
         $policy = New-APIPolicy @"
             <policies>
                 <backend>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.BackendBasePolicy" {
     }
 
 
-    It "Should return false if the base policy is missing from the backend section" {
+    It "Should fail if the base policy is missing from the backend section" {
         $policy = New-APIPolicy @"
             <policies>
                 <backend>
@@ -47,7 +47,7 @@ Describe "APIM.Policy.BackendBasePolicy" {
     }
 
 
-    It "Should return false if the backend section is empty" {
+    It "Should fail if the backend section is empty" {
         $policy = New-APIPolicy @"
             <policies>
                 <backend />
@@ -60,7 +60,7 @@ Describe "APIM.Policy.BackendBasePolicy" {
     }
 
 
-    It "Should return false if there is more than one policy in the backend section" {
+    It "Should fail if there is more than one policy in the backend section" {
         $policy = New-APIPolicy @"
             <policies>
                 <backend>
@@ -77,7 +77,7 @@ Describe "APIM.Policy.BackendBasePolicy" {
     }
 
 
-    It "Should return false if the backend section is missing" {
+    It "Should fail if the backend section is missing" {
         $policy = New-APIPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIM.Policy.BackendBasePolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*backend*not exist*"

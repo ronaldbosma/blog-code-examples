@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.OnErrorBasePolicy" {
 
-    It "Should return true if base policy is the only policy in the on-error section" {
+    It "Should pass if base policy is the only policy in the on-error section" {
         $policy = New-APIPolicy @"
             <policies>
                 <on-error>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.OnErrorBasePolicy" {
     }
 
 
-    It "Should return true if base policy is any of the policies in the on-error section" {
+    It "Should pass if base policy is any of the policies in the on-error section" {
         $policy = New-APIPolicy @"
             <policies>
                 <on-error>
@@ -48,7 +48,7 @@ Describe "APIM.Policy.OnErrorBasePolicy" {
     }
 
 
-    It "Should return false if the base policy is missing from the on-error section" {
+    It "Should fail if the base policy is missing from the on-error section" {
         $policy = New-APIPolicy @"
             <policies>
                 <on-error>
@@ -63,7 +63,7 @@ Describe "APIM.Policy.OnErrorBasePolicy" {
     }
 
 
-    It "Should return false if the on-error section is empty" {
+    It "Should fail if the on-error section is empty" {
         $policy = New-APIPolicy @"
             <policies>
                 <on-error />
@@ -76,7 +76,7 @@ Describe "APIM.Policy.OnErrorBasePolicy" {
     }
 
 
-    It "Should return false if the on-error section is missing" {
+    It "Should fail if the on-error section is missing" {
         $policy = New-APIPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIM.Policy.OnErrorBasePolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*on-error*not exist*"

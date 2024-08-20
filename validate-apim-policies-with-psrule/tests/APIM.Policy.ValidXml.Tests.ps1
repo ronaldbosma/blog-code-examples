@@ -27,7 +27,7 @@ Describe "APIM.Policy.ValidXml" {
     }
 
 
-    It "Should return false for objects of type APIM.PolicyWithInvalidXml" {
+    It "Should fail for objects of type APIM.PolicyWithInvalidXml" {
         $input = [PSCustomObject]@{
             PSTypeName = "APIM.PolicyWithInvalidXml" # This is necessary for the -Type filter on a Rule to work
             Name = "invalid-xml.api.cshtml"

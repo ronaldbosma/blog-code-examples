@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
 
-    It "Should return true if the subscription key header is removed in the inbound section" {
+    It "Should pass if the subscription key header is removed in the inbound section" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <inbound>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
     }
 
 
-    It "Should return false if the subscription key header is NOT removed in the inbound section" {
+    It "Should fail if the subscription key header is NOT removed in the inbound section" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <inbound />
@@ -45,7 +45,7 @@ Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
     }
 
 
-    It "Should return false if a set-header policy with delete action is present in the inbound section, but for a different header" {
+    It "Should fail if a set-header policy with delete action is present in the inbound section, but for a different header" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <inbound>
@@ -60,7 +60,7 @@ Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
     }
 
 
-    It "Should return false if a set-header policy is present for the subscription key, but the action is not delete" {
+    It "Should fail if a set-header policy is present for the subscription key, but the action is not delete" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <inbound>
@@ -75,7 +75,7 @@ Describe "APIM.Policy.RemoveSubscriptionKeyHeader" {
     }
 
 
-    It "Should return false if a set-header policy to remove the subscription key exists, but is not a direct child of the inbound section" {
+    It "Should fail if a set-header policy to remove the subscription key exists, but is not a direct child of the inbound section" {
         $policy = New-GlobalPolicy @"
             <policies>
                 <inbound>

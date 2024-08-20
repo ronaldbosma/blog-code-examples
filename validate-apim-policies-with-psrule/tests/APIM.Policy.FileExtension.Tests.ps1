@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.FileExtension" {
 
-    It "Should return true if the file name is global.cshtml" {
+    It "Should pass if the file name is global.cshtml" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "global.cshtml"
@@ -28,7 +28,7 @@ Describe "APIM.Policy.FileExtension" {
     }
 
     
-    It "Should return true if the file name ends with .workspace.cshtml" {
+    It "Should pass if the file name ends with .workspace.cshtml" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "test.workspace.cshtml"
@@ -39,7 +39,7 @@ Describe "APIM.Policy.FileExtension" {
     }
 
 
-    It "Should return true if the file name ends with .product.cshtml" {
+    It "Should pass if the file name ends with .product.cshtml" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "test.product.cshtml"
@@ -50,7 +50,7 @@ Describe "APIM.Policy.FileExtension" {
     }
 
 
-    It "Should return true if the file name ends with .api.cshtml" {
+    It "Should pass if the file name ends with .api.cshtml" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "test.api.cshtml"
@@ -61,7 +61,7 @@ Describe "APIM.Policy.FileExtension" {
     }
 
 
-    It "Should return true if the file name ends with .operation.cshtml" {
+    It "Should pass if the file name ends with .operation.cshtml" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "test.operation.cshtml"
@@ -72,7 +72,7 @@ Describe "APIM.Policy.FileExtension" {
     }
 
 
-    It "Should return true if the file name ends with .fragment.cshtml" {
+    It "Should pass if the file name ends with .fragment.cshtml" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "test.fragment.cshtml"
@@ -83,7 +83,7 @@ Describe "APIM.Policy.FileExtension" {
     }
 
 
-    It "Should return false if the file name ends with unknown extension" {
+    It "Should fail if the file name ends with unknown extension" {
         $file = [PSCustomObject]@{
             PSTypeName = ".cshtml" # This is necessary for the -Type filter on a Rule to work
             Name = "unknown.cshtml"

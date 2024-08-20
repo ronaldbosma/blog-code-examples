@@ -17,7 +17,7 @@ BeforeAll {
 
 Describe "APIM.Policy.OutboundBasePolicy" {
 
-    It "Should return true if base policy is the only policy in the outbound section" {
+    It "Should pass if base policy is the only policy in the outbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <outbound>
@@ -32,7 +32,7 @@ Describe "APIM.Policy.OutboundBasePolicy" {
     }
 
 
-    It "Should return true if base policy is any of the policies in the outbound section" {
+    It "Should pass if base policy is any of the policies in the outbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <outbound>
@@ -48,7 +48,7 @@ Describe "APIM.Policy.OutboundBasePolicy" {
     }
 
 
-    It "Should return false if the base policy is missing from the outbound section" {
+    It "Should fail if the base policy is missing from the outbound section" {
         $policy = New-APIPolicy @"
             <policies>
                 <outbound>
@@ -63,7 +63,7 @@ Describe "APIM.Policy.OutboundBasePolicy" {
     }
 
 
-    It "Should return false if the outbound section is empty" {
+    It "Should fail if the outbound section is empty" {
         $policy = New-APIPolicy @"
             <policies>
                 <outbound />
@@ -76,7 +76,7 @@ Describe "APIM.Policy.OutboundBasePolicy" {
     }
 
 
-    It "Should return false if the outbound section is missing" {
+    It "Should fail if the outbound section is missing" {
         $policy = New-APIPolicy "<policies></policies>"
         $result = Invoke-CustomPSRule $policy "APIM.Policy.OutboundBasePolicy"
         $result | Assert-RuleFailedWithReason -ExpectedReasonPattern "*outbound*not exist*"
