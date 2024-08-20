@@ -10,3 +10,9 @@ execution:
   # Ignore warnings for resources and objects that don't have any rules.
   unprocessedObject: Ignore
   ruleSuppressed: Ignore
+
+suppression:
+  APIM.Policy.RemoveSubscriptionKeyHeader:
+  - './src/suppressed/global.cshtml'
+  APIM.Policy.BackendForwardRequestGlobalPolicy:
+  - './src/suppressed/global.cshtml'
