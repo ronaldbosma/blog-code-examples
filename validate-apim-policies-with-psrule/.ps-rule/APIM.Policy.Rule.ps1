@@ -77,10 +77,10 @@ Rule "APIM.Policy.RemoveSubscriptionKeyHeader" -If { $TargetObject.Scope -eq "Gl
         $_."exists-action" -eq "delete" 
     } )
 
-    if ($removeSubscriptionKeyPolicies.Count -gt 0) {
-        $Assert.Pass()
-    } else {
+    if ($removeSubscriptionKeyPolicies.Count -eq 0) {
         $Assert.Fail("Unable to find a set-header policy that removes the Ocp-Apim-Subscription-Key header as a direct child of the inbound section.")
+    } else {
+        $Assert.Pass()
     }
 }
 
