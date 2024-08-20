@@ -5,3 +5,8 @@ binding:
 convention:
   include:
   - 'APIM.Policy.Conventions.Import'
+
+execution:
+  # Ignore warnings for resources and objects that don't have any rules.
+  unprocessedObject: Ignore
+  ruleSuppressed: Ignore

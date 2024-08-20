@@ -10,12 +10,6 @@ Execute the following command to check the policies in the `src` folder against 
 Invoke-PSRule -InputPath ".\src\" -Option ".\.ps-rule\ps-rule.yaml"
 ```
 
-If you don't want to warnings to show in the output, add the `-WarningAction Ignore` parameter to the command:
-
-```powershell
-Invoke-PSRule -InputPath ".\src\" -Option ".\.ps-rule\ps-rule.yaml" -WarningAction Ignore
-```
-
 ## Execute tests
 
 The `test` folder contains [Pester](https://pester.dev/) tests for each custom rule. 
