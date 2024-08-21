@@ -43,3 +43,40 @@ jobs:
       source: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/'
       option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
       outputFormat: 'None'
+
+
+# This job execute the Pester tests
+- job: run_pester_tests
+  displayName: 'Run Pester tests'
+  condition: false
+  pool:
+    vmImage: 'ubuntu-latest'
+  workspace:
+    clean: all
+  steps:
+  - checkout: self
+  - task: PowerShell@2
+    displayName: 'Executing Pester Tests'
+    inputs:
+      filePath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/Invoke-PesterTests.ps1'
+      arguments: '-ModulePath $(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests -ResultsPath $(System.DefaultWorkingDirectory)/Publish -Publish'
+      errorActionPreference: 'silentlyContinue'
+      ignoreLASTEXITCODE: true
+      workingDirectory: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/'
+      pwsh: true
+
+  - task: PublishCodeCoverageResults@2
+    displayName: 'Publish Code Coverage'
+    inputs:
+      summaryFileLocation: '**/Pester-Coverage.xml'
+      pathToSources: '$(System.DefaultWorkingDirectory)/Publish'
+      failIfCoverageEmpty: true
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Pester Tests'
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '**/Test-Pester.xml'
+      searchFolder: '$(System.DefaultWorkingDirectory)/Publish'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
