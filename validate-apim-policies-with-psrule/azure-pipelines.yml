@@ -67,8 +67,8 @@ jobs:
       pwsh: true
     continueOnError: true # continue on error to publish test results
   
-  # I tried using the Pester task, but the scenarios where a rule should not be applied like 'APIM.Policy.InboundBasePolicy.Should not apply to global' fail.
-  # The Invoke-PSRule commandlet seems to return a rule records instead of $null.
+  # I tried using the Pester task, but the scenarios fail where a rule should not be applied like 'APIM.Policy.InboundBasePolicy.Should not apply to global'.
+  # Locally, the Invoke-PSRule commandlet returns null, but when using this task it returns a RuleRecord object.
   - task: Pester@10
     displayName: "Execute Pester Tests"
     enabled: false
