@@ -45,7 +45,7 @@ jobs:
       outputFormat: 'None'
 
 
-# This job execute the Pester tests
+# This job execute the Pester tests using https://github.com/pester/AzureDevOpsExtension
 - job: run_pester_tests
   displayName: 'Run Pester Tests'
   pool:
