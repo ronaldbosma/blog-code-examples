@@ -55,9 +55,6 @@ jobs:
   steps:
   - checkout: self
 
-  - pwsh: 'Install-Module -Name PSRule -Repository PSGallery -Force -Scope CurrentUser'
-    displayName: 'Install PSRule module'
-
   - task: PowerShell@2
     displayName: "Execute Pester Tests"
     inputs:
