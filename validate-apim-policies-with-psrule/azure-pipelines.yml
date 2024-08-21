@@ -60,6 +60,7 @@ jobs:
 
   - task: PowerShell@2
     displayName: "Execute Pester Tests"
+    enabled: false
     inputs:
       filePath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/Invoke-PesterTests.ps1'
       arguments: '-Path "$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests" -TestResultsPath "$(System.DefaultWorkingDirectory)/Test-Pester.XML"'
@@ -71,12 +72,12 @@ jobs:
   # The Invoke-PSRule commandlet seems to return a rule records instead of $null.
   - task: Pester@10
     displayName: "Execute Pester Tests"
-    enabled: false
     inputs:
       scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
       resultsFile: '$(System.DefaultWorkingDirectory)/Test-Pester.XML'
       usePSCore: true
-      PesterVersion: 'LatestVersion'
+      PesterVersion: 'OtherVersion'
+      preferredPesterVersion: '5.4.1'
     continueOnError: true # continue on error to publish test results
 
   - task: PublishTestResults@2
