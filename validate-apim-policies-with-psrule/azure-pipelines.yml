@@ -62,7 +62,7 @@ jobs:
     displayName: "Execute Pester Tests"
     inputs:
       scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
-      resultsFile: '$(System.DefaultWorkingDirectory)\Test-Pester.XML'
+      resultsFile: '$(System.DefaultWorkingDirectory)/Test-Pester.XML'
       CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/CC-Pester.XML'
       usePSCore: true
       CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
