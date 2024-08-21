@@ -1,0 +1,12 @@
+trigger: none
+
+jobs:
+- job: run_psrule
+  displayName: 'Run PSRule'
+  pool:
+    vmImage: 'ubuntu-latest'
+  workspace:
+    clean: all
+  steps:
+  - checkout: self
+  - pwsh: "Write-Host 'Hello, world!'"
