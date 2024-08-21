@@ -57,10 +57,10 @@ jobs:
 
   - pwsh: 'Install-Module -Name "PSRule" -Repository PSGallery -Force -Scope CurrentUser'
     displayName: 'Install PSRule module'
-    enabled: false
   
   - task: ps-rule-assert@2
     displayName: 'Analyse src/good folder with PSRule'
+    enabled: false
     inputs:
       path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/good/'
       inputType: 'inputPath'
