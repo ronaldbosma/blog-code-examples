@@ -19,7 +19,7 @@ function Install-RequiredModule([string]$Name, [string]$Version, [string]$Minimu
     $module = Get-Module -Name $Name -ListAvailable | Where-Object {$_.Version -like $Version}
     if (!$module) { 
         try {
-            Install-Module -Name $Name -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion $MinimumVersion
+            Install-Module -Name $Name -Repository PSGallery -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion $MinimumVersion
             $module = Get-Module -Name $Name -ListAvailable | Where-Object {$_.Version -like $Version}
         }
         catch {
