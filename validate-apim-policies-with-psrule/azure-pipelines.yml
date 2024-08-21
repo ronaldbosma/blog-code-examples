@@ -62,8 +62,7 @@ jobs:
       CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/TestResults/Pester-Coverage.xml'
       usePSCore: false
       CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
-      PesterVersion: 'OtherVersion'
-      preferredPesterVersion: '5.*.*'
+      PesterVersion: 'LatestVersion'
 
   - task: PublishCodeCoverageResults@2
     displayName: 'Publish Code Coverage'
