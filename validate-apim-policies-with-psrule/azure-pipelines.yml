@@ -47,35 +47,36 @@ jobs:
 
 # This job execute the Pester tests
 - job: run_pester_tests
-  displayName: 'Run Pester tests'
+  displayName: 'Run Pester Tests'
   pool:
     vmImage: 'ubuntu-latest'
   workspace:
     clean: all
   steps:
   - checkout: self
-  - task: PowerShell@2
-    displayName: 'Executing Pester Tests'
+  - task: Pester@10
+    displayName: "Execute Pester Tests"
     inputs:
-      filePath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/Invoke-PesterTests.ps1'
-      arguments: '-ModulePath $(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests -ResultsPath $(System.DefaultWorkingDirectory)/Publish -Publish'
-      errorActionPreference: 'silentlyContinue'
-      ignoreLASTEXITCODE: true
-      workingDirectory: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/'
-      pwsh: true
+      scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
+      resultsFile: '$(System.DefaultWorkingDirectory)/TestResults/Test-Pester.xml'
+      CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/TestResults/Pester-Coverage.xml'
+      usePSCore: false
+      CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
+      PesterVersion: 'OtherVersion'
+      preferredPesterVersion: '5.*'
 
   - task: PublishCodeCoverageResults@2
     displayName: 'Publish Code Coverage'
     inputs:
-      summaryFileLocation: '**/Pester-Coverage.xml'
-      pathToSources: '$(System.DefaultWorkingDirectory)/Publish'
+      summaryFileLocation:  '$(System.DefaultWorkingDirectory)/TestResults/Pester-Coverage.xml'
+      pathToSources: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
       failIfCoverageEmpty: true
 
   - task: PublishTestResults@2
-    displayName: 'Publish Pester Tests'
+    displayName: 'Publish Pester Test Results'
     inputs:
       testResultsFormat: 'NUnit'
       testResultsFiles: '**/Test-Pester.xml'
-      searchFolder: '$(System.DefaultWorkingDirectory)/Publish'
+      searchFolder: '$(System.DefaultWorkingDirectory)/TestResults'
       mergeTestResults: true
       failTaskOnFailedTests: true
