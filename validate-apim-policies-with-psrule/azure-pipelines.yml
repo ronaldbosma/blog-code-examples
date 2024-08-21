@@ -49,7 +49,7 @@ jobs:
 - job: run_pester_tests
   displayName: 'Run Pester Tests'
   pool:
-    vmImage: 'windows-latest'
+    vmImage: 'ubuntu-latest'
   workspace:
     clean: all
   steps:
