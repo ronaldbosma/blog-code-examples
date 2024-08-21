@@ -45,7 +45,7 @@ function New-Policy([Parameter(Mandatory=$true)]$Scope, [Parameter(Mandatory=$tr
 function Invoke-CustomPSRule([Parameter(Mandatory=$true)]$InputObject, [Parameter(Mandatory=$true)]$Rule)
 {
     # The Path should point to the directory containing the rule files, else they won't be loaded
-    # The Option should point to the PSRule configuraton file, else they conventions won't be loaded
+    # The Option should point to the PSRule configuration file, else they conventions won't be loaded
 
     return Invoke-PSRule -InputObject $InputObject -Name $Rule -Path "$PSScriptRoot/../.ps-rule" -Option "$PSScriptRoot/../.ps-rule/ps-rule.yaml"
 }
