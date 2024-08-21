@@ -1,8 +1,11 @@
 trigger: none
 
+# See https://microsoft.github.io/PSRule/v2/creating-your-pipeline/ for more information on running PSRule in a pipeline
+
 jobs:
-- job: run_psrule
-  displayName: 'Run PSRule'
+# This job should fail because not all files in the src folder conform to the APIM policy rules
+- job: run_psrule_on_src
+  displayName: 'Run PSRule on src folder'
   pool:
     vmImage: 'ubuntu-latest'
   workspace:
@@ -10,10 +13,29 @@ jobs:
   steps:
   - checkout: self
   - task: ps-rule-assert@2
-    displayName: 'Execute PSRule on src folder'
+    displayName: 'Analyse src folder with PSRule'
     inputs:
       path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule'
       inputType: 'inputPath'
       inputPath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/'
+      option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
+      outputFormat: 'None'
+
+      
+# This job should succeed because all files in the src/good folder conform to the APIM policy rules
+- job: run_psrule_on_src_good
+  displayName: 'Run PSRule on src/good folder'
+  pool:
+    vmImage: 'ubuntu-latest'
+  workspace:
+    clean: all
+  steps:
+  - checkout: self
+  - task: ps-rule-assert@2
+    displayName: 'Analyse src/good folder with PSRule'
+    inputs:
+      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule'
+      inputType: 'inputPath'
+      inputPath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/good'
       option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
       outputFormat: 'None'
