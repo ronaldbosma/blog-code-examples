@@ -63,18 +63,9 @@ jobs:
     inputs:
       scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
       resultsFile: '$(System.DefaultWorkingDirectory)/Test-Pester.XML'
-      CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/CC-Pester.XML'
       usePSCore: true
-      CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
       PesterVersion: 'LatestVersion'
     continueOnError: true # continue on error to publish test results
-
-  - task: PublishCodeCoverageResults@2
-    displayName: 'Publish Code Coverage'
-    inputs:
-      summaryFileLocation:  '$(System.DefaultWorkingDirectory)/CC-Pester.XML'
-      pathToSources: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
-      failIfCoverageEmpty: true
 
   - task: PublishTestResults@2
     displayName: 'Publish Pester Test Results'
