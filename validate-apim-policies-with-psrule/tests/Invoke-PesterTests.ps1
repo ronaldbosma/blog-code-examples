@@ -1,49 +1,47 @@
 <#
     Script to execute Pester tests.
-    Source: https://www.logitblog.com/increase-the-success-rate-of-azure-devops-pipelines-using-pester/
+    Based on: https://www.logitblog.com/increase-the-success-rate-of-azure-devops-pipelines-using-pester/
 #>
 
 param (
+    # Path to the folder containing the Pester test files. Default is the current folder.
     [string]
-    $ModulePath = ".",
+    $Path = ".",
 
-    [string]
-    $IncludeTestFiles = "*",
-
-    [Parameter(Mandatory = $false)]
-    [switch]
-    $Publish,
-
+    # Path where the test results will be published. Default is not to publish test results.
     [Parameter(Mandatory=$false)]
     [string]
-    $ResultsPath
+    $TestResultsPath
 )
 
-$pesterModule = Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -like '5.*'}
-if (!$pesterModule) { 
-    try {
-        Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion "5.0"
-        $pesterModule = Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -like '5.*'}
+function Install-RequiredModule([string]$Name, [string]$Version, [string]$MinimumVersion)
+{
+    $module = Get-Module -Name $Name -ListAvailable | Where-Object {$_.Version -like $Version}
+    if (!$module) { 
+        try {
+            Install-Module -Name $Name -Repository PSGallery -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion $MinimumVersion
+            $module = Get-Module -Name $Name -ListAvailable | Where-Object {$_.Version -like $Version}
+        }
+        catch {
+            Write-Error "Failed to install the $Name module."
+        }
     }
-    catch {
-        Write-Error "Failed to install the Pester module."
-    }
+
+    Write-Host "$Name version: $($module.Version)"
 }
 
-Write-Host "Pester version: $($pesterModule.Version.Major).$($pesterModule.Version.Minor).$($pesterModule.Version.Build)"
-$pesterModule | Import-Module
+Install-RequiredModule -Name "PSRule" -Version "2.*" -MinimumVersion "2.9.0"
+Install-RequiredModule -Name "Pester" -Version "5.*" -MinimumVersion "5.0"
 
-if ($Publish) {
-    if (!(Test-Path -Path $ResultsPath)) {
-        New-Item -Path $ResultsPath -ItemType Directory -Force | Out-Null
-    }
+
+$config = New-PesterConfiguration
+$config.Run.Path = $Path
+
+# Enable test result generation if the TestResultsPath parameter is provided
+if (-not([string]::IsNullOrWhiteSpace($TestResultsPath))) {
+    $config.TestResult.OutputFormat = "NUnitXml"
+    $config.TestResult.OutputPath = $TestResultsPath
+    $config.TestResult.Enabled = $True
 }
 
-$tests = (Get-ChildItem -Path $($ModulePath) -Include $IncludeTestFiles -Recurse | Where-Object {$_.Name -like "*.Tests.ps1"}).FullName
-
-if ($Publish) {
-    $files = (Get-ChildItem -Recurse | Where-Object {$_.Name -like "*.psm1" -or $_.Name -like "*.ps1" -and $_.FullName -notlike "*\Pipelines\*"}).FullName
-    Invoke-Pester $tests -OutputFile "$ResultsPath\Test-Pester.xml" -OutputFormat NUnitXml -CodeCoverage $($files.FullName) -CodeCoverageOutputFile "$($ResultsPath)\Pester-Coverage.xml" -CodeCoverageOutputFileFormat JaCoCo
-} else {
-    Invoke-Pester $tests
-}
+Invoke-Pester -Configuration $config
