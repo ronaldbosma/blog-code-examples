@@ -14,6 +14,6 @@ jobs:
     inputs:
       path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule'
       inputType: 'inputPath'
-      inputPath: './src/'
-      option: './.ps-rule/ps-rule.yaml'
+      inputPath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/'
+      option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
       outputFormat: 'None'
