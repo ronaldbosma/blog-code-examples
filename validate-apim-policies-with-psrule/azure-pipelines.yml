@@ -35,7 +35,7 @@ jobs:
   - task: ps-rule-assert@2
     displayName: 'Analyse src/good folder with PSRule'
     inputs:
-      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/'
+      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/good/'
       inputType: 'inputPath'
       inputPath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/good/'
       source: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/'
