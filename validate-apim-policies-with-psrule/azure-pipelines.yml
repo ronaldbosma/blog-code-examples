@@ -55,7 +55,7 @@ jobs:
   steps:
   - checkout: self
 
-  - pwsh: 'Install-Module -Name "PSRule" -Repository PSGallery -Scope CurrentUser'
+  - powershell: 'Install-Module -Name "PSRule" -Repository PSGallery -Scope CurrentUser'
     displayName: 'Install PSRule module'
   
   - task: Pester@10
