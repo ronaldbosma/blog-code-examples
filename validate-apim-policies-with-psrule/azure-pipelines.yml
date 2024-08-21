@@ -15,9 +15,10 @@ jobs:
   - task: ps-rule-assert@2
     displayName: 'Analyse src folder with PSRule'
     inputs:
-      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule'
+      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/'
       inputType: 'inputPath'
       inputPath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/'
+      source: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/'
       option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
       outputFormat: 'None'
 
@@ -34,8 +35,9 @@ jobs:
   - task: ps-rule-assert@2
     displayName: 'Analyse src/good folder with PSRule'
     inputs:
-      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule'
+      path: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/'
       inputType: 'inputPath'
       inputPath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/src/good/'
+      source: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/'
       option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
       outputFormat: 'None'
