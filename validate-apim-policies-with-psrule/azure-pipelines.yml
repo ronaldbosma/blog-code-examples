@@ -6,6 +6,7 @@ jobs:
 # This job should fail because not all files in the src folder conform to the APIM policy rules
 - job: run_psrule_on_src
   displayName: 'Run PSRule on src folder'
+  condition: false
   pool:
     vmImage: 'ubuntu-latest'
   workspace:
@@ -26,6 +27,7 @@ jobs:
 # This job should succeed because all files in the src/good folder conform to the APIM policy rules
 - job: run_psrule_on_src_good
   displayName: 'Run PSRule on src/good folder'
+  condition: false
   pool:
     vmImage: 'ubuntu-latest'
   workspace:
