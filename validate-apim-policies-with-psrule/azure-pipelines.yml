@@ -58,8 +58,8 @@ jobs:
     displayName: "Execute Pester Tests"
     inputs:
       scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
-      resultsFile: '$(System.DefaultWorkingDirectory)/Test-Pester.xml'
-      CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/Pester-Coverage.xml'
+      resultsFile: '$(System.DefaultWorkingDirectory)\Test-Pester.XML'
+      CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/CC-Pester.XML'
       usePSCore: false
       CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
       PesterVersion: 'LatestVersion'
@@ -67,7 +67,7 @@ jobs:
   - task: PublishCodeCoverageResults@2
     displayName: 'Publish Code Coverage'
     inputs:
-      summaryFileLocation:  '$(System.DefaultWorkingDirectory)/Pester-Coverage.xml'
+      summaryFileLocation:  '$(System.DefaultWorkingDirectory)/CC-Pester.XML'
       pathToSources: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
       failIfCoverageEmpty: true
 
@@ -75,7 +75,7 @@ jobs:
     displayName: 'Publish Pester Test Results'
     inputs:
       testResultsFormat: 'NUnit'
-      testResultsFiles: '**/Test-Pester.xml'
+      testResultsFiles: '**/Test-Pester.XML'
       searchFolder: '$(System.DefaultWorkingDirectory)'
       mergeTestResults: true
       failTaskOnFailedTests: true
