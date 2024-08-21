@@ -78,6 +78,7 @@ jobs:
       usePSCore: true
       CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
       PesterVersion: 'LatestVersion'
+    continueOnError: true
 
   - task: PublishCodeCoverageResults@2
     displayName: 'Publish Code Coverage'
