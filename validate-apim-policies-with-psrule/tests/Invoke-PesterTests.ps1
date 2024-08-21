@@ -14,21 +14,24 @@ param (
     $TestResultsPath
 )
 
-# Install the Pester PowerShell module if it is not available
-$pesterModule = Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -like '5.*'}
-if (!$pesterModule) { 
-    try {
-        Install-Module -Name Pester -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion "5.0"
-        $pesterModule = Get-Module -Name Pester -ListAvailable | Where-Object {$_.Version -like '5.*'}
+function Install-RequiredModule([string]$Name, [string]$Version, [string]$MinimumVersion)
+{
+    $module = Get-Module -Name $Name -ListAvailable | Where-Object {$_.Version -like $Version}
+    if (!$module) { 
+        try {
+            Install-Module -Name $Name -Scope CurrentUser -Force -SkipPublisherCheck -MinimumVersion $MinimumVersion
+            $module = Get-Module -Name $Name -ListAvailable | Where-Object {$_.Version -like $Version}
+        }
+        catch {
+            Write-Error "Failed to install the $Name module."
+        }
     }
-    catch {
-        Write-Error "Failed to install the Pester module."
-    }
+
+    Write-Host "$Name version: $($module.Version)"
 }
 
-# Import the Pester module
-Write-Host "Pester version: $($pesterModule.Version.Major).$($pesterModule.Version.Minor).$($pesterModule.Version.Build)"
-$pesterModule | Import-Module
+Install-RequiredModule -Name "PSRule" -Version "2.*" -MinimumVersion "2.9.0"
+Install-RequiredModule -Name "Pester" -Version "5.*" -MinimumVersion "5.0"
 
 
 $config = New-PesterConfiguration
