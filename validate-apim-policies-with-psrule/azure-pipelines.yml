@@ -57,9 +57,19 @@ jobs:
 
   - pwsh: 'Install-Module -Name PSRule -Repository PSGallery -Force -Scope CurrentUser'
     displayName: 'Install PSRule module'
+
+  - task: PowerShell@2
+    displayName: "Execute Pester Tests"
+    inputs:
+      filePath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/Invoke-PesterTests.ps1'
+      arguments: '-Path "$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests" -TestResultsPath "$(System.DefaultWorkingDirectory)/Test-Pester.XML"'
+      workingDirectory: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
+      pwsh: true
+    continueOnError: true # continue on error to publish test results
   
   - task: Pester@10
     displayName: "Execute Pester Tests"
+    enabled: false
     inputs:
       scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
       resultsFile: '$(System.DefaultWorkingDirectory)/Test-Pester.XML'
