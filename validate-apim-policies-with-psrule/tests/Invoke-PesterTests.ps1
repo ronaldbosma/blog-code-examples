@@ -37,7 +37,7 @@ $config.Run.Path = $Path
 # Enable test result generation if the TestResultsPath parameter is provided
 if (-not([string]::IsNullOrWhiteSpace($TestResultsPath))) {
     $config.TestResult.OutputFormat = "NUnitXml"
-    $config.TestResult.OutputPath = TestResultsPath
+    $config.TestResult.OutputPath = $TestResultsPath
     $config.TestResult.Enabled = $True
 }
 
