@@ -48,7 +48,6 @@ jobs:
 # This job execute the Pester tests
 - job: run_pester_tests
   displayName: 'Run Pester tests'
-  condition: false
   pool:
     vmImage: 'ubuntu-latest'
   workspace:
