@@ -55,7 +55,7 @@ jobs:
   steps:
   - checkout: self
 
-  - powershell: 'Install-Module -Name "PSRule" -Repository PSGallery -Scope CurrentUser'
+  - pwsh: 'Install-Module -Name "PSRule" -Repository PSGallery -Scope CurrentUser'
     displayName: 'Install PSRule module'
   
   - task: Pester@10
@@ -64,7 +64,7 @@ jobs:
       scriptFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
       resultsFile: '$(System.DefaultWorkingDirectory)\Test-Pester.XML'
       CodeCoverageOutputFile: '$(System.DefaultWorkingDirectory)/CC-Pester.XML'
-      usePSCore: false
+      usePSCore: true
       CodeCoverageFolder: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule'
       PesterVersion: 'LatestVersion'
 
