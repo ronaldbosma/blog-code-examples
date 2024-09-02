@@ -1,9 +1,9 @@
-trigger: none
-
 # See https://microsoft.github.io/PSRule/v2/creating-your-pipeline/ for more information on running PSRule in a pipeline
 
+trigger: none
+
 jobs:
-# This job should fail because not all files in the src folder conform to the APIM policy rules
+# This job should FAIL because not all files in the src folder conform to the APIM policy rules
 - job: run_psrule_on_src
   displayName: 'Run PSRule on src folder'
   pool:
@@ -23,7 +23,7 @@ jobs:
       outputFormat: 'None'
 
       
-# This job should succeed because all files in the src/good folder conform to the APIM policy rules
+# This job should SUCCEED because all files in the src/good folder conform to the APIM policy rules
 - job: run_psrule_on_src_good
   displayName: 'Run PSRule on src/good folder'
   pool:
@@ -42,31 +42,3 @@ jobs:
       option: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/.ps-rule/ps-rule.yaml'
       outputFormat: 'None'
 
-
-# Configuration was inspired by: https://www.logitblog.com/increase-the-success-rate-of-azure-devops-pipelines-using-pester/
-- job: run_pester_tests
-  displayName: 'Run Pester Tests'
-  pool:
-    vmImage: 'ubuntu-latest'
-  workspace:
-    clean: all
-  steps:
-  - checkout: self
-
-  - task: PowerShell@2
-    displayName: "Execute Pester Tests"
-    inputs:
-      filePath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/Invoke-PesterTests.ps1'
-      arguments: '-Path "$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests" -TestResultsPath "$(System.DefaultWorkingDirectory)/Test-Pester.XML"'
-      workingDirectory: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
-      pwsh: true
-    continueOnError: true # continue on error to publish test results
-
-  - task: PublishTestResults@2
-    displayName: 'Publish Pester Test Results'
-    inputs:
-      testResultsFormat: 'NUnit'
-      testResultsFiles: '**/Test-Pester.XML'
-      searchFolder: '$(System.DefaultWorkingDirectory)'
-      mergeTestResults: true
-      failTaskOnFailedTests: true

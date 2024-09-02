@@ -1,0 +1,31 @@
+# Configuration was inspired by: https://www.logitblog.com/increase-the-success-rate-of-azure-devops-pipelines-using-pester/
+
+trigger: none
+
+jobs:
+- job: run_pester_tests
+  displayName: 'Run Pester Tests'
+  pool:
+    vmImage: 'ubuntu-latest'
+  workspace:
+    clean: all
+  steps:
+  - checkout: self
+
+  - task: PowerShell@2
+    displayName: "Execute Pester Tests"
+    inputs:
+      filePath: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests/Invoke-PesterTests.ps1'
+      arguments: '-Path "$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests" -TestResultsPath "$(System.DefaultWorkingDirectory)/Test-Pester.XML"'
+      workingDirectory: '$(Build.SourcesDirectory)/validate-apim-policies-with-psrule/tests'
+      pwsh: true
+    continueOnError: true # continue on error to publish test results
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Pester Test Results'
+    inputs:
+      testResultsFormat: 'NUnit'
+      testResultsFiles: '**/Test-Pester.XML'
+      searchFolder: '$(System.DefaultWorkingDirectory)'
+      mergeTestResults: true
+      failTaskOnFailedTests: true
