@@ -2,7 +2,7 @@
 // Naming Conventions for Azure Resources
 //=============================================================================
 
-// Get resource name based on the naming convention taken from the Cloud Adoptation Framework.
+// Get resource name based on the naming convention taken from the Cloud Adoption Framework.
 // Convention: <resourceType>-<workload>-<environment>-<region>-<instance>
 // Source: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
 @export()
