@@ -16,13 +16,6 @@ param location string
 @maxLength(24)
 param keyVaultName string
 
-@description('The default action on the Key Vault when no rule from ipRules and from virtualNetworkRules match.')
-@allowed([ 'Allow', 'Deny' ])
-param keyVaultNetworkAclsDefaultAction string = 'Allow'
-
-@description('An IP address from which access to the Key Vault is allowed')
-param keyVaultAllowedIpAddress string = ''
-
 //=============================================================================
 // Resources
 //=============================================================================
@@ -42,9 +35,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
       family: 'A'
     }
     networkAcls: {
-      defaultAction: keyVaultNetworkAclsDefaultAction
       bypass: 'AzureServices'
-      ipRules: empty(keyVaultAllowedIpAddress) ? [] : [ { value: keyVaultAllowedIpAddress } ]
     }
   }
 }
