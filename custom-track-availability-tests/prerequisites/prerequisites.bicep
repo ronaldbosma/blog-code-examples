@@ -36,7 +36,7 @@ param environment string = 'dev'
 param instance string = '01'
 
 @description('The name of the App Service for the Function App that will be created')
-param functionAppServicePlanName string = getResourceName('appServicePlan', workload, environment, location, 'functionapp')
+param functionAppServicePlanName string = getResourceName('appServicePlan', workload, environment, location, 'functionapp-${instance}')
 
 @description('The name of the Function App that will be created')
 param functionAppName string = getResourceName('functionApp', workload, environment, location, instance)
