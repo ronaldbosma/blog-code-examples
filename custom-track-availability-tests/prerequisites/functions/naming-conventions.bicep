@@ -2,9 +2,10 @@
 // Naming Conventions for Azure Resources
 //=============================================================================
 
-// Get resource name based on the naming convention taken from the Cloud Adoptation Framework.
+// Get resource name based on the naming convention taken from the Cloud Adoption Framework.
 // Convention: <resourceType>-<workload>-<environment>-<region>-<instance>
 // Source: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
+// Blog about these functions: https://ronaldbosma.github.io/blog/2024/06/05/apply-azure-naming-convention-using-bicep-functions/
 @export()
 func getResourceName(resourceType string, workload string, environment string, region string, instance string) string => 
   shouldBeShortened(resourceType) 
