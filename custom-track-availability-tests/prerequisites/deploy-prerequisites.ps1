@@ -20,12 +20,8 @@ if (-not($ResourceGroupName)) {
     $ResourceGroupName = "rg-$Workload-$Environment-$Location-$Instance".ToLower()
 }
 
-# Create the resource group if it doesn't exist
-if ((az group exists --name $ResourceGroupName) -eq "false")
-{
-    Write-Host "Create resource group: $ResourceGroupName"
-    az group create --name $ResourceGroupName --location $Location
-}
+Write-Host "Create resource group '$ResourceGroupName' if it does not exist"
+az group create --name $ResourceGroupName --location $Location
 
 
 # =============================================================================
@@ -49,11 +45,11 @@ if (-not($KeyVaultAdministratorId))
 # =============================================================================
 
 # Print the time and date before starting the deployment so you can estimate when it's finished if you have an expected duration
-Write-Host "Start deployment validation at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
+Write-Host "Validate deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
 
 # Validate the deployment of the resources with Bicep
 az deployment group validate `
-    --name "validate-custom-track-availability-tests-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
+    --name "validate-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
     --template-file './prerequisites.bicep' `
     --parameters workload=$Workload `
@@ -72,7 +68,7 @@ Write-Host "Start deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
 
 # Deploy the resources with Bicep
 az deployment group create `
-    --name "deploy-custom-track-availability-tests-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
+--name "deploy-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
     --resource-group $ResourceGroupName `
     --template-file './prerequisites.bicep' `
     --parameters workload=$Workload `
