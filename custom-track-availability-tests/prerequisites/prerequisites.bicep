@@ -20,7 +20,7 @@ param tenantId string = subscription().tenantId
 param location string = resourceGroup().location
 
 @description('The name of the workload to deploy')
-@maxLength(12) // The maximum length of the storage account name and key vault name is 24 characters. To prevent errors the workfload name should be short (about 12 characters).
+@maxLength(12) // The maximum length of the storage account name and key vault name is 24 characters. To prevent errors the workload name should be short (about 12 characters).
 param workload string
 
 @description('The name of the environment to deploy to')
