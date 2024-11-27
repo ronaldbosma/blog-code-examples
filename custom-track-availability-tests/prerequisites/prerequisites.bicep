@@ -35,6 +35,9 @@ param environment string = 'dev'
 @description('The instance number to will be added to the deployed resources names to make them unique')
 param instance string = '01'
 
+@description('The name of the App Service for the Function App that will be created')
+param functionAppServicePlanName string = getResourceName('appServicePlan', workload, environment, location, 'functionapp')
+
 @description('The name of the Function App that will be created')
 param functionAppName string = getResourceName('functionApp', workload, environment, location, instance)
 
@@ -58,13 +61,6 @@ param keyVaultName string = getResourceName('keyVault', workload, environment, l
 @description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
 param keyVaultAdministratorId string
 
-@description('The default action on the Key Vault when no rule from ipRules and from virtualNetworkRules match.')
-@allowed([ 'Allow', 'Deny' ])
-param keyVaultNetworkAclsDefaultAction string = 'Allow'
-
-@description('An IP address from which access to the Key Vault is allowed')
-param keyVaultAllowedIpAddress string = ''
-
 @description('The name of the API Management Service that will be created')
 param apiManagementServiceName string = getResourceName('apiManagement', workload, environment, location, instance)
 
@@ -85,8 +81,6 @@ module keyVault 'modules/key-vault.bicep' = {
     tenantId: tenantId
     location: location
     keyVaultName: keyVaultName
-    keyVaultNetworkAclsDefaultAction: keyVaultNetworkAclsDefaultAction
-    keyVaultAllowedIpAddress: keyVaultAllowedIpAddress
   }
 }
 
@@ -109,7 +103,6 @@ module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bic
   }
   dependsOn: [
     keyVault
-    storageAccount
   ]
 }
 
@@ -122,6 +115,9 @@ module appInsights 'modules/app-insights.bicep' = {
     retentionInDays: retentionInDays
     keyVaultName: keyVaultName
   }
+  dependsOn: [
+    keyVault
+  ]
 }
 
 module apiManagement 'modules/api-management.bicep' = {
@@ -140,15 +136,32 @@ module apiManagement 'modules/api-management.bicep' = {
   ]
 }
 
+module functionApp 'modules/function-app.bicep' = {
+  name: 'functionApp'
+  params: {
+    location: location
+    functionAppServicePlanName: functionAppServicePlanName
+    functionAppName: functionAppName
+    functionAppIdentityName: identitiesAndRoleAssignments.outputs.functionAppIdentityName
+    appInsightsName: appInsightsName
+    storageAccountName: storageAccountName
+  }
+  dependsOn: [
+    appInsights
+    storageAccount
+  ]
+}
+
 
 //=============================================================================
 // Resources
 //=============================================================================
 
 // Return the names of the resources
-output functionAppName string = functionAppName
-output storageAccountName string = storageAccountName
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
-output appInsightsName string = appInsightsName
-output keyVaultName string = keyVaultName
 output apiManagementServiceName string = apiManagementServiceName
+output appInsightsName string = appInsightsName
+output functionAppName string = functionAppName
+output functionAppServicePlanName string = functionAppServicePlanName
+output keyVaultName string = keyVaultName
+output logAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
+output storageAccountName string = storageAccountName
