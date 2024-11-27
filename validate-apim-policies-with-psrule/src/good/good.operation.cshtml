@@ -1,0 +1,38 @@
+<policies>
+    <inbound>
+        <base />
+        <set-backend-service backend-id="test" />
+
+        <!-- 
+            API Management accepts policy expressions that result in invalid XML that our PSRule convention doesn't accept.
+            Use the <![CDATA[]> to prevent issues.
+        -->
+        <set-body><![CDATA[@{
+            return context.Request.Body.As<string>();
+        }]]></set-body>
+    </inbound>
+
+    <backend>
+        <base />
+    </backend>
+
+    <outbound>
+        <base />
+        <choose>
+            <!-- 
+                API Management accepts the use of " inside the attribute value but this is invalid XML that our PSRule convention doesn't accept.
+                Either surround the attribute value with ' or use &quot; in the policy expression.
+            -->
+            <when condition='@(context.Response.StatusCode.ToString() == "200")'>
+                <!-- Do something -->
+            </when>
+            <when condition="@(context.Response.StatusCode.ToString() == &quot;200&quot;)">
+                <!-- Do something -->
+            </when>
+        </choose>
+    </outbound>
+
+    <on-error>
+        <base />
+    </on-error>
+</policies>

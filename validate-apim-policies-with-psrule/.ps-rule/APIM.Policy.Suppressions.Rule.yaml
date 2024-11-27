@@ -1,0 +1,19 @@
+---
+# Synopsis: Suppress APIM policy rules for all files in the 'src/suppressed' folder
+apiVersion: github.com/microsoft/PSRule/v1
+kind: SuppressionGroup
+metadata:
+  name: 'SuppressAPIMPolicyRulesForFilesInSuppressedFolder'
+spec:
+  rule:
+  - 'APIM.Policy.BackendBasePolicy'
+  - 'APIM.Policy.FileExtension'
+  - 'APIM.Policy.InboundBasePolicy'
+  - 'APIM.Policy.OnErrorBasePolicy'
+  - 'APIM.Policy.OutboundBasePolicy'
+  - 'APIM.Policy.UseBackendEntity'
+  - 'APIM.Policy.ValidXml'
+  if:
+    name: '.'
+    contains:
+    - 'src/suppressed/'

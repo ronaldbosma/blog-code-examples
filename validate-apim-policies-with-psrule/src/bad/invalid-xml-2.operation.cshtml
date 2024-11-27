@@ -1,0 +1,23 @@
+<policies>
+    <inbound>
+        <base />
+    </inbound>
+
+    <backend>
+        <base />
+    </backend>
+
+    <outbound>
+        <base />
+        <choose>
+            <!-- This will result in an error when loading the policy as XML, because of the use of " inside the attribute value -->
+            <when condition="@(context.Response.StatusCode.ToString() == "200")">
+                <!-- Do something -->
+            </when>
+        </choose>
+    </outbound>
+
+    <on-error>
+        <base />
+    </on-error>
+</policies>
