@@ -25,6 +25,13 @@ param storageAccountName string
 param appInsightsName string
 
 //=============================================================================
+// Variables
+//=============================================================================
+
+var netFrameworkVersion = 'v8.0'
+var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+
+//=============================================================================
 // Existing resources
 //=============================================================================
 
@@ -82,7 +89,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'AzureWebJobsStorage'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+          value: storageAccountConnectionString
         }
         {
           name: 'FUNCTIONS_EXTENSION_VERSION'
@@ -94,7 +101,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'
-          value: 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
+          value: storageAccountConnectionString
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
@@ -107,7 +114,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       ]
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
-      netFrameworkVersion: 'v8.0'
+      netFrameworkVersion: netFrameworkVersion
     }
     httpsOnly: true
   }
