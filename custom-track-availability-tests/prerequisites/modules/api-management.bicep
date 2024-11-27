@@ -72,7 +72,7 @@ resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
 }
 
 
-// Store App Insights instrumentation key in named value. Use the secret URI from the Key Vault secret to reference the secret in the named value
+// Get reference to secret containing the App Insights instrumentation key and store the secret URI in a named value
 
 resource appInsightsInstrumentationKeySecret 'Microsoft.KeyVault/vaults/secrets@2023-02-01' existing = {
   name: 'applicationinsights-instrumentationkey'
@@ -98,13 +98,13 @@ resource appInsightsInstrumentationKeyNamedValue 'Microsoft.ApiManagement/servic
 // - we need diagnostics settings that specify what to log to the logger
 
 resource apimAppInsightsLogger 'Microsoft.ApiManagement/service/loggers@2022-08-01' = {
-  name: 'apim-appin-logger'
+  name: appInsightsName
   parent: apiManagementService
   properties: {
     loggerType: 'applicationInsights'
     credentials: {
       // If we would reference the instrumentation key directly using appInsights.properties.InstrumentationKey,
-      // a new named value is created everytime we execute a deployment
+      // a new named value is created every time we execute a deployment
       instrumentationKey: '{{${appInsightsInstrumentationKeyNamedValue.properties.displayName}}}'
     }
     resourceId: appInsights.id
