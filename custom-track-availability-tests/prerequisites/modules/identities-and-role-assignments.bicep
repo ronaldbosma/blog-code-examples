@@ -9,11 +9,11 @@
 @description('Location to use for all resources')
 param location string
 
-@description('The name of the Function App that will be granted permissions')
-param functionAppName string
+@description('The name of the Function App identity that will be granted permissions')
+param functionAppIdentityName string
 
-@description('The name of the API Management Service that will be granted permissions')
-param apiManagementServiceName string
+@description('The name of the API Management Service identity that will be granted permissions')
+param apiManagementIdentityName string
 
 @description('The name of the Key Vault that will contain the secrets')
 @maxLength(24)
@@ -47,7 +47,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 // Create a user-assigned managed identity for the Function App
 
 resource functionAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'id-${functionAppName}'
+  name: functionAppIdentityName
   location: location
 }
 
@@ -55,14 +55,14 @@ resource functionAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2
 // Create a user-assigned managed identity for the API Management Service
 
 resource apimIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
-  name: 'id-${apiManagementServiceName}'
+  name: apiManagementIdentityName
   location: location
 }
 
 // Grant the API Management Service access to the Key Vault
 
 resource grantApimKeyVaultAccess 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid('grant-${apiManagementServiceName}-${keyVaultName}-${keyVaultSecretsUserRole}')
+  name: guid('grant-${apiManagementIdentityName}-${keyVaultName}-${keyVaultSecretsUserRole}')
   scope: keyVault
   properties: {
     roleDefinitionId: keyVaultSecretsUserRole
@@ -83,11 +83,3 @@ resource grantAdministratorKeyVaultAccess 'Microsoft.Authorization/roleAssignmen
     principalType: 'User'
   }
 }
-
-
-//=============================================================================
-// Outputs
-//=============================================================================
-
-output functionAppIdentityName string = functionAppIdentity.name
-output apimIdentityName string = apimIdentity.name

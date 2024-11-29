@@ -3,20 +3,20 @@
 //=============================================================================
 
 //=============================================================================
+// Imports
+//=============================================================================
+
+import { functionAppSettingsType } from '../types/settings.bicep'
+
+//=============================================================================
 // Parameters
 //=============================================================================
 
 @description('Location to use for all resources')
 param location string
 
-@description('The name of the App Service for the Function App that will be created')
-param functionAppServicePlanName string
-
-@description('The name of the Function App that will be created')
-param functionAppName string
-
-@description('The name of the user-assigned managed identity of Function App')
-param functionAppIdentityName string
+@description('The settings for the Function App that will be created')
+param functionAppSettings functionAppSettingsType
 
 @description('Name of the storage account that will be used by the Function App')
 param storageAccountName string
@@ -28,7 +28,6 @@ param appInsightsName string
 // Variables
 //=============================================================================
 
-var netFrameworkVersion = 'v8.0'
 var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName=${storageAccountName};EndpointSuffix=${environment().suffixes.storage};AccountKey=${storageAccount.listKeys().keys[0].value}'
 
 //=============================================================================
@@ -38,7 +37,7 @@ var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName
 // Function App User Managed Identity
 
 resource functionAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
-  name: functionAppIdentityName
+  name: functionAppSettings.identityName
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
@@ -56,7 +55,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing 
 // Create the Application Service Plan for the Function App
 
 resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
-  name: functionAppServicePlanName
+  name: functionAppSettings.appServicePlanName
   location: location
   kind: 'functionapp'
   sku: {
@@ -70,7 +69,7 @@ resource hostingPlan 'Microsoft.Web/serverfarms@2021-03-01' = {
 // Create the Function App
 
 resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
-  name: functionAppName
+  name: functionAppSettings.functionAppName
   location: location
   kind: 'functionapp'
   identity: {
@@ -105,7 +104,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
         }
         {
           name: 'WEBSITE_CONTENTSHARE'
-          value: toLower(functionAppName)
+          value: toLower(functionAppSettings.functionAppName)
         }
         {
           name: 'WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED'
@@ -114,7 +113,7 @@ resource functionApp 'Microsoft.Web/sites@2021-03-01' = {
       ]
       ftpsState: 'FtpsOnly'
       minTlsVersion: '1.2'
-      netFrameworkVersion: netFrameworkVersion
+      netFrameworkVersion: functionAppSettings.netFrameworkVersion
     }
     httpsOnly: true
   }

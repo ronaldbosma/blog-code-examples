@@ -6,7 +6,8 @@
 // Imports
 //=============================================================================
 
-import { getResourceName } from './functions/naming-conventions.bicep'
+import { getResourceName, getResourceIdentityName } from './functions/naming-conventions.bicep'
+import * as settings from './types/settings.bicep'
 
 
 //=============================================================================
@@ -30,45 +31,42 @@ param workload string
   'acc'
   'prd'
 ])
-param environment string = 'dev'
+param environment string
 
 @description('The instance number to will be added to the deployed resources names to make them unique')
-param instance string = '01'
-
-@description('The name of the App Service for the Function App that will be created')
-param functionAppServicePlanName string = getResourceName('appServicePlan', workload, environment, location, 'functionapp-${instance}')
-
-@description('The name of the Function App that will be created')
-param functionAppName string = getResourceName('functionApp', workload, environment, location, instance)
-
-@description('Name of the storage account that will be used by the Function App')
-@maxLength(24)
-param storageAccountName string = getResourceName('storageAccount', workload, environment, location, instance)
-
-@description('The name of the Log Analytics workspace that will be created')
-param logAnalyticsWorkspaceName string = getResourceName('logAnalyticsWorkspace', workload, environment, location, instance)
-
-@description('The name of the App Insights instance that will be created and used by API other resources')
-param appInsightsName string = getResourceName('applicationInsights', workload, environment, location, instance)
-
-@description('Retention in days of the logging')
-param retentionInDays int = 30
-
-@description('The name of the Key Vault that will contain the secrets')
-@maxLength(24)
-param keyVaultName string = getResourceName('keyVault', workload, environment, location, instance)
+param instance string
 
 @description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
 param keyVaultAdministratorId string
 
-@description('The name of the API Management Service that will be created')
-param apiManagementServiceName string = getResourceName('apiManagement', workload, environment, location, instance)
 
-@description('The name of the owner of the API Management service')
-param apiManagementPublisherName string = 'admin@example.org'
+//=============================================================================
+// Variables
+//=============================================================================
 
-@description('The email address of the owner of the API Management service')
-param apiManagementPublisherEmail string = 'admin@example.org'
+var apiManagementSettings = {
+  serviceName: getResourceName('apiManagement', workload, environment, location, instance)
+  identityName: getResourceIdentityName('apiManagement', workload, environment, location, instance)
+  publisherName: 'admin@example.org'
+  publisherEmail: 'admin@example.org'
+}
+
+var appInsightsSettings = {
+  appInsightsName: getResourceName('applicationInsights', workload, environment, location, instance)
+  logAnalyticsWorkspaceName: getResourceName('logAnalyticsWorkspace', workload, environment, location, instance)
+  retentionInDays: 30
+}
+
+var functionAppSettings = {
+  functionAppName: getResourceName('functionApp', workload, environment, location, instance)
+  identityName: getResourceIdentityName('functionApp', workload, environment, location, instance)
+  appServicePlanName: getResourceName('appServicePlan', workload, environment, location, 'functionapp-${instance}')
+  netFrameworkVersion: 'v8.0'
+}
+
+var keyVaultName = getResourceName('keyVault', workload, environment, location, instance)
+
+var storageAccountName = getResourceName('storageAccount', workload, environment, location, instance)
 
 
 //=============================================================================
@@ -96,8 +94,8 @@ module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bic
   name: 'identitiesAndRoleAssignments'
   params: {
     location: location
-    functionAppName: functionAppName
-    apiManagementServiceName: apiManagementServiceName
+    functionAppIdentityName: functionAppSettings.identityName
+    apiManagementIdentityName: apiManagementSettings.identityName
     keyVaultName: keyVaultName
     keyVaultAdministratorId: keyVaultAdministratorId
   }
@@ -110,9 +108,7 @@ module appInsights 'modules/app-insights.bicep' = {
   name: 'appInsights'
   params: {
     location: location
-    logAnalyticsWorkspaceName: logAnalyticsWorkspaceName
-    appInsightsName: appInsightsName
-    retentionInDays: retentionInDays
+    appInsightsSettings: appInsightsSettings
     keyVaultName: keyVaultName
   }
   dependsOn: [
@@ -124,11 +120,8 @@ module apiManagement 'modules/api-management.bicep' = {
   name: 'apiManagement'
   params: {
     location: location
-    apiManagementServiceName: apiManagementServiceName
-    publisherName: apiManagementPublisherName
-    publisherEmail: apiManagementPublisherEmail
-    apimIdentityName: identitiesAndRoleAssignments.outputs.apimIdentityName
-    appInsightsName: appInsightsName
+    apiManagementSettings: apiManagementSettings
+    appInsightsName: appInsightsSettings.appInsightsName
     keyVaultName: keyVaultName
   }
   dependsOn: [
@@ -140,10 +133,8 @@ module functionApp 'modules/function-app.bicep' = {
   name: 'functionApp'
   params: {
     location: location
-    functionAppServicePlanName: functionAppServicePlanName
-    functionAppName: functionAppName
-    functionAppIdentityName: identitiesAndRoleAssignments.outputs.functionAppIdentityName
-    appInsightsName: appInsightsName
+    functionAppSettings: functionAppSettings
+    appInsightsName: appInsightsSettings.appInsightsName
     storageAccountName: storageAccountName
   }
   dependsOn: [
@@ -154,14 +145,14 @@ module functionApp 'modules/function-app.bicep' = {
 
 
 //=============================================================================
-// Resources
+// Outputs
 //=============================================================================
 
 // Return the names of the resources
-output apiManagementServiceName string = apiManagementServiceName
-output appInsightsName string = appInsightsName
-output functionAppName string = functionAppName
-output functionAppServicePlanName string = functionAppServicePlanName
+output apiManagementServiceName string = apiManagementSettings.serviceName
+output appInsightsName string = appInsightsSettings.appInsightsName
+output functionAppName string = functionAppSettings.functionAppName
+output functionAppServicePlanName string = functionAppSettings.appServicePlanName
 output keyVaultName string = keyVaultName
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspaceName
+output logAnalyticsWorkspaceName string = appInsightsSettings.logAnalyticsWorkspaceName
 output storageAccountName string = storageAccountName

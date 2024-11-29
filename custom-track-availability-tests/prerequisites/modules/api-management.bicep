@@ -3,23 +3,20 @@
 //=============================================================================
 
 //=============================================================================
+// Imports
+//=============================================================================
+
+import { apiManagementSettingsType } from '../types/settings.bicep'
+
+//=============================================================================
 // Parameters
 //=============================================================================
 
 @description('Location to use for all resources')
 param location string
 
-@description('The name of the API Management Service that will be created')
-param apiManagementServiceName string
-
-@description('The email address of the owner of the API Management service')
-param publisherEmail string
-
-@description('The name of the owner of the API Management service')
-param publisherName string
-
-@description('The name of the user-assigned managed identity of API management')
-param apimIdentityName string
+@description('The settings for the API Management Service that will be created')
+param apiManagementSettings apiManagementSettingsType
 
 @description('The name of the App Insights instance that will be created and used by API Management')
 param appInsightsName string
@@ -35,7 +32,7 @@ param keyVaultName string
 // APIM User Managed Identity
 
 resource apimIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
-  name: apimIdentityName
+  name: apiManagementSettings.identityName
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
@@ -53,15 +50,15 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 // API Management - Consumption tier (see also: https://learn.microsoft.com/en-us/azure/api-management/quickstart-bicep?tabs=CLI)
 
 resource apiManagementService 'Microsoft.ApiManagement/service@2022-08-01' = {
-  name: apiManagementServiceName
+  name: apiManagementSettings.serviceName
   location: location
   sku: {
     name: 'Consumption'
     capacity: 0
   }
   properties: {
-    publisherEmail: publisherEmail
-    publisherName: publisherName
+    publisherName: apiManagementSettings.publisherName
+    publisherEmail: apiManagementSettings.publisherEmail
   }
   identity: {
     type: 'UserAssigned'
