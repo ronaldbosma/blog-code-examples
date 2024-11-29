@@ -3,7 +3,7 @@ param (
     [string]$Environment = "dev",
     [string]$Location = "norwayeast",
     [string]$Instance = "01",
-    [string]$KeyVaultAdministratorId = $null
+    [string]$CurrentUserPrincipalId = $null
 )
 
 $ErrorActionPreference = 'Stop'
@@ -14,14 +14,14 @@ Set-StrictMode -Version Latest
 #  Get Settings from Signed-In User
 # =============================================================================
 
-# If the Id of the Key Vault Administrators is not specified, try to get the signed in user and use theirs.
+# If the Id of the Current User is not specified, try to get the signed in user and use theirs.
 # NOTE: depending on the access rights of the signed in user, this might fail.
-if (-not($KeyVaultAdministratorId))
+if (-not($CurrentUserPrincipalId))
 {
     $signedInUser = az ad signed-in-user show | ConvertFrom-Json
-    if (-not($KeyVaultAdministratorId))
+    if (-not($CurrentUserPrincipalId))
     {
-        $KeyVaultAdministratorId = $signedInUser.id
+        $CurrentUserPrincipalId = $signedInUser.id
     }
 }
 
@@ -42,7 +42,7 @@ az deployment sub validate `
                  workload=$Workload `
                  environment=$Environment `
                  instance=$Instance `
-                 keyVaultAdministratorId=$KeyVaultAdministratorId `
+                 currentUserPrincipalId=$CurrentUserPrincipalId `
     --verbose
 
 
@@ -62,5 +62,5 @@ az deployment sub create `
                  workload=$Workload `
                  environment=$Environment `
                  instance=$Instance `
-                 keyVaultAdministratorId=$KeyVaultAdministratorId `
+                 currentUserPrincipalId=$CurrentUserPrincipalId `
     --verbose

@@ -18,11 +18,14 @@ param location string
 @description('The settings for the Function App that will be created')
 param functionAppSettings functionAppSettingsType
 
-@description('Name of the storage account that will be used by the Function App')
-param storageAccountName string
-
 @description('The name of the App Insights instance that will be used by the Function App')
 param appInsightsName string
+
+@description('The name of the Key Vault that will contain the secrets')
+param keyVaultName string
+
+@description('Name of the storage account that will be used by the Function App')
+param storageAccountName string
 
 //=============================================================================
 // Variables
@@ -33,12 +36,6 @@ var storageAccountConnectionString = 'DefaultEndpointsProtocol=https;AccountName
 //=============================================================================
 // Existing resources
 //=============================================================================
-
-// Function App User Managed Identity
-
-resource functionAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
-  name: functionAppSettings.identityName
-}
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
@@ -51,6 +48,23 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2023-04-01' existing 
 //=============================================================================
 // Resources
 //=============================================================================
+
+// Create Function App identity and assign roles to it
+
+resource functionAppIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: functionAppSettings.identityName
+  location: location
+}
+
+module assignRolesToFunctionAppIdentity 'assign-roles-to-principal.bicep' = {
+  name: 'assignRolesToFunctionAppIdentity'
+  params: {
+    principalId: functionAppIdentity.properties.principalId
+    keyVaultName: keyVaultName
+    storageAccountName: storageAccountName
+  }
+}
+
 
 // Create the Application Service Plan for the Function App
 

@@ -38,8 +38,8 @@ param environment string
 @description('The instance number to will be added to the deployed resources names to make them unique')
 param instance string
 
-@description('The ID of the user that will be granted Key Vault Administrator rights to the Key Vault.')
-param keyVaultAdministratorId string
+@description('The principal ID of the user that will be assigned roles to the Key Vault and Storage Account.')
+param currentUserPrincipalId string
 
 
 //=============================================================================
@@ -101,21 +101,6 @@ module storageAccount 'modules/storage-account.bicep' = {
   }
 }
 
-module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bicep' = {
-  name: 'identitiesAndRoleAssignments'
-  scope: workloadResourceGroup
-  params: {
-    location: location
-    functionAppIdentityName: functionAppSettings.identityName
-    apiManagementIdentityName: apiManagementSettings.identityName
-    keyVaultName: keyVaultName
-    keyVaultAdministratorId: keyVaultAdministratorId
-  }
-  dependsOn: [
-    keyVault
-  ]
-}
-
 module appInsights 'modules/app-insights.bicep' = {
   name: 'appInsights'
   scope: workloadResourceGroup
@@ -137,6 +122,7 @@ module apiManagement 'modules/api-management.bicep' = {
     apiManagementSettings: apiManagementSettings
     appInsightsName: appInsightsSettings.appInsightsName
     keyVaultName: keyVaultName
+    storageAccountName: storageAccountName
   }
   dependsOn: [
     appInsights
@@ -150,10 +136,26 @@ module functionApp 'modules/function-app.bicep' = {
     location: location
     functionAppSettings: functionAppSettings
     appInsightsName: appInsightsSettings.appInsightsName
+    keyVaultName: keyVaultName
     storageAccountName: storageAccountName
   }
   dependsOn: [
     appInsights
+    storageAccount
+  ]
+}
+
+module assignRolesToCurrentUser 'modules/assign-roles-to-principal.bicep' = if (currentUserPrincipalId != null) {
+  name: 'assignRolesToCurrentUser'
+  scope: workloadResourceGroup
+  params: {
+    principalId: currentUserPrincipalId
+    principalType: 'User'
+    keyVaultName: keyVaultName
+    storageAccountName: storageAccountName
+  }
+  dependsOn: [
+    keyVault
     storageAccount
   ]
 }

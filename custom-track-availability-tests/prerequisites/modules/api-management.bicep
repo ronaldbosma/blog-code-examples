@@ -22,18 +22,14 @@ param apiManagementSettings apiManagementSettingsType
 param appInsightsName string
 
 @description('The name of the Key Vault that will contain the secrets')
-@maxLength(24)
 param keyVaultName string
+
+@description('Name of the storage account that will be used by the Function App')
+param storageAccountName string
 
 //=============================================================================
 // Existing resources
 //=============================================================================
-
-// APIM User Managed Identity
-
-resource apimIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' existing = {
-  name: apiManagementSettings.identityName
-}
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
@@ -46,6 +42,23 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' existing = {
 //=============================================================================
 // Resources
 //=============================================================================
+
+// Create API Management identity and assign roles to it
+
+resource apimIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+  name: apiManagementSettings.identityName
+  location: location
+}
+
+module assignRolesToApimIdentity 'assign-roles-to-principal.bicep' = {
+  name: 'assignRolesToApimIdentity'
+  params: {
+    principalId: apimIdentity.properties.principalId
+    keyVaultName: keyVaultName
+    storageAccountName: storageAccountName
+  }
+}
+
 
 // API Management - Consumption tier (see also: https://learn.microsoft.com/en-us/azure/api-management/quickstart-bicep?tabs=CLI)
 
