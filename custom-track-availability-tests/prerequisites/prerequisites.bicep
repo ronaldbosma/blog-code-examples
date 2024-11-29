@@ -2,6 +2,8 @@
 // Prerequisites
 //=============================================================================
 
+targetScope = 'subscription'
+
 //=============================================================================
 // Imports
 //=============================================================================
@@ -18,7 +20,7 @@ import * as settings from './types/settings.bicep'
 param tenantId string = subscription().tenantId
 
 @description('Location to use for all resources')
-param location string = resourceGroup().location
+param location string
 
 @description('The name of the workload to deploy')
 @maxLength(12) // The maximum length of the storage account name and key vault name is 24 characters. To prevent errors the workload name should be short (about 12 characters).
@@ -43,6 +45,8 @@ param keyVaultAdministratorId string
 //=============================================================================
 // Variables
 //=============================================================================
+
+var resourceGroupName = getResourceName('resourceGroup', workload, environment, location, instance)
 
 var apiManagementSettings = {
   serviceName: getResourceName('apiManagement', workload, environment, location, instance)
@@ -73,8 +77,14 @@ var storageAccountName = getResourceName('storageAccount', workload, environment
 // Resources
 //=============================================================================
 
+resource workloadResourceGroup 'Microsoft.Resources/resourceGroups@2021-04-01' = {
+  name: resourceGroupName
+  location: location
+}
+
 module keyVault 'modules/key-vault.bicep' = {
   name: 'keyVault'
+  scope: workloadResourceGroup
   params: {
     tenantId: tenantId
     location: location
@@ -84,6 +94,7 @@ module keyVault 'modules/key-vault.bicep' = {
 
 module storageAccount 'modules/storage-account.bicep' = {
   name: 'storageAccount'
+  scope: workloadResourceGroup
   params: {
     location: location
     storageAccountName: storageAccountName
@@ -92,6 +103,7 @@ module storageAccount 'modules/storage-account.bicep' = {
 
 module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bicep' = {
   name: 'identitiesAndRoleAssignments'
+  scope: workloadResourceGroup
   params: {
     location: location
     functionAppIdentityName: functionAppSettings.identityName
@@ -106,6 +118,7 @@ module identitiesAndRoleAssignments 'modules/identities-and-role-assignments.bic
 
 module appInsights 'modules/app-insights.bicep' = {
   name: 'appInsights'
+  scope: workloadResourceGroup
   params: {
     location: location
     appInsightsSettings: appInsightsSettings
@@ -118,6 +131,7 @@ module appInsights 'modules/app-insights.bicep' = {
 
 module apiManagement 'modules/api-management.bicep' = {
   name: 'apiManagement'
+  scope: workloadResourceGroup
   params: {
     location: location
     apiManagementSettings: apiManagementSettings
@@ -131,6 +145,7 @@ module apiManagement 'modules/api-management.bicep' = {
 
 module functionApp 'modules/function-app.bicep' = {
   name: 'functionApp'
+  scope: workloadResourceGroup
   params: {
     location: location
     functionAppSettings: functionAppSettings

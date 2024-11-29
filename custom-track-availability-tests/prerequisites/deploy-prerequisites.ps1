@@ -3,25 +3,11 @@ param (
     [string]$Environment = "dev",
     [string]$Location = "norwayeast",
     [string]$Instance = "01",
-    [string]$ResourceGroupName = $null,
     [string]$KeyVaultAdministratorId = $null
 )
 
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-
-
-# =============================================================================
-#  Create Resource Group
-# =============================================================================
-
-if (-not($ResourceGroupName)) {
-    # This might not follow the naming convention used in the Bicep script to the letter, but it's close enough
-    $ResourceGroupName = "rg-$Workload-$Environment-$Location-$Instance".ToLower()
-}
-
-Write-Host "Create resource group '$ResourceGroupName' if it does not exist"
-az group create --name $ResourceGroupName --location $Location
 
 
 # =============================================================================
@@ -48,11 +34,12 @@ if (-not($KeyVaultAdministratorId))
 Write-Host "Validate deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
 
 # Validate the deployment of the resources with Bicep
-az deployment group validate `
-    --name "validate-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
-    --resource-group $ResourceGroupName `
+az deployment sub validate `
+    --name "validate-$Workload-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
+    --location $Location `
     --template-file './prerequisites.bicep' `
-    --parameters workload=$Workload `
+    --parameters location=$Location `
+                 workload=$Workload `
                  environment=$Environment `
                  instance=$Instance `
                  keyVaultAdministratorId=$KeyVaultAdministratorId `
@@ -67,11 +54,12 @@ az deployment group validate `
 Write-Host "Start deployment at: $(Get-Date -Format "dd-MM-yyyy HH:mm:ss")"
 
 # Deploy the resources with Bicep
-az deployment group create `
---name "deploy-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
-    --resource-group $ResourceGroupName `
+az deployment sub create `
+    --name "deploy-$Workload-$(Get-Date -Format "yyyyMMdd-HHmmss")" `
+    --location $Location `
     --template-file './prerequisites.bicep' `
-    --parameters workload=$Workload `
+    --parameters location=$Location `
+                 workload=$Workload `
                  environment=$Environment `
                  instance=$Instance `
                  keyVaultAdministratorId=$KeyVaultAdministratorId `
