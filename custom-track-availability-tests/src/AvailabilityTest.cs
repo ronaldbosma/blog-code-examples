@@ -50,6 +50,9 @@ internal class AvailabilityTest
                 availability.Context.Operation.ParentId = activity.ParentSpanId.ToString();
                 availability.Context.Operation.Id = activity.RootId;
 
+                // Set start time of availability test
+                availability.Timestamp = DateTimeOffset.UtcNow;
+
                 await _checkAvailabilityAsync();
             }
 
@@ -65,7 +68,6 @@ internal class AvailabilityTest
         {
             stopwatch.Stop();
             availability.Duration = stopwatch.Elapsed;
-            availability.Timestamp = DateTimeOffset.UtcNow;
 
             _telemetryClient.TrackAvailability(availability);
             _telemetryClient.Flush();
