@@ -18,9 +18,10 @@ namespace Sample.AvailabilityTests
         }
 
         [Function("SampleAvailabilityTest")]
-        public void Run([TimerTrigger("0 * * * * *")] TimerInfo timerInfo)
+        public async Task Run([TimerTrigger("0 * * * * *")] TimerInfo timerInfo)
         {
             var availabilityTest = new AvailabilityTest("API Management Status", CheckApiManagementAvailabilityAsync, _telemetryClient);
+            await availabilityTest.ExecuteAsync();
         }
 
         private async Task CheckApiManagementAvailabilityAsync()
