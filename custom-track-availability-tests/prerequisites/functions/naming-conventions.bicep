@@ -5,6 +5,7 @@
 // Get resource name based on the naming convention taken from the Cloud Adoption Framework.
 // Convention: <resourceType>-<workload>-<environment>-<region>-<instance>
 // Source: https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/azure-best-practices/resource-naming
+// Blog about these functions: https://ronaldbosma.github.io/blog/2024/06/05/apply-azure-naming-convention-using-bicep-functions/
 @export()
 func getResourceName(resourceType string, workload string, environment string, region string, instance string) string => 
   shouldBeShortened(resourceType) 
@@ -14,6 +15,10 @@ func getResourceName(resourceType string, workload string, environment string, r
 func getResourceNameByConvention(resourceType string, workload string, environment string, region string, instance string) string => 
   sanitizeResourceName('${getPrefix(resourceType)}-${workload}-${abbreviateEnvironment(environment)}-${abbreviateRegion(region)}-${instance}')
 
+// The user-assigned managed identity name for a resource based on the naming convention.
+@export()
+func getResourceIdentityName(resourceType string, workload string, environment string, region string, instance string) string => 
+  '${getPrefix('managedIdentity')}-${getResourceNameByConvention(resourceType, workload, environment, region, instance)}'
 
 //=============================================================================
 // Shorten Names
@@ -47,9 +52,7 @@ func removeHyphens(value string) string => replace(value, '-', '')
 //=============================================================================
 
 // Sanitize the resource name by removing illegal characters and converting it to lower case.
-func sanitizeResourceName(value string) string => toLower(removeTrailingHyphen(removeColons(removeCommas(removeDots(removeSemicolons(removeUnderscores(removeWhiteSpaces(value))))))))
-
-func removeTrailingHyphen(value string) string => endsWith(value, '-') ? substring(value, 0, length(value)-1) : value
+func sanitizeResourceName(value string) string => toLower(removeColons(removeCommas(removeDots(removeSemicolons(removeUnderscores(removeWhiteSpaces(value)))))))
 func removeColons(value string) string => replace(value, ':', '')
 func removeCommas(value string) string => replace(value, ',', '')
 func removeDots(value string) string => replace(value, '.', '')
