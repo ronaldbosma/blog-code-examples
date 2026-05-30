@@ -83,6 +83,43 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentListOfAddresses_Success()
+        {
+            // Arrange
+            var expected = new List<AddressInternal>
+            {
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"),
+                new AddressInternal("456 Elm St", "Othertown", "NY", "67890"),
+                new AddressInternal("789 Oak St", "Sometown", "TX", "54321")
+            };
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+
+            // Act & Assert
+            actual.ShouldBeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_DifferentListOfAddresses_AssertionFails()
+        {
+            // Arrange
+            var expected = new List<AddressInternal>
+            {
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"),
+                new AddressInternal("456 Elm St", "Othertown", "NY", "67890"),
+                new AddressInternal("789 Oak St", "Sometown", "TX", "54321")
+            };
+
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+            actual[1].Street = "999 Pine St";
+
+            // Act
+            var act = () => actual.ShouldBeEquivalentTo(expected);
+
+            // Assert
+            act.ShouldThrow<ShouldAssertException>();
+        }
+
+        [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_FailsBecauseIgnoringPropertiesIsNotSupported()
         {
             // Arrange

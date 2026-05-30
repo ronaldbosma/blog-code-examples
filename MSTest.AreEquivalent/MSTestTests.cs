@@ -54,7 +54,7 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
-        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeWithDifferentValues_AssertionFails()
+        public void AreEquivalent_ExpectedAndActualAreDifferentObjectsOfDifferentTypeWithDifferentValues_AssertionFails()
         {
             // Arrange
             var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
@@ -79,6 +79,43 @@ namespace MSTest.AreEquivalent
 
             // Act & Assert
             Assert.AreEqual<object>(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEquivalent_EquivalentListOfAddresses_Success()
+        {
+            // Arrange
+            var expected = new List<AddressInternal>
+            {
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"),
+                new AddressInternal("456 Elm St", "Othertown", "NY", "67890"),
+                new AddressInternal("789 Oak St", "Sometown", "TX", "54321")
+            };
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+
+            // Act & Assert
+            Assert.AreEqual<object>(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEquivalent_DifferentListOfAddresses_AssertionFails()
+        {
+            // Arrange
+            var expected = new List<AddressInternal>
+            {
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"),
+                new AddressInternal("456 Elm St", "Othertown", "NY", "67890"),
+                new AddressInternal("789 Oak St", "Sometown", "TX", "54321")
+            };
+
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+            actual[1].Street = "999 Pine St";
+
+            // Act
+            var act = () => Assert.AreEqual<object>(expected, actual);
+
+            // Assert
+            Assert.ThrowsExactly<AssertFailedException>(act);
         }
 
         [TestMethod]
