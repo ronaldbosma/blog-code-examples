@@ -122,5 +122,24 @@ namespace MSTest.AreEquivalent
             // Act & Assert
             actual.Should().BeEquivalentTo(expected);
         }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal
+            {
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
+            };
+
+            var actual = expected.CreateCopy();
+            actual.Street = "456 Elm St";
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(x => x.Street));
+        }
     }
 }
