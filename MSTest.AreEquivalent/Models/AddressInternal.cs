@@ -20,5 +20,16 @@
                 ZipCode = ZipCode
             };
         }
+
+        public AddressExternal MapToExternal()
+        {
+            return new AddressExternal
+            {
+                Street = Street,
+                City = City,
+                State = State,
+                ZipCode = ZipCode
+            };
+        }
     }
 }

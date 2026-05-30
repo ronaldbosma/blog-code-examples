@@ -73,13 +73,7 @@ namespace MSTest.AreEquivalent
                 State = "CA",
                 ZipCode = "12345"
             };
-            var actual = new AddressExternal
-            {
-                Street = "123 Main St",
-                City = "Anytown",
-                State = "CA",
-                ZipCode = "12345"
-            };
+            var actual = expected.MapToExternal();
 
             // Act & Assert
             Assert.AreEqual<object>(expected, actual);
@@ -102,19 +96,7 @@ namespace MSTest.AreEquivalent
                     ZipCode = "12345"
                 }
             };
-            var actual = new PersonExternal
-            {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressExternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
-            };
+            var actual = expected.MapToExternal();
 
             // Act & Assert
             Assert.AreEqual<object>(expected, actual);
