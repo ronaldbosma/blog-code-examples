@@ -71,7 +71,7 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
-        public void ShouldBeEquivalentTo_EquivalentComplexObjects_Success()
+        public void ShouldBeEquivalentTo_EquivalentComplexObjectsOfDifferentTypes_Success()
         {
             // Arrange
             var expected = new PersonInternal("John", "Doe", 30, 
