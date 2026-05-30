@@ -63,7 +63,7 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
-        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeButWithSameValues_FailsAlthoughObjectsAreSimilar()
+        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeButWithSameValues_FailsAlthoughObjectsAreEquivalent()
         {
             // Arrange
             var expected = new AddressInternal
@@ -102,7 +102,7 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
-        public void ShouldBeEquivalentTo_EquivalentComplexObjects_FailsAlthoughObjectsAreSimilar()
+        public void ShouldBeEquivalentTo_EquivalentComplexObjects_FailsAlthoughObjectsAreEquivalent()
         {
             // Arrange
             var expected = new PersonInternal
