@@ -1,13 +1,13 @@
 ﻿namespace MSTest.AreEquivalent.Models
 {
-    internal record AddressExternal
+    internal class AddressExternal
     {
-        public required string Street { get; init; }
+        public required string Street { get; set; }
 
-        public required string City { get; init; }
+        public required string City { get; set; }
 
-        public required string State { get; init; }
+        public required string State { get; set; }
 
-        public required string ZipCode { get; init; }
+        public required string ZipCode { get; set; }
     }
 }

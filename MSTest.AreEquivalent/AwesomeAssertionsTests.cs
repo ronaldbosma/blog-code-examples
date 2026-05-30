@@ -33,7 +33,7 @@ namespace MSTest.AreEquivalent
                 State = "CA",
                 ZipCode = "12345"
             };
-            var actual = expected;
+            var actual = expected.CreateCopy();
 
             // Act & Assert
             actual.Should().BeEquivalentTo(expected);
@@ -50,7 +50,9 @@ namespace MSTest.AreEquivalent
                 State = "CA",
                 ZipCode = "12345"
             };
-            var actual = expected with { Street = "456 Elm St" };
+
+            var actual = expected.CreateCopy();
+            actual.Street = "456 Elm St";
 
             // Act
             var act = () => actual.Should().BeEquivalentTo(expected);

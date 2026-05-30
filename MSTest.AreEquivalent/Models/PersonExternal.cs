@@ -1,13 +1,13 @@
 ﻿namespace MSTest.AreEquivalent.Models
 {
-    internal record PersonExternal
+    internal class PersonExternal
     {
-        public required string FirstName { get; init; }
+        public required string FirstName { get; set; }
 
-        public required string LastName { get; init; }
+        public required string LastName { get; set; }
 
-        public required int Age { get; init; }
+        public required int Age { get; set; }
 
-        public required AddressExternal Address { get; init; }
+        public required AddressExternal Address { get; set; }
     }
 }
