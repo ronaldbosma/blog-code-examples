@@ -1,5 +1,4 @@
-﻿using AwesomeAssertions;
-using MSTest.AreEquivalent.Models;
+﻿using MSTest.AreEquivalent.Models;
 using Shouldly;
 
 namespace MSTest.AreEquivalent
@@ -80,6 +79,21 @@ namespace MSTest.AreEquivalent
             var actual = expected.MapToExternal();
 
             // Act & Assert
+            actual.ShouldBeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_FailsBecauseIgnoringPropertiesIsNotSupported()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            var actual = expected.CreateCopy();
+            actual.Street = "456 Elm St";
+
+            // Act & Assert
+
+            // MSTEST DOESN'T SUPPORT IGNORING PROPERTIES, SO THIS TEST WILL FAIL
             actual.ShouldBeEquivalentTo(expected);
         }
     }

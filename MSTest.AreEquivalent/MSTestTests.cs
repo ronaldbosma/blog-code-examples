@@ -80,5 +80,20 @@ namespace MSTest.AreEquivalent
             // Act & Assert
             Assert.AreEqual<object>(expected, actual);
         }
+
+        [TestMethod]
+        public void AreEquivalent_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_FailsBecauseIgnoringPropertiesIsNotSupported()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            var actual = expected.CreateCopy();
+            actual.Street = "456 Elm St";
+
+            // Act & Assert
+
+            // MSTEST DOESN'T SUPPORT IGNORING PROPERTIES, SO THIS TEST WILL FAIL
+            Assert.AreEqual<object>(expected, actual);
+        }
     }
 }
