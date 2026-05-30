@@ -2,34 +2,30 @@
 {
     internal class AddressInternal
     {
-        public required string Street { get; set; }
+        public AddressInternal(string street, string city, string state, string zipCode)
+        {
+            Street = street;
+            City = city;
+            State = state;
+            ZipCode = zipCode;
+        }
 
-        public required string City { get; set; }
+        public string Street { get; set; }
 
-        public required string State { get; set; }
+        public string City { get; set; }
 
-        public required string ZipCode { get; set; }
+        public string State { get; set; }
+
+        public string ZipCode { get; set; }
 
         public AddressInternal CreateCopy()
         {
-            return new AddressInternal
-            {
-                Street = Street,
-                City = City,
-                State = State,
-                ZipCode = ZipCode
-            };
+            return new AddressInternal(Street, City, State, ZipCode);
         }
 
         public AddressExternal MapToExternal()
         {
-            return new AddressExternal
-            {
-                Street = Street,
-                City = City,
-                State = State,
-                ZipCode = ZipCode
-            };
+            return new AddressExternal(Street, City, State, ZipCode);
         }
     }
 }

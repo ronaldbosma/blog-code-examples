@@ -2,23 +2,25 @@
 {
     internal class PersonInternal
     {
-        public required string FirstName { get; set; }
+        public PersonInternal(string firstName, string lastName, int age, AddressInternal address)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Age = age;
+            Address = address;
+        }
 
-        public required string LastName { get; set; }
+        public string FirstName { get; set; }
 
-        public required int Age { get; set; }
+        public string LastName { get; set; }
 
-        public required AddressInternal Address { get; set; }
+        public int Age { get; set; }
+
+        public AddressInternal Address { get; set; }
 
         public PersonExternal MapToExternal()
         {
-            return new PersonExternal
-            {
-                FirstName = FirstName,
-                LastName = LastName,
-                Age = Age,
-                Address = Address.MapToExternal()
-            };
+            return new PersonExternal(FirstName, LastName, Age, Address.MapToExternal());
         }
     }
 }

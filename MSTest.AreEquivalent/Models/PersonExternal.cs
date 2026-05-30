@@ -2,12 +2,20 @@
 {
     internal class PersonExternal
     {
-        public required string FirstName { get; set; }
+        public PersonExternal(string firstName, string lastName, int age, AddressExternal address)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Age = age;
+            Address = address;
+        }
 
-        public required string LastName { get; set; }
+        public string FirstName { get; set; }
 
-        public required int Age { get; set; }
+        public string LastName { get; set; }
 
-        public required AddressExternal Address { get; set; }
+        public int Age { get; set; }
+
+        public AddressExternal Address { get; set; }
     }
 }
