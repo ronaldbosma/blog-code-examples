@@ -9,7 +9,7 @@ namespace MSTest.AreEquivalent
         public void AreEquivalent_ExpectedAndActualAreTheSameObject_Success()
         {
             // Arrange
-            var expectedAndActualPerson = new AddressInternal
+            var expectedAndActual = new AddressInternal
             {
                 Street = "123 Main St",
                 City = "Anytown",
@@ -18,7 +18,7 @@ namespace MSTest.AreEquivalent
             };
 
             // Act & Assert
-            Assert.AreEqual(expectedAndActualPerson, expectedAndActualPerson);
+            Assert.AreEqual(expectedAndActual, expectedAndActual);
         }
 
         [TestMethod]
