@@ -1,4 +1,5 @@
-﻿using MSTest.AreEquivalent.Models;
+﻿using AwesomeAssertions;
+using MSTest.AreEquivalent.Models;
 using Shouldly;
 
 namespace MSTest.AreEquivalent
@@ -10,18 +11,12 @@ namespace MSTest.AreEquivalent
         public void AreEquivalent_ExpectedAndActualAreTheSameObject_Success()
         {
             // Arrange
-            var expectedAndActualPerson = new PersonInternal
+            var expectedAndActualPerson = new AddressInternal
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressInternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
             };
 
             // Act & Assert
@@ -32,18 +27,12 @@ namespace MSTest.AreEquivalent
         public void AreEquivalent_ExpectedAndActualAreDifferentObjectsOfSameTypeWithSameValues_Success()
         {
             // Arrange
-            var expected = new PersonInternal
+            var expected = new AddressInternal
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressInternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
             };
             var actual = expected;
 
@@ -55,20 +44,14 @@ namespace MSTest.AreEquivalent
         public void AreEquivalent_ExpectedAndActualHaveDifferentValues_AssertionFails()
         {
             // Arrange
-            var expected = new PersonInternal
+            var expected = new AddressInternal
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressInternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
             };
-            var actual = expected with { FirstName = "Jane" };
+            var actual = expected with { Street = "456 Elm St" };
 
             // Act
             var act = () => Assert.AreEqual(expected, actual);
@@ -79,6 +62,29 @@ namespace MSTest.AreEquivalent
 
         [TestMethod]
         public void AreEquivalent_ExpectedAndActualAreDifferentObjectsOfDifferentTypeButWithSameValues_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal
+            {
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
+            };
+            var actual = new AddressExternal
+            {
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
+            };
+
+            // Act & Assert
+            Assert.AreEqual<object>(expected, actual);
+        }
+
+        [TestMethod]
+        public void AreEquivalent_EquivalentComplexObjects_Success()
         {
             // Arrange
             var expected = new PersonInternal

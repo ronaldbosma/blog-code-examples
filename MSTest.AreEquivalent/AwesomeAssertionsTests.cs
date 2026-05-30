@@ -10,40 +10,28 @@ namespace MSTest.AreEquivalent
         public void ShouldBeEquivalentTo_ExpectedAndActualAreTheSameObject_Success()
         {
             // Arrange
-            var expectedAndActualPerson = new PersonInternal
+            var expectedAndActual = new AddressInternal
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressInternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
             };
 
             // Act & Assert
-            expectedAndActualPerson.Should().BeEquivalentTo(expectedAndActualPerson);
+            expectedAndActual.Should().BeEquivalentTo(expectedAndActual);
         }
 
         [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfSameTypeWithSameValues_Success()
         {
             // Arrange
-            var expected = new PersonInternal
+            var expected = new AddressInternal
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressInternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
             };
             var actual = expected;
 
@@ -55,20 +43,14 @@ namespace MSTest.AreEquivalent
         public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValues_AssertionFails()
         {
             // Arrange
-            var expected = new PersonInternal
+            var expected = new AddressInternal
             {
-                FirstName = "John",
-                LastName = "Doe",
-                Age = 30,
-                Address = new AddressInternal
-                {
-                    Street = "123 Main St",
-                    City = "Anytown",
-                    State = "CA",
-                    ZipCode = "12345"
-                }
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
             };
-            var actual = expected with { FirstName = "Jane" };
+            var actual = expected with { Street = "456 Elm St" };
 
             // Act
             var act = () => actual.Should().BeEquivalentTo(expected);
@@ -79,6 +61,29 @@ namespace MSTest.AreEquivalent
 
         [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeButWithSameValues_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal
+            {
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
+            };
+            var actual = new AddressExternal
+            {
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
+            };
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentComplexObjects_Success()
         {
             // Arrange
             var expected = new PersonInternal
