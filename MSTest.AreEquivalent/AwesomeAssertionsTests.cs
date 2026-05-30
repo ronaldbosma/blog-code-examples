@@ -1,5 +1,5 @@
-﻿using MSTest.AreEquivalent.Models;
-using AwesomeAssertions;
+﻿using AwesomeAssertions;
+using MSTest.AreEquivalent.Models;
 
 namespace MSTest.AreEquivalent
 {
@@ -76,6 +76,28 @@ namespace MSTest.AreEquivalent
 
             // Act & Assert
             actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeWithDifferentValues_AssertionFails()
+        {
+            // Arrange
+            var expected = new AddressInternal
+            {
+                Street = "123 Main St",
+                City = "Anytown",
+                State = "CA",
+                ZipCode = "12345"
+            };
+
+            var actual = expected.MapToExternal();
+            actual.Street = "456 Elm St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
