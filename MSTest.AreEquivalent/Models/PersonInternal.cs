@@ -18,6 +18,11 @@
 
         public AddressInternal Address { get; set; }
 
+        public PersonInternal CreateCopy()
+        {
+            return new PersonInternal(FirstName, LastName, Age, Address.CreateCopy());
+        }
+
         public PersonExternal MapToExternal()
         {
             return new PersonExternal(FirstName, LastName, Age, Address.MapToExternal());
