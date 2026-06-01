@@ -186,5 +186,27 @@ namespace MSTest.AreEquivalent
             // Act & Assert
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(x => x.Address.Street));
         }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedHasExtraProperty_AssertionFails()
+        {
+            // Arrange
+            var expected = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
+            var actual = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ActualHasExtraProperty_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+            var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
     }
 }
