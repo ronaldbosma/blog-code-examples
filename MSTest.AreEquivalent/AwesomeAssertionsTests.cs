@@ -205,6 +205,17 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
+        public void ShouldBeEquivalentTo_ActualHasExtraProperty_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+            var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedHasExtraProperty_AssertionFails()
         {
             // Arrange
@@ -216,17 +227,6 @@ namespace MSTest.AreEquivalent
 
             // Assert
             act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Country"));
-        }
-
-        [TestMethod]
-        public void ShouldBeEquivalentTo_ActualHasExtraProperty_Success()
-        {
-            // Arrange
-            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
-            var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
-
-            // Act & Assert
-            actual.Should().BeEquivalentTo(expected);
         }
     }
 }
