@@ -1,1 +1,0 @@
-Moved to https://github.com/ronaldbosma/bicep-samples/blob/main/naming-conventions/naming-convention-caf/

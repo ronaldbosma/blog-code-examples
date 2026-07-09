@@ -1,1 +1,0 @@
-Moved to https://github.com/ronaldbosma/bicep-samples/tree/main/user-defined-functions/replace-placholders-in-string-with-bicep-function
