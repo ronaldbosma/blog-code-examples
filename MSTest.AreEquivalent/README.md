@@ -1,4 +1,4 @@
-# MSTest.AreEquivalent
+# MSTest AreEquivalent
 
 This solution contains samples for the [Deep Object Comparison in MSTest with Assert.AreEquivalent](http://lronaldbosma.github.io/blog/2026/07/09/deep-object-comparison-in-mstest-with-assert.areequivalent/) blog post.
 
