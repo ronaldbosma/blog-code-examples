@@ -1,0 +1,232 @@
+﻿using AwesomeAssertions;
+using MSTest.AreEquivalent.Models;
+
+namespace MSTest.AreEquivalent
+{
+    [TestClass]
+    public sealed class AwesomeAssertionsTests
+    {
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualAreTheSameObject_Success()
+        {
+            // Arrange
+            var expectedAndActual = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            // Act & Assert
+            expectedAndActual.Should().BeEquivalentTo(expectedAndActual);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfSameTypeWithSameValues_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+            var actual = expected.CreateCopy();
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValues_AssertionFails()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            var actual = expected.CreateCopy();
+            actual.Street = "456 Elm St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeButWithSameValues_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+            var actual = expected.MapToExternal();
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeWithDifferentValues_AssertionFails()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            var actual = expected.MapToExternal();
+            actual.Street = "456 Elm St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentComplexObjectsOfDifferentTypes_Success()
+        {
+            // Arrange
+            var expected = new PersonInternal("John", "Doe", 30, 
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"));
+            var actual = expected.MapToExternal();
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentComplexObjectsOfDifferentTypesWithDifferentValueInChildObject_AssertionFails()
+        {
+            // Arrange
+            var expected = new PersonInternal("John", "Doe", 30,
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"));
+            
+            var actual = expected.MapToExternal();
+            actual.Address.Street = "456 Elm St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            var actual = expected.CreateCopy();
+            actual.Street = "456 Elm St";
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(x => x.Street));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentListOfObjects_Success()
+        {
+            // Arrange
+            var expected = new List<AddressInternal>
+            {
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"),
+                new AddressInternal("456 Elm St", "Othertown", "NY", "67890"),
+                new AddressInternal("789 Oak St", "Sometown", "TX", "54321")
+            };
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_DifferentListOfObjects_AssertionFails()
+        {
+            // Arrange
+            var expected = new List<AddressInternal>
+            {
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"),
+                new AddressInternal("456 Elm St", "Othertown", "NY", "67890"),
+                new AddressInternal("789 Oak St", "Sometown", "TX", "54321")
+            };
+
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+            actual[1].Street = "999 Pine St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentListOfObjectsWithComplexChildren_Success()
+        {
+            // Arrange
+            var expected = new List<PersonInternal>
+            {
+                new PersonInternal("John", "Doe", 30, new AddressInternal("123 Main St", "Anytown", "CA", "12345")),
+                new PersonInternal("Jane", "Smith", 25, new AddressInternal("456 Elm St", "Othertown", "NY", "67890")),
+                new PersonInternal("Bob", "Johnson", 40, new AddressInternal("789 Oak St", "Sometown", "TX", "54321"))
+            };
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_DifferentListOfObjectsWithComplexChildren_AssertionFails()
+        {
+            // Arrange
+            var expected = new List<PersonInternal>
+            {
+                new PersonInternal("John", "Doe", 30, new AddressInternal("123 Main St", "Anytown", "CA", "12345")),
+                new PersonInternal("Jane", "Smith", 25, new AddressInternal("456 Elm St", "Othertown", "NY", "67890")),
+                new PersonInternal("Bob", "Johnson", 40, new AddressInternal("789 Oak St", "Sometown", "TX", "54321"))
+            };
+
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+            actual[1].Address.Street = "999 Pine St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_DifferentListOfObjectsWithComplexChildrenButDifferentValueIsInIgnoredProperty_Success()
+        {
+            // Arrange
+            var expected = new List<PersonInternal>
+            {
+                new PersonInternal("John", "Doe", 30, new AddressInternal("123 Main St", "Anytown", "CA", "12345")),
+                new PersonInternal("Jane", "Smith", 25, new AddressInternal("456 Elm St", "Othertown", "NY", "67890")),
+                new PersonInternal("Bob", "Johnson", 40, new AddressInternal("789 Oak St", "Sometown", "TX", "54321"))
+            };
+
+            var actual = expected.Select(a => a.CreateCopy()).ToList();
+            actual[1].Address.Street = "999 Pine St";
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(x => x.Address.Street));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ExpectedHasExtraProperty_AssertionFails()
+        {
+            // Arrange
+            var expected = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
+            var actual = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Country"));
+        }
+
+        [TestMethod]
+        public void ShouldBeEquivalentTo_ActualHasExtraProperty_Success()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+            var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
+
+            // Act & Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+    }
+}
