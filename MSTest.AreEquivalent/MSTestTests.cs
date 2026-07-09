@@ -83,6 +83,24 @@ namespace MSTest.AreEquivalent
             Assert.AreEquivalent<object>(expected, actual);
         }
 
+        [TestMethod]
+        public void AreEquivalent_EquivalentComplexObjectsOfDifferentTypesWithDifferentValueInChildObject_AssertionFails()
+        {
+            // Arrange
+            var expected = new PersonInternal("John", "Doe", 30,
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"));
+
+            var actual = expected.MapToExternal();
+            actual.Address.Street = "456 Elm St";
+
+            // Act
+            var act = () => Assert.AreEquivalent<object>(expected, actual);
+
+            // Assert
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Street");
+        }
+
         /// <summary>
         /// This test will currently fail because MSTest does not support ignoring properties in the Assert.AreEquivalent assertion.
         /// This scenario is supported by AwesomeAssertions.

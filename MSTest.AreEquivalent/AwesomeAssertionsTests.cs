@@ -83,6 +83,23 @@ namespace MSTest.AreEquivalent
         }
 
         [TestMethod]
+        public void ShouldBeEquivalentTo_EquivalentComplexObjectsOfDifferentTypesWithDifferentValueInChildObject_AssertionFails()
+        {
+            // Arrange
+            var expected = new PersonInternal("John", "Doe", 30,
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"));
+            
+            var actual = expected.MapToExternal();
+            actual.Address.Street = "456 Elm St";
+
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
+        }
+
+        [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_Success()
         {
             // Arrange

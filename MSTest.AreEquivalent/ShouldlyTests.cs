@@ -61,7 +61,7 @@ namespace MSTest.AreEquivalent
 
         /// <summary>
         /// This test will currently fail because Shouldly does not support comparing objects of different types in the ShouldBeEquivalentTo assertion.
-        /// In this case it will throw a 'ShouldAssertException', but it's because the types are different and not because the Street property has different values.
+        /// In this case it will throw a 'ShouldAssertException' as expected, but the reason is the different types instead of the Street property having different values.
         /// This scenario is supported by AwesomeAssertions and MSTest.
         /// </summary>
         [TestMethod]
@@ -94,6 +94,28 @@ namespace MSTest.AreEquivalent
 
             // Act & Assert
             actual.ShouldBeEquivalentTo(expected);
+        }
+
+        /// <summary>
+        /// This test will currently fail because Shouldly does not support comparing objects of different types in the ShouldBeEquivalentTo assertion.
+        /// In this case it will throw a 'ShouldAssertException' as expected, but the reason is the different types instead of the Street property having different values.
+        /// This scenario is supported by AwesomeAssertions and MSTest.
+        /// </summary>
+        [TestMethod]
+        public void AreEquivalent_EquivalentComplexObjectsOfDifferentTypesWithDifferentValueInChildObject_TestFailsBecauseOfDifferentTypesAlthoughObjectsAreEquivalent()
+        {
+            // Arrange
+            var expected = new PersonInternal("John", "Doe", 30,
+                new AddressInternal("123 Main St", "Anytown", "CA", "12345"));
+
+            var actual = expected.MapToExternal();
+            actual.Address.Street = "456 Elm St";
+
+            // Act
+            var act = () => actual.ShouldBeEquivalentTo(expected);
+
+            // Assert
+            act.ShouldThrow<ShouldAssertException>().Message.ShouldContain("Street");
         }
 
         /// <summary>
