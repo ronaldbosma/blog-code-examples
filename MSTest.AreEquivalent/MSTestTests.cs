@@ -81,8 +81,11 @@ namespace MSTest.AreEquivalent
             Assert.AreEquivalent<object>(expected, actual);
         }
 
+        /// <summary>
+        /// This test will currently fail because MSTest does not support ignoring properties in the Assert.AreEquivalent assertion.
+        /// </summary>
         [TestMethod]
-        public void AreEquivalent_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_FailsBecauseIgnoringPropertiesIsNotSupported()
+        public void AreEquivalent_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_TestFailsBecauseIgnoringPropertiesIsNotSupported()
         {
             // Arrange
             var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
@@ -91,8 +94,6 @@ namespace MSTest.AreEquivalent
             actual.Street = "456 Elm St";
 
             // Act & Assert
-
-            // MSTEST DOESN'T SUPPORT IGNORING PROPERTIES, SO THIS TEST WILL FAIL
             Assert.AreEquivalent(expected, actual);
         }
 
@@ -170,8 +171,11 @@ namespace MSTest.AreEquivalent
             Assert.ThrowsExactly<AssertFailedException>(act);
         }
 
+        /// <summary>
+        /// This test will currently fail because MSTest does not support ignoring properties in the Assert.AreEquivalent assertion.
+        /// </summary>
         [TestMethod]
-        public void AreEquivalent_DifferentListOfObjectsWithComplexChildrenButDifferentValueIsInIgnoredProperty_FailsBecauseIgnoringPropertiesIsNotSupported()
+        public void AreEquivalent_DifferentListOfObjectsWithComplexChildrenButDifferentValueIsInIgnoredProperty_TestFailsBecauseIgnoringPropertiesIsNotSupported()
         {
             // Arrange
             var expected = new List<PersonInternal>
@@ -185,7 +189,6 @@ namespace MSTest.AreEquivalent
             actual[1].Address.Street = "999 Pine St";
 
             // Act & Assert
-            // MSTEST DOESN'T SUPPORT IGNORING PROPERTIES, SO THIS TEST WILL FAIL
             Assert.AreEquivalent(expected, actual);
         }
 
