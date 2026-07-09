@@ -40,12 +40,13 @@ namespace MSTest.AreEquivalent
             var act = () => actual.ShouldBeEquivalentTo(expected);
 
             // Assert
-            act.ShouldThrow<ShouldAssertException>();
+            act.ShouldThrow<ShouldAssertException>().Message.ShouldContain("Street");
         }
 
 
         /// <summary>
         /// This test will currently fail because Shouldly does not support comparing objects of different types in the ShouldBeEquivalentTo assertion.
+        /// This scenario is supported by AwesomeAssertions and MSTest.
         /// </summary>
         [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedAndActualAreDifferentObjectsOfDifferentTypeButWithSameValues_TestFailsBecauseOfDifferentTypesAlthoughObjectsAreEquivalent()
@@ -76,6 +77,7 @@ namespace MSTest.AreEquivalent
 
         /// <summary>
         /// This test will currently fail because Shouldly does not support comparing objects of different types in the ShouldBeEquivalentTo assertion.
+        /// This scenario is supported by AwesomeAssertions and MTest.
         /// </summary>
         [TestMethod]
         public void ShouldBeEquivalentTo_EquivalentComplexObjectsOfDifferentTypes_TestFailsBecauseOfDifferentTypesAlthoughObjectsAreEquivalent()
@@ -91,6 +93,7 @@ namespace MSTest.AreEquivalent
 
         /// <summary>
         /// This test will currently fail because Shouldly does not support ignoring properties in the ShouldBeEquivalentTo assertion.
+        /// This scenario is supported by AwesomeAssertions.
         /// </summary>
         [TestMethod]
         public void ShouldBeEquivalentTo_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_TestFailsBecauseIgnoringPropertiesIsNotSupported()
@@ -139,7 +142,7 @@ namespace MSTest.AreEquivalent
             var act = () => actual.ShouldBeEquivalentTo(expected);
 
             // Assert
-            act.ShouldThrow<ShouldAssertException>();
+            act.ShouldThrow<ShouldAssertException>().Message.ShouldContain("Street");
         }
 
         [TestMethod]
@@ -176,11 +179,12 @@ namespace MSTest.AreEquivalent
             var act = () => actual.ShouldBeEquivalentTo(expected);
 
             // Assert
-            act.ShouldThrow<ShouldAssertException>();
+            act.ShouldThrow<ShouldAssertException>().Message.ShouldContain("Street");
         }
 
         /// <summary>
         /// This test will currently fail because Shouldly does not support ignoring properties in the ShouldBeEquivalentTo assertion.
+        /// This scenario is supported by AwesomeAssertions.
         /// </summary>
         [TestMethod]
         public void ShouldBeEquivalentTo_DifferentListOfObjectsWithComplexChildrenButDifferentValueIsInIgnoredProperty_TestFailsBecauseIgnoringPropertiesIsNotSupported()

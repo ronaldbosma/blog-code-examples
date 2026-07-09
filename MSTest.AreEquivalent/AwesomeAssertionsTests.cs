@@ -40,7 +40,7 @@ namespace MSTest.AreEquivalent
             var act = () => actual.Should().BeEquivalentTo(expected);
 
             // Assert
-            act.Should().Throw<AssertFailedException>();
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace MSTest.AreEquivalent
             var act = () => actual.Should().BeEquivalentTo(expected);
 
             // Assert
-            act.Should().Throw<AssertFailedException>();
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
         }
 
         [TestMethod]
@@ -129,7 +129,7 @@ namespace MSTest.AreEquivalent
             var act = () => actual.Should().BeEquivalentTo(expected);
 
             // Assert
-            act.Should().Throw<AssertFailedException>();
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
         }
 
         [TestMethod]
@@ -166,7 +166,7 @@ namespace MSTest.AreEquivalent
             var act = () => actual.Should().BeEquivalentTo(expected);
 
             // Assert
-            act.Should().Throw<AssertFailedException>();
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Street"));
         }
 
         [TestMethod]
@@ -198,7 +198,7 @@ namespace MSTest.AreEquivalent
             var act = () => actual.Should().BeEquivalentTo(expected);
 
             // Assert
-            act.Should().Throw<AssertFailedException>();
+            act.Should().Throw<AssertFailedException>().Where(e => e.Message.Contains("Country"));
         }
 
         [TestMethod]

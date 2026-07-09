@@ -39,7 +39,8 @@ namespace MSTest.AreEquivalent
             var act = () => Assert.AreEquivalent(expected, actual);
 
             // Assert
-            Assert.ThrowsExactly<AssertFailedException>(act);
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Street");
         }
 
         [TestMethod]
@@ -66,7 +67,8 @@ namespace MSTest.AreEquivalent
             var act = () => Assert.AreEquivalent<object>(expected, actual);
 
             // Assert
-            Assert.ThrowsExactly<AssertFailedException>(act);
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Street");
         }
 
         [TestMethod]
@@ -83,6 +85,7 @@ namespace MSTest.AreEquivalent
 
         /// <summary>
         /// This test will currently fail because MSTest does not support ignoring properties in the Assert.AreEquivalent assertion.
+        /// This scenario is supported by AwesomeAssertions.
         /// </summary>
         [TestMethod]
         public void AreEquivalent_ExpectedAndActualHaveDifferentValueButPropertyIsIgnored_TestFailsBecauseIgnoringPropertiesIsNotSupported()
@@ -131,7 +134,8 @@ namespace MSTest.AreEquivalent
             var act = () => Assert.AreEquivalent(expected, actual);
 
             // Assert
-            Assert.ThrowsExactly<AssertFailedException>(act);
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Street");
         }
 
         [TestMethod]
@@ -168,11 +172,13 @@ namespace MSTest.AreEquivalent
             var act = () => Assert.AreEquivalent(expected, actual);
 
             // Assert
-            Assert.ThrowsExactly<AssertFailedException>(act);
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Street");
         }
 
         /// <summary>
         /// This test will currently fail because MSTest does not support ignoring properties in the Assert.AreEquivalent assertion.
+        /// This scenario is supported by AwesomeAssertions.
         /// </summary>
         [TestMethod]
         public void AreEquivalent_DifferentListOfObjectsWithComplexChildrenButDifferentValueIsInIgnoredProperty_TestFailsBecauseIgnoringPropertiesIsNotSupported()
@@ -203,7 +209,8 @@ namespace MSTest.AreEquivalent
             var act = () => Assert.AreEquivalent<object>(expected, actual);
 
             // Assert
-            Assert.ThrowsExactly<AssertFailedException>(act);
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Country");
         }
 
         [TestMethod]
