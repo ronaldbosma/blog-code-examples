@@ -194,8 +194,11 @@ namespace MSTest.AreEquivalent
             var expected = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
             var actual = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
 
-            // Act & Assert
-            actual.Should().BeEquivalentTo(expected);
+            // Act
+            var act = () => actual.Should().BeEquivalentTo(expected);
+
+            // Assert
+            act.Should().Throw<AssertFailedException>();
         }
 
         [TestMethod]
