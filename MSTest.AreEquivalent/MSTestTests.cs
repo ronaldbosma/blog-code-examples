@@ -12,7 +12,7 @@ namespace MSTest.AreEquivalent
             var expectedAndActual = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
 
             // Act & Assert
-            Assert.AreEqual(expectedAndActual, expectedAndActual);
+            Assert.AreEquivalent(expectedAndActual, expectedAndActual);
         }
 
         [TestMethod]
@@ -23,7 +23,7 @@ namespace MSTest.AreEquivalent
             var actual = expected.CreateCopy();
 
             // Act & Assert
-            Assert.AreEqual(expected, actual);
+            Assert.AreEquivalent(expected, actual);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace MSTest.AreEquivalent
             actual.Street = "456 Elm St";
 
             // Act
-            var act = () => Assert.AreEqual(expected, actual);
+            var act = () => Assert.AreEquivalent(expected, actual);
 
             // Assert
             Assert.ThrowsExactly<AssertFailedException>(act);
@@ -50,7 +50,7 @@ namespace MSTest.AreEquivalent
             var actual = expected.MapToExternal();
 
             // Act & Assert
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent<object>(expected, actual);
         }
 
         [TestMethod]
@@ -63,7 +63,7 @@ namespace MSTest.AreEquivalent
             actual.Street = "456 Elm St";
 
             // Act
-            var act = () => Assert.AreEqual<object>(expected, actual);
+            var act = () => Assert.AreEquivalent<object>(expected, actual);
 
             // Assert
             Assert.ThrowsExactly<AssertFailedException>(act);
@@ -78,7 +78,7 @@ namespace MSTest.AreEquivalent
             var actual = expected.MapToExternal();
 
             // Act & Assert
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent<object>(expected, actual);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace MSTest.AreEquivalent
             // Act & Assert
 
             // MSTEST DOESN'T SUPPORT IGNORING PROPERTIES, SO THIS TEST WILL FAIL
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent(expected, actual);
         }
 
         [TestMethod]
@@ -109,7 +109,7 @@ namespace MSTest.AreEquivalent
             var actual = expected.Select(a => a.CreateCopy()).ToList();
 
             // Act & Assert
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent(expected, actual);
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace MSTest.AreEquivalent
             actual[1].Street = "999 Pine St";
 
             // Act
-            var act = () => Assert.AreEqual<object>(expected, actual);
+            var act = () => Assert.AreEquivalent(expected, actual);
 
             // Assert
             Assert.ThrowsExactly<AssertFailedException>(act);
@@ -146,7 +146,7 @@ namespace MSTest.AreEquivalent
             var actual = expected.Select(a => a.CreateCopy()).ToList();
 
             // Act & Assert
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent(expected, actual);
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace MSTest.AreEquivalent
             actual[1].Address.Street = "999 Pine St";
 
             // Act
-            var act = () => Assert.AreEqual<object>(expected, actual);
+            var act = () => Assert.AreEquivalent(expected, actual);
 
             // Assert
             Assert.ThrowsExactly<AssertFailedException>(act);
@@ -186,7 +186,7 @@ namespace MSTest.AreEquivalent
 
             // Act & Assert
             // MSTEST DOESN'T SUPPORT IGNORING PROPERTIES, SO THIS TEST WILL FAIL
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent(expected, actual);
         }
 
         [TestMethod]
@@ -197,7 +197,7 @@ namespace MSTest.AreEquivalent
             var actual = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
 
             // Act & Assert
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent<object>(expected, actual);
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace MSTest.AreEquivalent
             var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
 
             // Act & Assert
-            Assert.AreEqual<object>(expected, actual);
+            Assert.AreEquivalent<object>(expected, actual);
         }
     }
 }
