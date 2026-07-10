@@ -241,5 +241,22 @@ namespace MSTest.AreEquivalent
             // Act & Assert
             Assert.AreEquivalent<object>(expected, actual);
         }
+
+        [TestMethod]
+        public void AreEquivalent_ActualHasExtraPropertyAndComparisonIsStrict_AssertionFails()
+        {
+            // Arrange
+            var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
+            var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
+
+            var strict = true;
+
+            // Act
+            var act = () => Assert.AreEquivalent<object>(expected, actual, strict);
+
+            // Assert
+            var ex = Assert.ThrowsExactly<AssertFailedException>(act);
+            StringAssert.Contains(ex.Message, "Country");
+        }
     }
 }
