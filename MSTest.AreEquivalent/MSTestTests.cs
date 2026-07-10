@@ -248,7 +248,8 @@ namespace MSTest.AreEquivalent
             // Arrange
             var expected = new AddressInternal("123 Main St", "Anytown", "CA", "12345");
             var actual = new AddressWithExtraProperty("123 Main St", "Anytown", "CA", "12345", "The Country");
-
+            
+            // When strict is true, the comparison fails if actual has public properties or fields that are not present on expected
             var strict = true;
 
             // Act
