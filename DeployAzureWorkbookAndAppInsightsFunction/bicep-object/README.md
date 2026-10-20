@@ -15,7 +15,7 @@ $targetFile = "./sample-object.bicep"
 # Key value pair of environment specific values and the param/variable names that should replace them
 $variables = @{
     "my-api-management-dev" = "apimResourceName";
-    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-test/providers/microsoft.insights/components/my-application-insights-dev" = "appInsights.id";
+    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-monitorais-frc-u7eei/providers/microsoft.insights/components/appi-monitorais-frc-u7eei" = "appInsights.id";
 }
 
 $workbook = Get-Content -Path $sourceFile
@@ -79,7 +79,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
 }
 
-resource workbookId_resource 'microsoft.insights/workbooks@2021-03-08' = {
+resource workbookId_resource 'Microsoft.Insights/workbooks@2022-04-01' = {
   name: guid(name)
   location: resourceGroup().location
   kind: 'shared'

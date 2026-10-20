@@ -11,7 +11,7 @@ var definition = {
         version: 'KqlParameterItem/1.0'
         parameters: [
           {
-            id: 'fdf8406d-feec-42bd-8da1-affae4dbed83'
+            id: 'eeb172d0-61e7-4767-a7f4-d24d34252dc2'
             version: 'KqlParameterItem/1.0'
             name: 'Time'
             type: 4
@@ -73,7 +73,7 @@ var definition = {
             }
           }
           {
-            id: '529721b3-4f6a-4a28-832e-6496c299c58e'
+            id: 'c2568f64-dcbb-4665-bd08-75bec20accfc'
             version: 'KqlParameterItem/1.0'
             name: 'Subscription'
             type: 2
@@ -93,7 +93,7 @@ var definition = {
             value: []
           }
           {
-            id: '5ae86289-64b1-4d6d-82c8-1e657455225a'
+            id: '67538a51-4450-4733-a6ae-529723dd1c6d'
             version: 'KqlParameterItem/1.0'
             name: 'Api'
             type: 2
@@ -110,9 +110,10 @@ var definition = {
             timeContextFromParameter: 'Time'
             queryType: 0
             resourceType: 'microsoft.insights/components'
+            value: []
           }
           {
-            id: '397b1738-8446-4d25-8200-377001155b53'
+            id: '3068ae8e-e520-4551-b471-8c804ac4de56'
             version: 'KqlParameterItem/1.0'
             name: 'Success'
             type: 2
@@ -120,10 +121,6 @@ var definition = {
               additionalResourceOptions: []
             }
             jsonData: ' [\r\n    { "value": "true", "label": "yes"},\r\n    { "value": "false", "label": "no"}\r\n]'
-            timeContext: {
-              durationMs: 0
-            }
-            timeContextFromParameter: 'Time'
             value: null
           }
         ]
@@ -137,12 +134,13 @@ var definition = {
       type: 3
       content: {
         version: 'KqlItem/1.0'
-        query: 'ApimRequests\r\n| summarize \r\n        requests=strcat(\'Total # of requests: \', count()), \r\n        failures=strcat(\'Total # of failures: \', countif(success==false)),\r\n        errors=countif(toint(resultCode)>=500)\r\n    by api'
+        query: 'ApimRequests\r\n| summarize \r\n    requests=strcat(\'Total # of requests: \', count()), \r\n    failures=strcat(\'Total # of failures: \', countif(success==false)),\r\n    errors=countif(toint(resultCode)>=500)\r\n  by api'
         size: 4
+        showAnalytics: true
         title: 'Total # of errors per API (status code >=500)'
-        timeContext: {
-          durationMs: 86400000
-        }
+        timeContextFromParameter: 'Time'
+        showRefreshButton: true
+        showExportToExcel: true
         queryType: 0
         resourceType: 'microsoft.insights/components'
         visualization: 'tiles'
@@ -163,13 +161,15 @@ var definition = {
             numberFormat: {
               unit: 17
               options: {
-                maximumSignificantDigits: 3
+                style: 'decimal'
                 maximumFractionDigits: 2
+                maximumSignificantDigits: 3
               }
             }
           }
           secondaryContent: {
             columnMatch: 'failures'
+            formatter: 1
           }
           showBorder: false
           sortCriteriaField: 'api'
@@ -182,22 +182,32 @@ var definition = {
       type: 3
       content: {
         version: 'KqlItem/1.0'
-        query: 'let subscriptionFilter = dynamic([{Subscription}]);\r\nlet apiFilter = dynamic([{Api}]);\r\nlet successFilter = \'{Success}\';\r\n\r\nApimRequests\r\n| where array_length(subscriptionFilter) == 0 or subscription in (subscriptionFilter)\r\n| where array_length(apiFilter) == 0 or api in (apiFilter)\r\n| where isempty(successFilter) or success == tobool(successFilter)\r\n| project timestamp\r\n    , subscription\r\n    , api\r\n    , name\r\n    , success\r\n    , resultCode\r\n    , duration = strcat(round(duration, 1), " ms")\r\n    , details = itemId\r\n    , transaction = itemId\r\n    , sessionCorrelationId\r\n| order by timestamp desc'
+        query: 'let subscriptionFilter = dynamic([{Subscription}]);\r\nlet apiFilter = dynamic([{Api}]);\r\nlet successFilter = \'{Success}\';\r\n\r\nApimRequests\r\n| where array_length(subscriptionFilter) == 0 or subscription in (subscriptionFilter)\r\n| where array_length(apiFilter) == 0 or api in (apiFilter)\r\n| where isempty(successFilter) or success == tobool(successFilter)\r\n| project status = iif(success==true, "success", "error")\r\n    , timestamp\r\n    , subscription\r\n    , api\r\n    , name\r\n    , resultCode\r\n    , duration\r\n    , details = itemId\r\n    , transaction = itemId\r\n    , operation_Id\r\n| order by timestamp desc'
         size: 1
+        showAnalytics: true
         title: 'Requests'
         timeContextFromParameter: 'Time'
-        exportFieldName: 'sessionCorrelationId'
-        exportParameterName: 'SelectedSessionCorrelationId'
+        showRefreshButton: true
+        exportFieldName: 'operation_Id'
+        exportParameterName: 'SelectedOperationId'
+        showExportToExcel: true
         queryType: 0
         resourceType: 'microsoft.insights/components'
         visualization: 'table'
         gridSettings: {
           formatters: [
             {
+              columnMatch: 'status'
+              formatter: 11
+              formatOptions: {
+                customColumnWidthSetting: '12ch'
+              }
+            }
+            {
               columnMatch: 'timestamp'
               formatter: 0
               formatOptions: {
-                customColumnWidthSetting: '20.5ch'
+                customColumnWidthSetting: '23ch'
               }
             }
             {
@@ -208,24 +218,23 @@ var definition = {
               }
             }
             {
-              columnMatch: 'success'
-              formatter: 0
-              formatOptions: {
-                customColumnWidthSetting: '12ch'
-              }
-            }
-            {
               columnMatch: 'resultCode'
               formatter: 0
               formatOptions: {
-                customColumnWidthSetting: '15ch'
+                customColumnWidthSetting: '11.5ch'
               }
             }
             {
               columnMatch: 'duration'
-              formatter: 0
+              formatter: 4
               formatOptions: {
-                customColumnWidthSetting: '13ch'
+                palette: 'blue'
+              }
+              numberFormat: {
+                unit: 23
+                options: {
+                  style: 'decimal'
+                }
               }
             }
             {
@@ -235,6 +244,10 @@ var definition = {
                 linkTarget: 'RequestDetails'
                 linkLabel: 'details'
                 linkIsContextBlade: true
+                appInsightsContext: {
+                  resourceIdSource: 'workbook'
+                  secondaryIdSource: 'default'
+                }
                 customColumnWidthSetting: '11ch'
               }
             }
@@ -244,11 +257,58 @@ var definition = {
               formatOptions: {
                 linkTarget: 'RequestDetails'
                 linkLabel: 'transaction'
+                linkIsContextBlade: false
+                appInsightsContext: {
+                  resourceIdSource: 'workbook'
+                  secondaryIdSource: 'default'
+                }
                 customColumnWidthSetting: '15ch'
               }
             }
+            {
+              columnMatch: 'operation_Id'
+              formatter: 5
+            }
           ]
           filter: true
+          labelSettings: [
+            {
+              columnId: 'status'
+              label: 'Status'
+            }
+            {
+              columnId: 'timestamp'
+              label: 'Timestamp'
+            }
+            {
+              columnId: 'subscription'
+              label: 'Subscription'
+            }
+            {
+              columnId: 'api'
+              label: 'API'
+            }
+            {
+              columnId: 'name'
+              label: 'Name'
+            }
+            {
+              columnId: 'resultCode'
+              label: 'Result Code'
+            }
+            {
+              columnId: 'duration'
+              label: 'Duration'
+            }
+            {
+              columnId: 'details'
+              label: 'Details'
+            }
+            {
+              columnId: 'transaction'
+              label: 'Transaction'
+            }
+          ]
         }
       }
       name: 'query - 1'
@@ -257,48 +317,50 @@ var definition = {
       type: 3
       content: {
         version: 'KqlItem/1.0'
-        query: 'ApimRequests\r\n| where sessionCorrelationId == \'{SelectedSessionCorrelationId}\'\r\n| project timestamp\r\n    , subscription\r\n    , api\r\n    , name\r\n    , success\r\n    , resultCode\r\n    , duration = strcat(round(duration, 1), " ms")\r\n    , details = itemId\r\n    , transaction = itemId\r\n| order by timestamp desc'
-        size: 0
-        title: 'Requests for session: {SelectedSessionCorrelationId}'
+        query: 'dependencies\r\n| where operation_Id == \'{SelectedOperationId}\'\r\n| project status = iif(success==true, "success", "error")\r\n    , timestamp\r\n    , target\r\n    , name\r\n    , type\r\n    , resultCode\r\n    , duration\r\n    , details = itemId\r\n    , transaction = itemId\r\n| order by timestamp desc'
+        size: 1
+        showAnalytics: true
+        title: 'Dependencies of operation: {SelectedOperationId}'
         timeContextFromParameter: 'Time'
+        showRefreshButton: true
+        showExportToExcel: true
         queryType: 0
         resourceType: 'microsoft.insights/components'
         visualization: 'table'
         gridSettings: {
           formatters: [
             {
+              columnMatch: 'status'
+              formatter: 11
+              formatOptions: {
+                customColumnWidthSetting: '12ch'
+              }
+            }
+            {
               columnMatch: 'timestamp'
               formatter: 0
               formatOptions: {
-                customColumnWidthSetting: '20ch'
-              }
-            }
-            {
-              columnMatch: 'subscription'
-              formatter: 0
-              formatOptions: {
-                customColumnWidthSetting: '16ch'
-              }
-            }
-            {
-              columnMatch: 'success'
-              formatter: 0
-              formatOptions: {
-                customColumnWidthSetting: '12ch'
+                customColumnWidthSetting: '23ch'
               }
             }
             {
               columnMatch: 'resultCode'
               formatter: 0
               formatOptions: {
-                customColumnWidthSetting: '15ch'
+                customColumnWidthSetting: '11.5ch'
               }
             }
             {
               columnMatch: 'duration'
-              formatter: 0
+              formatter: 4
               formatOptions: {
-                customColumnWidthSetting: '13ch'
+                palette: 'blue'
+              }
+              numberFormat: {
+                unit: 23
+                options: {
+                  style: 'decimal'
+                }
               }
             }
             {
@@ -308,6 +370,10 @@ var definition = {
                 linkTarget: 'RequestDetails'
                 linkLabel: 'details'
                 linkIsContextBlade: true
+                appInsightsContext: {
+                  resourceIdSource: 'workbook'
+                  secondaryIdSource: 'default'
+                }
                 customColumnWidthSetting: '11ch'
               }
             }
@@ -317,14 +383,56 @@ var definition = {
               formatOptions: {
                 linkTarget: 'RequestDetails'
                 linkLabel: 'transaction'
+                appInsightsContext: {
+                  resourceIdSource: 'workbook'
+                  secondaryIdSource: 'default'
+                }
                 customColumnWidthSetting: '15ch'
               }
+            }
+          ]
+          labelSettings: [
+            {
+              columnId: 'status'
+              label: 'Status'
+            }
+            {
+              columnId: 'timestamp'
+              label: 'Timestamp'
+            }
+            {
+              columnId: 'target'
+              label: 'Target'
+            }
+            {
+              columnId: 'name'
+              label: 'Name'
+            }
+            {
+              columnId: 'type'
+              label: 'Type'
+            }
+            {
+              columnId: 'resultCode'
+              label: 'Result Code'
+            }
+            {
+              columnId: 'duration'
+              label: 'Duration'
+            }
+            {
+              columnId: 'details'
+              label: 'Details'
+            }
+            {
+              columnId: 'transaction'
+              label: 'Transaction'
             }
           ]
         }
       }
       conditionalVisibility: {
-        parameterName: 'SelectedSessionCorrelationId'
+        parameterName: 'SelectedOperationId'
         comparison: 'isNotEqualTo'
       }
       name: 'query - 3'
@@ -341,7 +449,7 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' existing = {
   name: appInsightsName
 }
 
-resource workbookId_resource 'microsoft.insights/workbooks@2021-03-08' = {
+resource workbookId_resource 'Microsoft.Insights/workbooks@2022-04-01' = {
   name: guid(name)
   location: resourceGroup().location
   kind: 'shared'
