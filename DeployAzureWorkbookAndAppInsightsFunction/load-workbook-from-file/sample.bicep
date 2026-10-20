@@ -5,7 +5,7 @@ param workbookDisplayName string = 'Sample Workbook'
 param workbookType string = 'workbook'
 
 @description('The id of resource instance to which the workbook will be associated')
-param workbookSourceId string = '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/my-test/providers/microsoft.insights/components/appin-robo-test'
+param workbookSourceId string = '/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-monitorais-frc-u7eei/providers/microsoft.insights/components/appi-monitorais-frc-u7eei'
 
 @description('The unique guid for this workbook instance')
 param workbookId string = guid('sample-workbook')
