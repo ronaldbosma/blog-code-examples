@@ -260,6 +260,10 @@
                 },
                 "customColumnWidthSetting": "15ch"
               }
+            },
+            {
+              "columnMatch": "operation_Id",
+              "formatter": 5
             }
           ],
           "filter": true,
@@ -299,10 +303,6 @@
             {
               "columnId": "transaction",
               "label": "Transaction"
-            },
-            {
-              "columnId": "operation_Id",
-              "label": "Operation ID"
             }
           ]
         }
@@ -313,10 +313,10 @@
       "type": 3,
       "content": {
         "version": "KqlItem/1.0",
-        "query": "ApimRequests\r\n| where operation_Id == '{SelectedOperationId}'\r\n| project status = iif(success==true, \"success\", \"error\")\r\n    , timestamp\r\n    , subscription\r\n    , api\r\n    , name\r\n    , resultCode\r\n    , duration\r\n    , details = itemId\r\n    , transaction = itemId\r\n| order by timestamp desc",
-        "size": 0,
+        "query": "dependencies\r\n| where operation_Id == '{SelectedOperationId}'\r\n| project status = iif(success==true, \"success\", \"error\")\r\n    , timestamp\r\n    , target\r\n    , name\r\n    , type\r\n    , resultCode\r\n    , duration\r\n    , details = itemId\r\n    , transaction = itemId\r\n| order by timestamp desc",
+        "size": 1,
         "showAnalytics": true,
-        "title": "Requests for operation: {SelectedOperationId}",
+        "title": "Dependencies of operation: {SelectedOperationId}",
         "timeContextFromParameter": "Time",
         "showRefreshButton": true,
         "showExportToExcel": true,
@@ -337,13 +337,6 @@
               "formatter": 0,
               "formatOptions": {
                 "customColumnWidthSetting": "23ch"
-              }
-            },
-            {
-              "columnMatch": "subscription",
-              "formatter": 0,
-              "formatOptions": {
-                "customColumnWidthSetting": "16ch"
               }
             },
             {
@@ -404,16 +397,16 @@
               "label": "Timestamp"
             },
             {
-              "columnId": "subscription",
-              "label": "Subscription"
-            },
-            {
-              "columnId": "api",
-              "label": "API"
+              "columnId": "target",
+              "label": "Target"
             },
             {
               "columnId": "name",
               "label": "Name"
+            },
+            {
+              "columnId": "type",
+              "label": "Type"
             },
             {
               "columnId": "resultCode",
