@@ -13,7 +13,7 @@ param workbookId string = guid('sample-workbook')
 var definition = loadTextContent('./sample.workbook')
 var serializedData = replace(definition, '##applicationInsightsId##', workbookSourceId)
 
-resource workbookId_resource 'microsoft.insights/workbooks@2021-03-08' = {
+resource workbookId_resource 'microsoft.insights/workbooks@2022-04-01' = {
   name: workbookId
   location: resourceGroup().location
   kind: 'shared'
