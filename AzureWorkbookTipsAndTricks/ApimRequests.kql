@@ -1,4 +1,4 @@
 requests
-| where customDimensions["Service ID"] == "apim-robo-test"
+| where customDimensions["Service ID"] == "apim-monitorais-frc-u7eei"
 | extend subscription = tostring(customDimensions["Subscription Name"])
     , api = tostring(customDimensions["API Name"])
